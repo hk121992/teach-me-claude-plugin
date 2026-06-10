@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "plugin": "learn-to-claude",
+  "learner": {
+    "name": "",
+    "profession": "",
+    "goals": [],
+    "comfort_level": "",
+    "started": ""
+  },
+  "current": {
+    "series": 1,
+    "challenge": 1
+  },
+  "challenges": {},
+  "capstone_briefs": [],
+  "reflections": []
+}

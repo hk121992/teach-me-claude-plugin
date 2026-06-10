@@ -1,0 +1,19 @@
+{
+  "name": "learn-to-claude",
+  "displayName": "Learn to Claude",
+  "version": "0.1.0",
+  "description": "A hands-on learning companion that teaches you to work with Claude through practical challenges — starting in Cowork, no technical background needed. Ships with the free Foundations series (10 challenges).",
+  "author": {
+    "name": "hk121992"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "learning",
+    "education",
+    "challenges",
+    "cowork",
+    "onboarding",
+    "curriculum"
+  ],
+  "hooks": "./hooks/hooks.json"
+}
