@@ -4,16 +4,23 @@ Design document for the 100-challenge curriculum. The user-facing map is
 [`roadmap/ROADMAP.md`](roadmap/ROADMAP.md); the shipped free series is in
 [`challenges/series-01/`](challenges/series-01/). This document records
 the *why*: audience, research grounding, pedagogy, architecture, and
-business model. Research conducted June 2026.
+business model. Research conducted June 2026; structure revised after
+design review (v0.2).
 
 ## 1. Thesis
 
 The best way to learn Claude is to use it — on your own work, with a
 coach, against real standards. Learn to Claude is a Cowork plugin that
 acts as a learning companion: 100 challenges, each pairing a short lesson
-with a practical task on the learner's real material, graded against an
-explicit rubric by the companion itself. The product *is* the medium: you
-learn agentic work from an agent, inside the agent.
+with a practical task, graded against an explicit rubric by the companion
+itself. The product *is* the medium: you learn agentic work from an
+agent, inside the agent.
+
+Its signature stance: most courses teach the user to prompt well. This
+one teaches them to **install guardrails that make good prompting
+automatic** — starting with their very first skill, which makes Claude
+Socratically interrogate *them* until the brief is complete. Learners
+graduate with infrastructure, not just technique.
 
 ## 2. Audience
 
@@ -57,25 +64,45 @@ Concretely:
    else previously practiced (Exercism's discipline).
 2. **Guidance fades across each series and across the arc**: worked
    example → fix/complete scaffolds → independent briefs → open
-   capstone. Early challenges hand the learner a working brief to study
-   and modify; capstones hand them only parameters.
-3. **Failure-first challenges** train discernment — the hardest and most
-   neglected AI skill: the learner watches a vague brief produce mush
-   (1.03) and hunts a real hallucination in their own domain (1.04)
-   *before* the technique is taught.
-4. **Real artifacts over gamification.** The Duolingo lesson, both ways:
-   keep bite-size units, visible progression, and immediate feedback;
-   reject XP and streaks as the progress metric. Progress = a portfolio
-   of things the learner actually uses (their template, their machine,
-   their CLAUDE.md, their website).
-5. **Capstones every 10** ("choose your own adventure"): the learner
-   defines the goal within parameters — Knowles' transfer test, and the
-   product's signature ritual.
-6. **Reflection per challenge**, recorded by the review skill — spaced
+   capstone.
+3. **Failure-first is the house style** — the learner experiences each
+   failure mode in a controlled setting *before* the countermeasure is
+   taught: vague brief → mush (1.03), sycophancy on their own half-baked
+   idea (1.04), a hallucination hunted in their own domain (1.05), a
+   fluent-but-wrong number (1.06). Scar tissue beats lecture, and
+   discernment — the hardest, most neglected AI skill — is trained on
+   felt evidence.
+4. **Short, sharp, variable pacing.** Time budgets are printed per
+   challenge: 5–10 minutes for openers, 15–20 for the core, 30–60 for
+   capstones (which may span sessions). Later building series run
+   longer by nature. The free series completes in a week of lunch
+   breaks.
+5. **Defined tasks as the floor, real work as the stretch.** Most
+   challenges ship a defined task so quality is controllable; where the
+   learner has a fitting real task, the companion offers it as the
+   stretch path. Capstones are always real work. In parallel, the
+   companion builds a **workflow profile** of the learner's actual
+   recurring work at every debrief — connecting each lesson back to
+   their use cases and seeding the delegation map (1.06) and capstones.
+6. **Real artifacts over gamification.** Keep bite-size units, visible
+   progression, immediate feedback; reject XP and streaks. Progress = a
+   portfolio of things the learner actually uses — formalized as **the
+   kit** (see §4.1) and rendered by widgets (journey map, graduation
+   certificate) that display real state only.
+7. **Capstones every 10**: the learner defines the goal within
+   parameters — Knowles' transfer test, and the product's signature
+   ritual.
+8. **Reflection per challenge**, recorded by the review skill — spaced
    retrieval, and raw material for later coaching.
-7. **Companion-as-coach, never doer.** Mollick's 10-hour rule: fluency
+9. **Companion-as-coach, never doer.** Mollick's 10-hour rule: fluency
    comes from hands-on hours that cannot be delegated. The hard rule in
    every skill: the learner does the task.
+10. **The companion practices what it preaches.** It refuses the
+    sycophantic register, grills vague answers Socratically, and shows
+    its own briefs — meta-consistency as credibility. The single
+    exception is scripted: failure-first demos where the learner must
+    meet default behavior (those run in fresh sessions, away from the
+    companion).
 
 ### 3.2 Competency spine: the 4D framework
 
@@ -83,8 +110,10 @@ Challenges are tagged with Anthropic's AI Fluency competencies — the
 only existing curriculum-grade taxonomy for this audience:
 **Delegation** (what to hand over), **Description** (how to brief),
 **Discernment** (how to judge output), **Diligence** (responsibility
-and safety). Note the spine is deliberately *not* prompting-first:
-delegation judgment and output evaluation are co-equal skills.
+and safety). The spine is deliberately *not* prompting-first: delegation
+judgment and output evaluation are co-equal skills, and the curriculum's
+flagship move (the grill-me skill) converts Description from a skill the
+learner performs into a guardrail the system enforces.
 
 ### 3.3 Designed against documented failure modes
 
@@ -96,31 +125,35 @@ research, GitHub issues, incident reports):
 | Search-engine mental model; expects memory; anthropomorphizing | 1.01 |
 | Never delegates real work; sandbox-only practice | 1.02 |
 | Vague one-liners; missing context ("colleague test") | 1.03 |
-| Swallowing hallucinations; trusting confident tone; unverified citations | 1.04 |
-| AI-for-everything / wrong tool selection | 1.05 |
-| Re-paying judgment prices for rules-work (the untaught "AI writes the automation" principle) | 1.06 |
+| Trusting agreeable feedback; courses that teach prompting but no guardrails | 1.04 |
+| Swallowing hallucinations; trusting confident tone; unverified citations | 1.05 |
+| Trusting fluent arithmetic; AI-for-everything / wrong tool selection | 1.06 |
 | Mega-prompts; correction spirals; kitchen-sink sessions | 1.07 |
 | Re-explaining everything; no persistent context | 1.08 |
 | Sensitive-data pasting; permission fatigue ("Allow all" → deleted folders); prompt injection via documents; no backups | 1.09 |
 
-Later series extend this: context rot and the .claude layer (S7), agent
-runaway and audit habits (S8), the full security strand (S9) — the
-documented Cowork incidents (the 11GB deletion, the 15,000 family
-photos, the PromptArmor exfiltration demo) are why Diligence is a
-strand, not a footnote.
+Later series extend this: context rot and the .claude layer (S9), agent
+runaway and audit habits (S9), sharing leaks (S7), secrets handling
+(S9), and the hardening pass (S10) — the documented Cowork incidents
+(the 11GB deletion, the 15,000 family photos, the PromptArmor
+exfiltration demo) are why Diligence is a strand, not a footnote.
 
-### 3.4 Three genuinely under-served topics we own
+### 3.4 Under-served topics we own
 
-The research found three high-value concepts essentially untaught
-anywhere for this audience — each is load-bearing here:
+The research found high-value concepts essentially untaught anywhere for
+this audience — each is load-bearing here:
 
-1. **"Build the machine once"** — AI writes deterministic automation;
-   pay for judgment once, run the artifact forever (1.06, recurring).
-2. **Git as the seatbelt for agent work** — version control taught as
-   undo-for-agents, not as developer tooling (Series 5).
-3. **Security and secrets for non-developers using agents** — prompt
-   injection, scope, .env, vaults, rotation, in plain language
-   (1.09 + Series 9).
+1. **Guardrails over prompting** — sycophancy, and making the AI
+   interrogate the user (the grill-me skill, 1.04; reinforced
+   everywhere).
+2. **"Build the machine once"** — AI writes deterministic automation;
+   pay for judgment once, run the artifact forever (1.06 concept,
+   1.10 capstone, recurring).
+3. **Git as the seatbelt for agent work** — version control taught as
+   undo-for-agents, not as developer tooling (Series 8).
+4. **Security and secrets for non-developers using agents** — taught
+   *where it's live*: basics (1.09), sharing hygiene (S7), secrets and
+   vaults (S9), full hardening pass (S10) — never a quarantine chapter.
 
 ## 4. Architecture of the 100
 
@@ -128,58 +161,88 @@ Full map in [`roadmap/ROADMAP.md`](roadmap/ROADMAP.md). The arc:
 
 | Series | Where | What it adds |
 |---|---|---|
-| 1 Foundations *(free)* | Cowork | Mental model, delegation, brief, verification, AI-vs-deterministic, decomposition, CLAUDE.md, safety |
-| 2 Delegation Playbook | Cowork | Examples, roles, folders, data, research, iteration, session hygiene |
-| 3 Workspace That Works | Cowork | Project architecture, layered memory, templates, backups |
-| 4 Skills | Cowork | SKILL.md authoring — first infrastructure they build |
-| 5 Git & GitHub | Cowork + GitHub | Version control as agent seatbelt; first external provider |
-| 6 Publish | GitHub Pages | First public artifact; design direction with Claude |
-| 7 Claude Code & .claude | Claude Code | Terminal, settings, permissions, memory hierarchy, context budget |
-| 8 Agents & Automation | Claude Code + Cowork | Subagents, hooks, schedules, MCP connectors |
-| 9 Security, Secrets & Trust | Everything | Threat model, injection drill, .env, Bitwarden, recovery |
-| 10 Build Real Software | Claude Code + Cloudflare | Spec → app → data → API → tests → real users |
+| 1 Foundations *(free)* | Cowork | Mental model, delegation, brief, the grill-me skill, verification, compute-don't-guess, decomposition, CLAUDE.md, safety basics — capstone: commission your own machine |
+| 2 Research | Cowork | Source discipline, fan-out, adversarial verification, synthesis, monitoring |
+| 3 Analytics | Cowork | Clean data, computed-and-rerunnable numbers, honest charts, recurring reports |
+| 4 Documents & Reports | Cowork | Structure-as-contract, voice, templates, long-form consistency |
+| 5 Presentations & Communication | Cowork | Decks, hard emails, audiences — capstone: the full four-domain pipeline |
+| 6 Repeatable Workflows | Cowork | Project architecture, intake, conventions, recurring drumbeat, handover |
+| 7 Skills, Plugins & Sharing | Cowork | Skill craft mastered, safe adoption, sharing hygiene, their library as a plugin |
+| 8 Git, GitHub & Going Public | Cowork + GitHub | Version control as agent seatbelt; first public website (Pages) |
+| 9 Claude Code, Agents & Automation | Claude Code | Terminal, .claude layer, permissions, subagents, hooks, schedules, secrets & Bitwarden |
+| 10 Build Real Software | Claude Code + Cloudflare | Spec → app → data → API → tests → hardening pass → real users |
 
-Design decisions and rationale:
+### 4.1 The free tier: a complete kit and an honest sampler
 
-- **Cowork-only through Series 4.** Anthropic's own Claude 101 spends
-  its whole length on conversation skills before features; the genuine
-  difficulty cliff for this audience is tool-layer concepts, so the
-  first 40 challenges build judgment in one familiar surface.
-- **GitHub before the web (5 before 6).** Pages deployment then *reuses*
-  the repository concept rather than introducing two providers at once.
-  GitHub Pages is the safer first host (zero extra accounts, pairs with
-  the git lessons); Cloudflare arrives in Series 10 where its free tier
-  (unlimited bandwidth, Workers, data) matches the ambition — and
-  matches the author's own stack.
-- **Claude Code at Series 7, framed as "same engine, other face."**
-  Cowork *is* Claude Code in a friendlier shell — the reveal reframes
-  the terminal from cliff to curtain. The full `.claude` directory
-  (settings → permissions → memory hierarchy → skills) is the series
-  spine, completing the CLAUDE.md → skills → agents → workflows
-  progression the product promises.
-- **Secrets late (Series 9), Bitwarden as the vault.** Secrets hygiene
-  needs git, the web, and automation to be meaningful. Sequence: what a
-  secret is → .env pattern → vault (Bitwarden: cross-platform, has a
-  CLI usable by agents, free tier) → agents-use-credentials-without-
-  seeing-them → rotation → recovery drills.
-- **Design woven in, not a separate series**: directing design in plain
-  language (52, 55), web writing (57), fit-and-finish (98).
+Two deliberate decisions shape Series 1:
+
+- **It's complete, not crippled.** The aim of the free tier is value and
+  excitement, not gating: the learner graduates with a working **kit** —
+  grill-me skill, brief template, verification checklist, delegation
+  map, CLAUDE.md with safety rules, and a machine they commissioned.
+  All artifacts they keep and use daily whether or not they ever pay;
+  shareable artifacts ("look at the skill my course had me build") are
+  the growth loop.
+- **It samples the paid quartet.** Foundational competencies need task
+  vehicles anyway, so they're assigned deliberately: first delegation on
+  a **document** task (1.02), the brief on a **communication** piece
+  (1.03), verification on **research** — the highest-hallucination
+  domain (1.05), compute-don't-guess on **analytics** (1.06). The free
+  series quietly previews all four domain packs while keeping its
+  mental-model spine; the paid segue writes itself ("your delegation
+  map has four domains on it").
+
+### 4.2 Structural rationale
+
+- **Domains in pipeline order (2→5), capstone chains them.** Research →
+  Analytics → Documents → Presentations is the natural flow of knowledge
+  work; Challenge 50 runs one real project through all four.
+- **Install → tailor → build, every domain series.** Each opens with
+  *borrowed expertise* (install an off-the-shelf skill from Anthropic's
+  skills repo / knowledge-work plugins — see `RESOURCES.md`), and closes
+  by *graduating the learner's own* tailored skill. Skills are therefore
+  practiced from Challenge 4 onward and mastered as a craft in Series 7,
+  whose capstone bundles the library the learner already owns into a
+  shareable plugin.
+- **Every series ends with something installed or running** — a skill, a
+  workspace, a plugin, a live site, an automation, an app — not just
+  something learned.
+- **Cowork-only through Series 7.** The genuine difficulty cliff for
+  this audience is tool-layer concepts, so the first 70 challenges build
+  judgment in one familiar surface. GitHub arrives in Series 8 (Pages
+  reuses the repository concept rather than introducing two providers at
+  once); Claude Code at Series 9, framed as "same engine, other face";
+  Cloudflare in Series 10 where its free tier matches the ambition.
+- **Security distributed, not quarantined**: basics where agent work
+  starts (1.09), sharing hygiene where artifacts go public (S7),
+  secrets where automations need credentials (S9 — Bitwarden as the
+  vault: cross-platform, agent-usable CLI, free tier), hardening where
+  the learner finally runs real systems (S10).
 - **Spaced retrieval is structural**: every capstone retrieves the whole
-  series; Series 7 deliberately rebuilds a Series 2 workflow; Series 9
-  re-runs Series 1's scrub drill at professional depth.
+  series; the pipeline capstone (50) retrieves four series; Series 9
+  rebuilds a Cowork workflow in Claude Code; the hardening pass (98)
+  re-runs 1.09's audit at professional depth.
 
 ## 5. Assessment model
 
 Claude-graded against per-challenge rubrics (chosen for v1):
 
 - Every challenge ships **Parameters** (constraints that keep the task
-  honest) and a **Rubric** (3–5 observable criteria). The review skill
-  inspects the *actual artifact* — never grades on say-so.
+  honest), a **Rubric** (3–5 observable criteria), and a **Time** budget.
+  The review skill inspects the *actual artifact* — never grades on
+  say-so.
 - Outcomes are **pass / refine** — refine is feedback with a named next
   step, never failure. Borderline passes get a named growth point
   (research: a generous pass teaches nothing; a pedantic fail churns).
+  The grading register is explicitly anti-sycophantic — the companion
+  models the discernment it teaches.
+- Every review ends with a **debrief ritual**: reflection recorded,
+  workflow profile updated, lesson connected to the learner's real use
+  cases, domain previewed where the challenge had a vehicle, at most one
+  resource pointer where the challenge calls for it.
 - Progress lives in `.learn/progress.json` in the learner's workspace:
-  local, plain, owned by the learner, never fabricated.
+  local, plain, owned by the learner, never fabricated. Widgets
+  (journey map, certificate) render that file's real contents only.
 - Future hardening (post-v1): deterministic artifact checks (file
   exists, sections present) layered under the rubric grading, per the
   three-tier grading stack the assessment literature recommends.
@@ -187,7 +250,13 @@ Claude-graded against per-challenge rubrics (chosen for v1):
 ## 6. Business model
 
 - **Free:** plugin + Series 1 (10 challenges) + full roadmap visibility.
+  The free tier is deliberately *not* a gate: it is the most valuable
+  short course we can build, complete with a kit the learner keeps. If
+  it's valuable and engaging they continue; excitement, not scarcity,
+  sells the packs.
 - **Paid:** €20 per series pack (10 challenges), €100 for all 90.
+  Pack naming = domain naming ("the Research pack"), so the delegation
+  map every free learner owns doubles as the product catalogue.
   Delivery via API in v2 (challenge packs fetched per-installation);
   v1 ships the teaser only.
 - Pricing sits in the validated open lane: challenge-format products
@@ -199,15 +268,18 @@ Claude-graded against per-challenge rubrics (chosen for v1):
   a strong willingness-to-pay signal.
 - Completion risk: self-paced completion rates are brutal (~3–13% in
   MOOCs) vs 65–90% with cohort/community mechanics. The companion's
-  per-session greeting and progress memory is the v1 mitigation; a
-  cohort/community layer is the highest-leverage v2 experiment.
+  per-session greeting, short-sharp pacing, and progress memory are the
+  v1 mitigation; a cohort/community layer is the highest-leverage v2
+  experiment.
 
 ## 7. V1 plugin scope (this repo)
 
 Shipped: plugin manifest, companion CLAUDE.md, four skills
-(`learn` onboarding/resume, `challenge` delivery, `review` grading,
-`progress` map + roadmap), SessionStart greeting hook, progress
-template, Series 1 complete (10 challenges), roadmap teaser.
+(`learn` onboarding/resume, `challenge` delivery, `review` grading +
+debrief, `progress` map + roadmap), SessionStart greeting hook, progress
+template (with workflow profile and kit tracking), Series 1 complete
+(10 challenges), roadmap teaser, resource guide, two widgets (journey
+map, certificate).
 
 Explicitly out of v1: payment/unlock flow, API delivery of packs,
 deterministic artifact checks, cohort features, localization.
@@ -219,12 +291,16 @@ deterministic artifact checks, cohort features, localization.
    suggest it is. The skills are written to be self-sufficient (each
    re-reads the companion contract), and the SessionStart hook covers
    the gap. Verify on a real Cowork install during trials.
-2. **Trial instrumentation:** what to capture from trial users beyond
-   progress.json (time per challenge, refine rates, drop-off points) —
-   currently manual/anecdotal.
-3. **Pack delivery contract:** the v2 API (auth, entitlement, challenge
+2. **Skill installation mechanics across surfaces:** Challenge 1.04
+   creates a personal skill in the learner's workspace; verify the
+   workspace-skills path works on current Cowork builds (fallback: the
+   user-level skills location), and that invocation/auto-trigger behaves
+   as the challenge assumes.
+3. **Trial instrumentation:** what to capture from trial users beyond
+   progress.json (time per challenge vs printed budgets, refine rates,
+   drop-off points) — currently manual/anecdotal.
+4. **Pack delivery contract:** the v2 API (auth, entitlement, challenge
    pack format) — design when trial demand justifies it.
-4. **Recency maintenance:** Cowork/Claude Code surface area moves fast
-   (the research found 2025 content already stale); challenges reference
-   product mechanics generically where possible, but Series 7–8 will
-   need a review cadence.
+5. **Recency maintenance:** Cowork/Claude Code surface area moves fast;
+   external links live only in `RESOURCES.md` (review each release),
+   and Series 7–9 will need a mechanics review cadence.

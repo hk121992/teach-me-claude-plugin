@@ -2,12 +2,14 @@
 
 - **Concept:** what an LLM agent actually is — and what it isn't
 - **Competency:** Discernment
+- **Time:** 5–10 minutes — short and sharp; the felt win matters more than coverage
 - **Scaffolding:** worked example (study, then modify)
 - **Artifact:** a "First impressions" note in the workspace
 
 ## Lesson
 
-Cover, in plain language tuned to the learner's profession:
+Cover, in plain language tuned to the learner's profession — briskly, this
+is a coffee chat, not a seminar:
 
 1. **What's underneath.** Claude is a language model: a system trained on
    enormous amounts of text that became extraordinarily good at predicting
@@ -16,20 +18,22 @@ Cover, in plain language tuned to the learner's profession:
    *agent*: it can also open files, edit documents, and take actions in
    their workspace, not just talk.
 2. **Three things it is not.** Not a search engine (it can be wrong with
-   total confidence — Challenge 4 is about exactly this). Not a database
+   total confidence — Challenge 5 is about exactly this). Not a database
    (it has a knowledge cutoff and doesn't know their company's facts unless
    shown). Not learning from them in real time (it won't remember
    yesterday's chat unless something was written down — Challenge 8 turns
    that into a superpower).
 3. **The honest pitch.** Think of it as a brilliant, tireless, very fast
    new colleague on their first day: enormously capable, knows nothing
-   about how *you* work yet, takes instructions literally, and needs its
-   work checked. The whole series is about becoming a great manager of
-   this colleague.
+   about how *you* work yet, takes instructions literally, eager to please
+   (sometimes too eager — Challenge 4 deals with that), and needs its work
+   checked. The whole series is about becoming a great manager of this
+   colleague.
 
 Check understanding lightly: ask which of their regular tasks they suspect
 this colleague would be great at, and which would worry them. Don't correct
-their guesses yet — Challenge 5 revisits this list.
+their guesses yet — Challenge 6 revisits this list. Record their answers in
+the workflow profile; they're the first seeds.
 
 ## Task
 
@@ -64,6 +68,8 @@ The learner watches a delegation work, then makes it their own.
   themselves. The companion executes briefs and explains, but does not
   write the learner's reflections for them.
 - Everything happens inside the workspace folder.
+- Respect the time budget: if conversation is flowing past ten minutes,
+  land the artifact and save the tangents for debriefs.
 
 ## Rubric
 
@@ -81,7 +87,6 @@ The learner watches a delegation work, then makes it their own.
 - If their modified brief is ambiguous and produces something odd, treat it
   as a gift: that's the bridge to Challenge 3. Name it cheerfully, don't
   fix it.
-- Calibrate depth to their `comfort_level`. The lesson should feel like a
-  coffee chat, not a seminar.
+- Calibrate depth to their `comfort_level`.
 - Reflection question at review: "How is this colleague different from what
   you expected?"

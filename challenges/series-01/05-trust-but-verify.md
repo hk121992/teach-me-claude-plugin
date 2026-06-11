@@ -1,7 +1,9 @@
-# Challenge 1.04 — Trust, but verify
+# Challenge 1.05 — Trust, but verify
 
 - **Concept:** hallucination, and verification habits calibrated to stakes
 - **Competency:** Discernment
+- **Vehicle:** Research (the highest-hallucination domain — Series 2 takes it deep)
+- **Time:** 15–20 minutes
 - **Scaffolding:** guided, failure-first (catch a real error before the lesson)
 - **Artifact:** the learner's personal verification checklist
 
@@ -18,15 +20,17 @@ Deliver the full lesson AFTER the hunt in task step 1.
 2. **Where the risk concentrates.** The risk is *jagged*, not uniform.
    Low: working over material they provided (summarizing their document).
    High: recalling specifics from memory — citations, statistics, dates,
-   names, legal/medical specifics, anything niche. Rule of thumb: the more
-   the answer depends on remembered facts rather than supplied material,
-   the harder to check it.
+   names, legal/medical specifics, anything niche. Research is the
+   highest-risk work they'll delegate, which is exactly why the
+   verification habit is taught here. Rule of thumb: the more the answer
+   depends on remembered facts rather than supplied material, the harder
+   to check it.
 3. **Verification habits, calibrated to stakes.** A brainstorm needs no
    audit; a number going to a client does. The habits: ask for sources and
-   *open them* (never trust an unopened citation); test formulas and
-   calculations on a case where they know the answer; for anything
-   load-bearing, get a second check (another source, a colleague, or a
-   fresh Claude session asked to critique).
+   *open them* (cited is not verified — never trust an unopened citation);
+   test formulas and calculations on a case where they know the answer;
+   for anything load-bearing, get a second check (another source, a
+   colleague, or a fresh Claude session asked to critique).
 
 ## Task
 
@@ -77,8 +81,12 @@ Deliver the full lesson AFTER the hunt in task step 1.
   wrong, in their own domain, is the moment skepticism becomes embodied
   rather than theoretical. Don't soften it; frame it as them acquiring a
   professional skill.
-- Connect forward: "your checklist joins your brief template — these are
-  the first pieces of your personal operating manual." (Challenge 8 gives
-  them a permanent home.)
+- Connect it to Challenge 4: sycophancy and hallucination are siblings —
+  both are fluent, confident, and tilted away from truth. The grill-me
+  skill guards the input; the checklist guards the output.
+- Connect forward: "your checklist joins your kit — brief template, skill,
+  and now this." (Challenge 8 gives the kit a permanent home.)
+- At debrief: this was research work — name the domain, record what
+  research their job actually involves (workflow profile).
 - Reflection question at review: "What's the most expensive mistake this
   colleague could make in your job, and what's your check for it?"

@@ -1,18 +1,27 @@
 {
-  "version": 1,
+  "version": 2,
   "plugin": "learn-to-claude",
   "learner": {
     "name": "",
     "profession": "",
     "goals": [],
     "comfort_level": "",
-    "started": ""
+    "started": "",
+    "workflow_profile": []
   },
   "current": {
     "series": 1,
     "challenge": 1
   },
   "challenges": {},
+  "kit": {
+    "grill_me_skill": "",
+    "brief_template": "",
+    "verification_checklist": "",
+    "delegation_map": "",
+    "claude_md": "",
+    "first_machine": ""
+  },
   "capstone_briefs": [],
   "reflections": []
 }

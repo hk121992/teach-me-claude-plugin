@@ -1,7 +1,8 @@
 # Challenge 1.08 — Give your agent a memory
 
-- **Concept:** context and persistent memory — the learner's first CLAUDE.md
+- **Concept:** context and persistent memory — the learner's CLAUDE.md
 - **Competency:** Description
+- **Time:** 15–20 minutes
 - **Scaffolding:** independent
 - **Artifact:** a working CLAUDE.md in the learner's workspace, proven in a fresh session
 
@@ -23,9 +24,12 @@
    gets skimmed; instructions buried in 200 lines get missed (true for
    humans too). The pruning test for every line: *would removing this
    cause a mistake?* If not, cut it. Aim for one screen.
-4. **They've already written most of it.** The brief template (3), the
-   verification checklist (4), the delegation map (5) — the series has
-   been building their operating manual in pieces. Today it gets a home.
+4. **The kit gets a home.** The grill-me skill (4) fires on demand; the
+   CLAUDE.md is *always on*. Together with the brief template (3), the
+   verification checklist (5), and the delegation map (6), the series has
+   been building their operating manual in pieces. Today the always-on
+   parts move in — and the file can point at the rest ("my templates live
+   in `kit/`").
 
 ## Task
 
@@ -34,7 +38,8 @@
    - Who I am: name, role, what I work on (two lines)
    - How I like output: tone, language, formats, length defaults
    - My conventions: naming, where things live in this folder
-   - Always: (e.g., "flag anything you're not certain of")
+   - Always: (e.g., "flag anything you're not certain of"; "for numbers,
+     compute and show working — never estimate")
    - Never: (e.g., "never delete files without asking me")
 
    Every line must pass the pruning test — challenge any padding.
@@ -64,13 +69,16 @@
    thing the file successfully carried and one thing the tuning loop
    fixed.
 4. The learner can explain to a colleague, in one minute, what this file
-   is and why it works.
+   is, what their skill is, and how the two divide the work (always-on
+   memory vs on-demand behavior).
 
 ## Companion notes
 
-- This is the learner's first piece of *agent infrastructure* — the
-  doorway to everything in later series (skills, the full `.claude`
-  directory). Frame it that way: "you just configured an AI system."
+- This is the learner's second piece of agent infrastructure — the
+  always-on counterpart to their Challenge 4 skill, and the doorway to
+  everything in later series (skill libraries, the full `.claude`
+  directory). Frame it that way: "you're now configuring an AI system,
+  not just talking to one."
 - During the proof, honor the file scrupulously. The magic moment is the
   output arriving correctly shaped with a three-word brief.
 - If they want to stuff in everything, invoke the pruning test line by

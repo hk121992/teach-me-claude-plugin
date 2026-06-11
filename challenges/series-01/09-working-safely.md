@@ -2,6 +2,7 @@
 
 - **Concept:** privacy, sensitive data, and safe habits for agent work
 - **Competency:** Diligence
+- **Time:** 15–20 minutes
 - **Scaffolding:** independent with a guided drill
 - **Artifact:** a scrubbed document + personal safety rules added to their CLAUDE.md
 
@@ -35,8 +36,14 @@ locking the office:
    same caution you'd give an unknown USB stick, and be wary when one
    "asks" your agent to do something you didn't.
 4. **Backups make courage cheap.** Before letting any agent loose on
-   files that matter, have a copy. (Series 5 turns this into a
+   files that matter, have a copy. (Series 8 turns this into a
    superpower called version control; for now: a copy.)
+
+This is the basics layer of a strand that runs the whole journey:
+sharing hygiene when their skills go public (Series 7), real secrets
+management when automations need credentials (Series 9), and a full
+hardening pass over everything they run (Series 10). Safety is taught
+where it's live, not in one scary chapter.
 
 ## Task
 
@@ -91,6 +98,7 @@ locking the office:
   reads what it's given — their caution protects them *with* you and
   with every other AI tool they'll ever use.
 - This challenge completes their CLAUDE.md into a true operating manual:
-  preferences (8) + safety rules (9). Point at the finished thing.
+  preferences (8) + safety rules (9). Point at the finished thing — and
+  at the kit around it. The capstone uses all of it.
 - Reflection question at review: "Which of your new rules would have
   changed something you did in the last month?"

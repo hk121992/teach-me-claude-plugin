@@ -2,6 +2,7 @@
 
 - **Concept:** decomposition with checkpoints — and why one giant ask fails
 - **Competency:** Description
+- **Time:** 20 minutes (the deliverable may continue beyond the session — that's fine and true to life)
 - **Scaffolding:** independent, failure-first option (run the mega-ask if the learner is game)
 - **Artifact:** a substantial multi-part deliverable, built in reviewed stages
 
@@ -23,7 +24,8 @@
    polluting what comes next. So: new major task, new session; and if
    you've corrected the same problem twice without progress, stop
    arguing — start a fresh session with a better brief that carries the
-   lessons. Restarting isn't defeat; it's the experienced move.
+   lessons. Restarting isn't defeat; it's the experienced move. (They've
+   already practiced fresh sessions in Challenges 4 and 5 — name that.)
 
 ## Task
 
@@ -37,7 +39,8 @@
 3. **Plan the chain.** The learner designs the decomposition: 3–6 stages,
    each with a deliverable and what *they* will judge at that checkpoint.
    You may critique the plan ("where would a wrong structural guess hurt
-   most? put a checkpoint there"), but the cut is theirs.
+   most? put a checkpoint there"), but the cut is theirs. Their grill-me
+   skill is the natural way to develop the stage-one brief — suggest it.
 4. **Execute with real checkpoints.** Run each stage; the learner reviews
    and gives a genuine verdict before the next begins — at least one
    checkpoint should produce a real course-correction (if everything
@@ -68,8 +71,9 @@
 ## Companion notes
 
 - This challenge is also quiet retrieval practice: a good chain uses the
-  brief template (3), verification at checkpoints (4), and possibly a
-  machine from (6). Notice aloud when they reuse earlier skills.
+  brief template (3), the grill-me skill (4), verification at checkpoints
+  (5), and computed numbers where they appear (6). Notice aloud when they
+  reuse earlier skills — the kit working together is the real lesson.
 - If a checkpoint review is hollow, push: "you're the editor here — what
   would you mark up if a junior sent you this?"
 - Model the fresh-session move if the opportunity arises naturally: when

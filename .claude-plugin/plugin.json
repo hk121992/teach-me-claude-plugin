@@ -1,8 +1,8 @@
 {
   "name": "learn-to-claude",
   "displayName": "Learn to Claude",
-  "version": "0.1.0",
-  "description": "A hands-on learning companion that teaches you to work with Claude through practical challenges — starting in Cowork, no technical background needed. Ships with the free Foundations series (10 challenges).",
+  "version": "0.2.0",
+  "description": "A hands-on learning companion that teaches you to work with Claude through practical challenges \u2014 starting in Cowork, no technical background needed. Ships with the free Foundations series (10 challenges), ending with a personal toolkit including your first skill and a machine you commission yourself.",
   "author": {
     "name": "hk121992"
   },

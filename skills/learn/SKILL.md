@@ -23,9 +23,11 @@ Check for `.learn/progress.json` in the current working folder.
 ## 1. Frame the journey (briefly)
 
 Two or three sentences, in your own words: this is a learn-by-doing
-curriculum; each challenge pairs a short lesson with a practical task using
-their real work; the free Foundations series is 10 challenges and ends with
-a project they design themselves. Don't oversell or list all ten.
+curriculum; each challenge pairs a short lesson with a practical task —
+most take 15–20 minutes, the first ones less; the free Foundations series
+is 10 challenges, and they graduate with a working personal toolkit (their
+first skill, their agent's memory file, a machine they commissioned
+themselves). Don't oversell or list all ten.
 
 ## 2. Set up the workspace
 
@@ -39,12 +41,15 @@ The learner needs a dedicated folder for the journey:
 
 Inside the workspace create `.learn/progress.json` from the template at
 `${CLAUDE_PLUGIN_ROOT}/data/progress-template.json`, filling
-`learner.started` with today's date.
+`learner.started` with today's date. Their artifacts will live in the
+visible workspace; suggest a `kit/` folder for permanent pieces when the
+first one appears (Challenge 3), not now.
 
 ## 3. Get to know them
 
-A short, friendly conversation — not a form. Learn and record in
-`.learn/progress.json`:
+A short, friendly conversation — not a form, and Socratic where it helps
+(a vague answer gets a curious follow-up, not a guess). Learn and record
+in `.learn/progress.json`:
 
 - **name** — what they'd like to be called
 - **profession** — what they do all day; ask a follow-up so you can tailor
@@ -53,13 +58,18 @@ A short, friendly conversation — not a form. Learn and record in
   time
 - **comfort_level** — their own words for how comfortable they are with
   technology (store verbatim; never label anyone "beginner" to their face)
+- **workflow_profile seeds** — one or two recurring tasks that eat their
+  week (store as the first `workflow_profile` entries; you'll grow this
+  picture at every debrief, and it becomes their delegation map in
+  Challenge 6)
 
 ## 4. Launch Challenge 1
 
 Bridge straight into the first challenge — read
 `${CLAUDE_PLUGIN_ROOT}/challenges/series-01/01-meet-your-agent.md` and run
-it per the companion contract. The onboarding conversation should flow into
-the challenge so the first session already delivers a win.
+it per the companion contract. It's deliberately short (5–10 minutes): the
+onboarding conversation should flow into it so the first session already
+delivers a felt win.
 
 Mark the challenge `in_progress` in `.learn/progress.json` with today's
 date.
