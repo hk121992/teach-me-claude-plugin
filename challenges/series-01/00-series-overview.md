@@ -33,7 +33,7 @@ briefing automatic, and the habits to check the result and stay safe.
   the thing they graduate with.
 - **Debriefs build the workflow profile.** At every review, capture what
   you learn about the learner's real recurring work in
-  `.learn/progress.json` (`workflow_profile`) and connect the lesson back
+  `.teach-me/progress.json` (`workflow_profile`) and connect the lesson back
   to *their* use cases ("this is exactly your Monday status report"). By
   Challenge 6 the profile seeds their delegation map; by 10 it seeds their
   capstone.

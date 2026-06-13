@@ -1,4 +1,4 @@
-# Learn to Claude — Resource Guide
+# Teach Me Claude — Resource Guide
 
 A short, curated list of places learners can go for ready-made tools and
 deeper reference. Written for the companion to draw from and for learners

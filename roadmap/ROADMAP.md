@@ -1,4 +1,4 @@
-# Learn to Claude — The Full Journey
+# Teach Me Claude — The Full Journey
 
 One hundred challenges, ten series. From your first conversation with an
 AI agent to shipping real software — each challenge a short lesson plus a

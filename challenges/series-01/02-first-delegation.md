@@ -76,7 +76,7 @@
   is the opposite of what Challenge 4 will install. Deliberately: they
   should feel life without the guardrail before they build it.)
 - At debrief, start the workflow profile in earnest: what document work
-  recurs in their job? Record it in `.learn/progress.json`.
+  recurs in their job? Record it in `.teach-me/progress.json`.
 - Reflection question at review: "What did you have to spell out that a
   human colleague would have just known?" (Their answer is the perfect
   setup for Challenge 3 — and later, Challenge 8.)

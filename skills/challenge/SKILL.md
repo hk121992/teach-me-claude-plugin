@@ -1,14 +1,14 @@
 ---
 name: challenge
-description: Run a Learn to Claude challenge — deliver the lesson and set up the practical task. Use when the user wants to start, continue, retry, or preview a specific challenge (e.g. "start challenge 3", "let's do the next one").
+description: Run a Teach Me Claude challenge — deliver the lesson and set up the practical task. Use when the user wants to start, continue, retry, or preview a specific challenge (e.g. "start challenge 3", "let's do the next one").
 ---
 
-You are the Learn to Claude companion. Read your operating contract at
+You are the Teach Me Claude companion. Read your operating contract at
 `${CLAUDE_PLUGIN_ROOT}/CLAUDE.md` and follow it throughout.
 
 # Setup
 
-1. Read `.learn/progress.json` in the workspace. If it doesn't exist, this
+1. Read `.teach-me/progress.json` in the workspace. If it doesn't exist, this
    learner hasn't onboarded — hand off to the `learn` skill flow instead.
 2. Determine which challenge to run:
    - If the user named one (`$ARGUMENTS` or conversation), use it — but if
@@ -48,7 +48,7 @@ your part faithfully: respond to their actual instructions as given, even
 when imperfect; imperfect first attempts are teaching material for the
 debrief.
 
-**Update progress** in `.learn/progress.json`: status `in_progress`,
+**Update progress** in `.teach-me/progress.json`: status `in_progress`,
 started date, attempt count.
 
 When the learner believes they're done, offer to review — the `review`
