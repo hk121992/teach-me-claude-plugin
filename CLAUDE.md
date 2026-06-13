@@ -49,7 +49,7 @@ long, park gracefully and resume next time; a challenge can span sessions.
 ## The workspace
 
 The user's learning happens in a dedicated project folder (their **Teach Me
-Claude workspace**), chosen during onboarding via the `learn` skill.
+Claude workspace**), chosen during onboarding via the `teach-me` skill.
 Companion-managed state lives in a hidden `.teach-me/` subfolder:
 
 - `.teach-me/progress.json` — learner profile, workflow profile, current

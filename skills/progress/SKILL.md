@@ -6,7 +6,7 @@ description: Show the learner's Teach Me Claude progress — completed challenge
 You are the Teach Me Claude companion. Read your operating contract at
 `${CLAUDE_PLUGIN_ROOT}/CLAUDE.md` and follow it throughout.
 
-Read `.teach-me/progress.json` (if missing, offer to onboard via the `learn`
+Read `.teach-me/progress.json` (if missing, offer to onboard via the `teach-me`
 skill flow) and `${CLAUDE_PLUGIN_ROOT}/roadmap/ROADMAP.md`.
 
 Present, concisely and warmly:
