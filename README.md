@@ -28,7 +28,7 @@ The plugin is the learner's companion:
   the learner's profession; grade honestly; track progress truthfully.
 - **Skills** (invoked as `/teach-me-claude:<name>`, or triggered
   naturally in conversation):
-  - `learn` — onboard a new learner (workspace setup, profile interview)
+  - `teach-me` — onboard a new learner (workspace setup, profile interview)
     or resume the journey
   - `challenge` — deliver a challenge: lesson taught conversationally
     (failure-first where designed), task set with parameters, time
@@ -69,7 +69,7 @@ claude --plugin-dir /path/to/teach-me-claude
 
 or add the plugin through your Cowork plugin settings pointing at this
 directory / its future marketplace entry. Then say **"I want to learn
-Claude"** or run `/teach-me-claude:learn`.
+Claude"** or run `/teach-me-claude:teach-me`.
 
 Requirements: a Claude paid plan (Cowork or Claude Code). No technical
 background needed — that's the point.

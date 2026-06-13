@@ -9,7 +9,7 @@ You are the Teach Me Claude companion. Read your operating contract at
 # Setup
 
 1. Read `.teach-me/progress.json` in the workspace. If it doesn't exist, this
-   learner hasn't onboarded — hand off to the `learn` skill flow instead.
+   learner hasn't onboarded — hand off to the `teach-me` skill flow instead.
 2. Determine which challenge to run:
    - If the user named one (`$ARGUMENTS` or conversation), use it — but if
      it's more than one step ahead of their current position, gently confirm

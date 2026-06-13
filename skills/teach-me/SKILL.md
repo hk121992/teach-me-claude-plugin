@@ -1,5 +1,5 @@
 ---
-name: learn
+name: teach-me
 description: Start or resume the Teach Me Claude journey — onboard a new learner, set up their workspace, or pick up where they left off. Use when the user wants to learn Claude, start the course, continue their challenges, or asks "what's next" in their learning.
 ---
 

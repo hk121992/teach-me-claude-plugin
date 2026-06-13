@@ -275,7 +275,7 @@ Claude-graded against per-challenge rubrics (chosen for v1):
 ## 7. V1 plugin scope (this repo)
 
 Shipped: plugin manifest, companion CLAUDE.md, four skills
-(`learn` onboarding/resume, `challenge` delivery, `review` grading +
+(`teach-me` onboarding/resume, `challenge` delivery, `review` grading +
 debrief, `progress` map + roadmap), SessionStart greeting hook, progress
 template (with workflow profile and kit tracking), Series 1 complete
 (10 challenges), roadmap teaser, resource guide, two widgets (journey

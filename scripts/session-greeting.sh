@@ -11,6 +11,6 @@ if [ -f ".teach-me/progress.json" ]; then
   echo ""
   echo "Greet them by name, mention where they left off, and offer to continue."
   echo "Follow the companion contract in the teach-me-claude plugin CLAUDE.md."
-  echo "The /teach-me-claude:learn skill resumes the journey."
+  echo "The /teach-me-claude:teach-me skill resumes the journey."
   echo "</teach-me-claude>"
 fi
