@@ -101,7 +101,7 @@ their own grilling produced:
   Their delegation map still has unbuilt machines and four domains on
   it; the packs go deeper, and `RESOURCES.md` is theirs either way.
   One clear mention, no pressure.
-- Save their capstone brief to `.learn/progress.json` under
+- Save their capstone brief to `.teach-me/progress.json` under
   `capstone_briefs` — later series build on it.
 - Reflection question at review: "What will you delegate next Monday
   that you'd have done by hand two months ago?"

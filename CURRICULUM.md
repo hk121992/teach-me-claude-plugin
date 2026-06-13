@@ -1,4 +1,4 @@
-# Learn to Claude — Curriculum Design
+# Teach Me Claude — Curriculum Design
 
 Design document for the 100-challenge curriculum. The user-facing map is
 [`roadmap/ROADMAP.md`](roadmap/ROADMAP.md); the shipped free series is in
@@ -10,7 +10,7 @@ design review (v0.2).
 ## 1. Thesis
 
 The best way to learn Claude is to use it — on your own work, with a
-coach, against real standards. Learn to Claude is a Cowork plugin that
+coach, against real standards. Teach Me Claude is a Cowork plugin that
 acts as a learning companion: 100 challenges, each pairing a short lesson
 with a practical task, graded against an explicit rubric by the companion
 itself. The product *is* the medium: you learn agentic work from an
@@ -240,7 +240,7 @@ Claude-graded against per-challenge rubrics (chosen for v1):
   workflow profile updated, lesson connected to the learner's real use
   cases, domain previewed where the challenge had a vehicle, at most one
   resource pointer where the challenge calls for it.
-- Progress lives in `.learn/progress.json` in the learner's workspace:
+- Progress lives in `.teach-me/progress.json` in the learner's workspace:
   local, plain, owned by the learner, never fabricated. Widgets
   (journey map, certificate) render that file's real contents only.
 - Future hardening (post-v1): deterministic artifact checks (file

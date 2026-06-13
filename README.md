@@ -1,4 +1,4 @@
-# Learn to Claude
+# Teach Me Claude
 
 A Cowork / Claude Code plugin that teaches you to work with Claude by
 *doing* — a learning companion that delivers practical challenges, coaches
@@ -26,7 +26,7 @@ The plugin is the learner's companion:
 - **`CLAUDE.md`** — the companion's operating contract: coach, never
   doer; no yes-machine — Socratic, honest, kind in that order; adapt to
   the learner's profession; grade honestly; track progress truthfully.
-- **Skills** (invoked as `/learn-to-claude:<name>`, or triggered
+- **Skills** (invoked as `/teach-me-claude:<name>`, or triggered
   naturally in conversation):
   - `learn` — onboard a new learner (workspace setup, profile interview)
     or resume the journey
@@ -47,7 +47,7 @@ The plugin is the learner's companion:
 - **SessionStart hook** — when a session opens inside a learning
   workspace, the companion greets the learner by name with where they
   left off.
-- **State** — `.learn/progress.json` in the learner's own workspace
+- **State** — `.teach-me/progress.json` in the learner's own workspace
   folder (plain JSON, learner-owned, survives plugin updates; nothing
   stored elsewhere). Includes the learner profile, the accumulating
   **workflow profile**, per-challenge status, kit tracking, and
@@ -64,12 +64,12 @@ companion teaches from these — it never pastes them.
 From a clone of this repo:
 
 ```
-claude --plugin-dir /path/to/learn-to-claude
+claude --plugin-dir /path/to/teach-me-claude
 ```
 
 or add the plugin through your Cowork plugin settings pointing at this
 directory / its future marketplace entry. Then say **"I want to learn
-Claude"** or run `/learn-to-claude:learn`.
+Claude"** or run `/teach-me-claude:learn`.
 
 Requirements: a Claude paid plan (Cowork or Claude Code). No technical
 background needed — that's the point.
@@ -86,7 +86,7 @@ What we want to learn from trial users:
 5. Does rubric grading feel fair and motivating?
 6. Does the kit + roadmap framing generate pack interest (ask at exit)?
 
-Ask trial users to share their `.learn/progress.json` and impressions
+Ask trial users to share their `.teach-me/progress.json` and impressions
 after a week. Known v0.2 caveats are listed in CURRICULUM.md §8 —
 notably: verify plugin CLAUDE.md auto-load and workspace-skill
 installation mechanics on the tester's Cowork build; the skills are
@@ -95,7 +95,7 @@ self-sufficient regardless.
 ## Repository layout
 
 ```
-learn-to-claude/
+teach-me-claude/
 ├── .claude-plugin/plugin.json   plugin manifest
 ├── CLAUDE.md                    companion operating contract
 ├── skills/                      learn / challenge / review / progress

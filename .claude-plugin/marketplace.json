@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "teach-me-claude",
+  "owner": {
+    "name": "hk121992"
+  },
+  "description": "Teach Me Claude plugin marketplace — a hands-on Claude Code learning companion that teaches you to work with Claude through practical challenges.",
+  "plugins": [
+    {
+      "name": "teach-me-claude",
+      "source": "./"
+    }
+  ]
+}

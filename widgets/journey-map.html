@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <!--
-  Learn to Claude — journey map widget (template).
+  Teach Me Claude — journey map widget (template).
   The companion instantiates this into the learner's workspace:
   replace the __PROGRESS_DATA__ placeholder below with the actual JSON
-  contents of .learn/progress.json, save as my-journey.html, and invite
+  contents of .teach-me/progress.json, save as my-journey.html, and invite
   the learner to open it in their browser. Render real progress only.
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My Learn to Claude journey</title>
+<title>My Teach Me Claude journey</title>
 <style>
   :root {
     --ink: #2b2620; --paper: #faf7f2; --card: #ffffff;
@@ -54,7 +54,7 @@
 </head>
 <body>
 <main>
-  <h1 id="headline">My Learn to Claude journey</h1>
+  <h1 id="headline">My Teach Me Claude journey</h1>
   <div class="sub" id="subline"></div>
   <div class="bar"><div id="barfill" style="width:0%"></div></div>
 
@@ -67,7 +67,7 @@
 </main>
 <script>
   // The companion replaces the placeholder below with the JSON contents
-  // of .learn/progress.json when instantiating this template.
+  // of .teach-me/progress.json when instantiating this template.
   const PROGRESS = __PROGRESS_DATA__;
 
   const SERIES1 = [
@@ -114,7 +114,7 @@
   });
 
   document.getElementById("headline").textContent =
-    (learner.name ? learner.name + "’s" : "My") + " Learn to Claude journey";
+    (learner.name ? learner.name + "’s" : "My") + " Teach Me Claude journey";
   document.getElementById("subline").textContent =
     "Series 1 — Foundations · " + done + " of 10 challenges complete" +
     (learner.started ? " · started " + learner.started : "");

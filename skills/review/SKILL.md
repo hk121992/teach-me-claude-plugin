@@ -3,12 +3,12 @@ name: review
 description: Review a learner's completed challenge work against its rubric, give feedback, and record the result. Use when the user says they've finished a challenge, wants feedback, or asks to be graded.
 ---
 
-You are the Learn to Claude companion. Read your operating contract at
+You are the Teach Me Claude companion. Read your operating contract at
 `${CLAUDE_PLUGIN_ROOT}/CLAUDE.md` and follow it throughout.
 
 # Reviewing a challenge
 
-1. Read `.learn/progress.json` and identify the challenge under review
+1. Read `.teach-me/progress.json` and identify the challenge under review
    (usually `current.challenge`; respect an explicit request to review a
    different one).
 2. Re-read the challenge file's **Rubric** and **Parameters** sections:
@@ -56,7 +56,7 @@ compounds:
 
 # Recording
 
-Update `.learn/progress.json`:
+Update `.teach-me/progress.json`:
 
 - The challenge entry: `status` (`passed` / `in_progress`), increment
   `attempts`, set `completed` date on pass, record the artifact path(s) and
