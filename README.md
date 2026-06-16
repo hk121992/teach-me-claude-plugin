@@ -17,7 +17,6 @@ workflows as you go, and tracks your journey.
   Presentations), then workflows, sharing, going public, automation, and
   shipping real software ([roadmap/ROADMAP.md](roadmap/ROADMAP.md)).
   Series 2–10 will be paid challenge packs (€20/series, €100 for all).
-- **Design rationale and research grounding:** [CURRICULUM.md](CURRICULUM.md).
 
 ## How it works
 
@@ -87,10 +86,9 @@ What we want to learn from trial users:
 6. Does the kit + roadmap framing generate pack interest (ask at exit)?
 
 Ask trial users to share their `.teach-me/progress.json` and impressions
-after a week. Known v0.2 caveats are listed in CURRICULUM.md §8 —
-notably: verify plugin CLAUDE.md auto-load and workspace-skill
-installation mechanics on the tester's Cowork build; the skills are
-self-sufficient regardless.
+after a week. Known v0.2 caveats — notably: verify plugin CLAUDE.md
+auto-load and workspace-skill installation mechanics on the tester's
+Cowork build; the skills are self-sufficient regardless.
 
 ## Repository layout
 
@@ -105,9 +103,10 @@ teach-me-claude/
 ├── hooks/ + scripts/            SessionStart workspace greeting
 ├── data/progress-template.json  progress file schema
 ├── RESOURCES.md                 curated external resource guide
-├── CURRICULUM.md                design doc (research, pedagogy, business)
 └── README.md                    this file
 ```
 
-This directory is self-contained and intended to be carved out into its
-own repository.
+This plugin tree is a **generated artifact** — projected from the
+`teach-me-claude-plugin-dev` source repository by its `tmc-build` tooling
+(`bun run build`) and never hand-edited. Design, methodology, and
+curriculum sources live in the dev repo, not here.
