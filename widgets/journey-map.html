@@ -5,55 +5,83 @@
   replace the __PROGRESS_DATA__ placeholder below with the actual JSON
   contents of .teach-me/progress.json, save as my-journey.html, and invite
   the learner to open it in their browser. Render real progress only.
+
+  Styling is the locked Teach Me Claude brand (brand/tokens.css): pine on warm
+  ivory, Bricolage Grotesque + Inter, light + dark. Real fonts load from Google
+  Fonts when online; the system-font stacks are the offline fallback.
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Teach Me Claude journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #2b2620; --paper: #faf7f2; --card: #ffffff;
-    --done: #2e7d4f; --doing: #c77b30; --ahead: #c8c2b8; --accent: #b3541e;
+    --pine: #1C7D74; --pine-strong: #115A53; --pine-tint: #E4F1F0;
+    --paper: #FBF8F2; --surface: #FFFFFF; --surface-2: #F3EDE2;
+    --ink: #241F1A; --ink-2: #6E665B; --ink-3: #9A9184; --hairline: #E2D9C9;
+    --done: #2E7D4F; --doing: #B26C2A;
+    --font-display: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-text: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --pine: #33C1B3; --pine-strong: #54C9BD; --pine-tint: #1F3D3A;
+      --paper: #18140F; --surface: #221C16; --surface-2: #2C251D;
+      --ink: #F2ECDF; --ink-2: #B3A998; --ink-3: #837A6B; --hairline: #3A3026;
+      --done: #5FB07E; --doing: #E0A35C;
+    }
+  }
+  [data-theme="dark"] {
+    --pine: #33C1B3; --pine-strong: #54C9BD; --pine-tint: #1F3D3A;
+    --paper: #18140F; --surface: #221C16; --surface-2: #2C251D;
+    --ink: #F2ECDF; --ink-2: #B3A998; --ink-3: #837A6B; --hairline: #3A3026;
+    --done: #5FB07E; --doing: #E0A35C;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 2.5rem 1.25rem; background: var(--paper);
-    color: var(--ink);
-    font-family: Georgia, "Times New Roman", serif;
-    line-height: 1.5;
+    margin: 0; padding: 2.5rem 1.25rem; background: var(--paper); color: var(--ink);
+    font-family: var(--font-text); line-height: 1.5; -webkit-font-smoothing: antialiased;
   }
   main { max-width: 680px; margin: 0 auto; }
-  h1 { font-size: 1.7rem; font-weight: normal; margin: 0 0 .25rem; }
-  .sub { color: #7a7268; font-size: .95rem; margin-bottom: 1.75rem; }
-  .bar { height: 10px; background: #eee8de; border-radius: 5px; overflow: hidden; margin-bottom: 2rem; }
-  .bar > div { height: 100%; background: var(--done); border-radius: 5px; transition: width .6s ease; }
+  .mark { width: 30px; height: 30px; display: block; margin-bottom: .85rem; }
+  h1 { font-family: var(--font-display); font-size: 1.7rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 .3rem; }
+  .sub { color: var(--ink-2); font-size: .95rem; margin-bottom: 1.75rem; }
+  .bar { height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin-bottom: 2rem; }
+  .bar > div { height: 100%; background: var(--pine); border-radius: 999px; transition: width .6s ease; }
   ol.map { list-style: none; padding: 0; margin: 0 0 2.25rem; }
   ol.map li {
-    background: var(--card); border: 1px solid #eee5d8; border-radius: 10px;
-    padding: .7rem 1rem; margin-bottom: .5rem;
-    display: flex; align-items: baseline; gap: .75rem;
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px;
+    padding: .7rem 1rem; margin-bottom: .5rem; display: flex; align-items: baseline; gap: .75rem;
   }
-  .dot { font-size: 1.05rem; width: 1.4rem; text-align: center; flex: none; }
+  .dot { font-size: 1.05rem; width: 1.4rem; text-align: center; flex: none; color: var(--ink-3); }
   li.done .dot { color: var(--done); }
   li.doing .dot { color: var(--doing); }
-  li.ahead { opacity: .62; }
-  .num { color: #9a9183; font-size: .85rem; width: 1.4rem; flex: none; }
+  li.doing { border-color: var(--doing); }
+  li.ahead { opacity: .6; }
+  .num { color: var(--ink-3); font-size: .85rem; width: 1.4rem; flex: none; font-variant-numeric: tabular-nums; }
   .title { flex: 1; }
-  .made { display: block; font-size: .85rem; color: #7a7268; font-style: italic; }
-  .when { font-size: .8rem; color: #9a9183; flex: none; }
-  h2 { font-size: 1.05rem; font-weight: normal; letter-spacing: .06em;
-       text-transform: uppercase; color: var(--accent); margin: 0 0 .75rem; }
+  .made { display: block; font-size: .85rem; color: var(--ink-2); font-style: italic; }
+  .when { font-size: .8rem; color: var(--ink-3); flex: none; }
+  h2 { font-family: var(--font-text); font-size: .8rem; font-weight: 600; letter-spacing: .1em;
+       text-transform: uppercase; color: var(--pine-strong); margin: 0 0 .75rem; }
   ul.kit { list-style: none; padding: 0; margin: 0 0 2.25rem; columns: 2; column-gap: 1.5rem; }
-  ul.kit li { padding: .25rem 0; font-size: .95rem; break-inside: avoid; }
-  ul.kit li::before { content: "□  "; color: var(--ahead); }
+  ul.kit li { padding: .25rem 0; font-size: .95rem; break-inside: avoid; color: var(--ink-2); }
+  ul.kit li::before { content: "□  "; color: var(--ink-3); }
+  ul.kit li.have { color: var(--ink); }
   ul.kit li.have::before { content: "■  "; color: var(--done); }
-  footer { color: #9a9183; font-size: .85rem; border-top: 1px solid #eee5d8; padding-top: 1rem; }
+  footer { color: var(--ink-3); font-size: .85rem; border-top: 1px solid var(--hairline); padding-top: 1rem; }
   @media (max-width: 540px) { ul.kit { columns: 1; } }
 </style>
 </head>
 <body>
 <main>
+  <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--pine)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+  </svg>
   <h1 id="headline">My Teach Me Claude journey</h1>
   <div class="sub" id="subline"></div>
   <div class="bar"><div id="barfill" style="width:0%"></div></div>
