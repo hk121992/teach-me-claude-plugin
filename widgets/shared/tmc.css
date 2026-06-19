@@ -1,0 +1,283 @@
+/* tmc.css — the shared Teach Me Claude widget stylesheet.
+ *
+ * CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md →
+ *   "Widget delivery + handback": "All widgets share the TMC stylesheet (CSS
+ *   variables)." Every lesson widget (static / templated / interactive) loads this
+ *   one file.
+ *
+ * ⚠ FONT CONSTRAINT (locked brand decision: widget-fonts-system-only). This runs
+ *   inside Cowork's show_widget, which CANNOT load external / Google / brand font
+ *   files. So the font stacks below are SYSTEM stacks only, each ending in
+ *   serif / sans-serif / monospace. There is deliberately NO @import and NO
+ *   @font-face / <link> to any web font here — the Bricolage/Inter/IBM-Plex brand
+ *   faces are for the website + exports, not these widgets.
+ *
+ * COLOURS are the locked brand palette, mirrored from brand/tokens.css (pine
+ *   #1C7D74, gold, warm ivory) and exposed as CSS variables. Light = :root;
+ *   dark = [data-theme="dark"] / .tmc-dark.
+ */
+
+:root {
+  /* Brand — primary: Pine */
+  --tmc-pine: hsl(174 64% 30%);          /* #1C7D74 */
+  --tmc-pine-strong: hsl(174 68% 21%);   /* #115A53 — pine text on paper, hover/press */
+  --tmc-pine-tint: hsl(174 32% 92%);     /* #E4F1F0 — light pine fills */
+  --tmc-on-pine: #FFFFFF;                /* text/icon on a pine fill */
+
+  /* Brand — secondary: Gold (sparing accent only) */
+  --tmc-gold: hsl(40 72% 42%);           /* #B8851E */
+  --tmc-gold-tint: hsl(40 64% 90%);
+
+  /* Neutrals — warm */
+  --tmc-paper: #FBF8F2;
+  --tmc-surface: #FFFFFF;
+  --tmc-surface-2: #F3EDE2;
+  --tmc-ink: #241F1A;
+  --tmc-ink-2: #6E665B;
+  --tmc-ink-3: #9A9184;
+  --tmc-hairline: #E2D9C9;
+
+  /* Semantic */
+  --tmc-done: #2E7D4F;  --tmc-done-tint: #E7F1E9;
+  --tmc-doing: #B26C2A; --tmc-doing-tint: #F6ECDD;
+
+  /* Type — SYSTEM stacks ONLY (see the font constraint above). No web fonts.
+     display = a slightly characterful system sans; text = the platform UI sans;
+     mono = the platform monospace. Each ends in a generic family. */
+  --tmc-font-display: ui-rounded, "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-text: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Radius — soft */
+  --tmc-r-sm: 6px;  --tmc-r-md: 10px;  --tmc-r-lg: 14px;  --tmc-r-pill: 999px;
+
+  /* Spacing scale */
+  --tmc-space-1: 4px; --tmc-space-2: 8px; --tmc-space-3: 12px;
+  --tmc-space-4: 16px; --tmc-space-5: 24px; --tmc-space-6: 32px;
+
+  /* Elevation */
+  --tmc-shadow: 0 10px 30px rgba(36, 31, 26, 0.10);
+}
+
+:root[data-theme="dark"], .tmc-dark {
+  --tmc-pine: hsl(174 58% 48%);          /* #33C1B3 */
+  --tmc-pine-strong: hsl(174 52% 56%);   /* #54C9BD */
+  --tmc-pine-tint: hsl(174 32% 18%);     /* #1F3D3A */
+  --tmc-on-pine: #0F2A26;
+  --tmc-gold: hsl(40 78% 58%);           /* #E7B040 */
+  --tmc-gold-tint: hsl(40 40% 18%);
+  --tmc-paper: #18140F;
+  --tmc-surface: #221C16;
+  --tmc-surface-2: #2C251D;
+  --tmc-ink: #F2ECDF;
+  --tmc-ink-2: #B3A998;
+  --tmc-ink-3: #837A6B;
+  --tmc-hairline: #3A3026;
+  --tmc-done: #5FB07E;  --tmc-done-tint: #1E3328;
+  --tmc-doing: #E0A35C; --tmc-doing-tint: #382816;
+  --tmc-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* ---- base ---------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.tmc {
+  font-family: var(--tmc-font-text);
+  color: var(--tmc-ink);
+  background: var(--tmc-paper);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The widget card — the standard frame for all three kinds. */
+.tmc-card {
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-lg);
+  box-shadow: var(--tmc-shadow);
+  padding: var(--tmc-space-6);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* ---- brand lockup -------------------------------------------------------- */
+
+.tmc-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  margin-bottom: var(--tmc-space-4);
+}
+.tmc-brand .tmc-mark { width: 28px; height: 28px; display: block; }
+.tmc-wordmark {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+.tmc-wordmark b { color: var(--tmc-pine-strong); font-weight: 600; }
+
+/* ---- typography ---------------------------------------------------------- */
+
+.tmc-eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--tmc-pine-strong);
+}
+.tmc h1, .tmc-title {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  margin: var(--tmc-space-2) 0 var(--tmc-space-3);
+  color: var(--tmc-ink);
+}
+.tmc h2 {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: var(--tmc-space-5) 0 var(--tmc-space-2);
+}
+.tmc p { margin: 0 0 var(--tmc-space-3); color: var(--tmc-ink); }
+.tmc .tmc-muted { color: var(--tmc-ink-2); }
+.tmc code, .tmc kbd, .tmc pre {
+  font-family: var(--tmc-font-mono);
+  font-size: 0.9em;
+  background: var(--tmc-surface-2);
+  border-radius: var(--tmc-r-sm);
+  padding: 0.1em 0.35em;
+}
+.tmc pre { padding: var(--tmc-space-3); overflow: auto; line-height: 1.45; }
+.tmc pre code { background: none; padding: 0; }
+
+/* A filled-from-state value — gives templated widgets a consistent emphasis. */
+.tmc-fill { color: var(--tmc-pine-strong); font-weight: 600; }
+
+/* ---- chips / badges ------------------------------------------------------ */
+
+.tmc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tmc-space-1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2em 0.7em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine-tint);
+  color: var(--tmc-pine-strong);
+}
+.tmc-chip--doing { background: var(--tmc-doing-tint); color: var(--tmc-doing); }
+.tmc-chip--done { background: var(--tmc-done-tint); color: var(--tmc-done); }
+
+/* ---- form controls (interactive widgets) -------------------------------- */
+
+.tmc-field { margin: 0 0 var(--tmc-space-4); }
+.tmc-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: var(--tmc-space-2);
+  color: var(--tmc-ink);
+}
+.tmc-help { font-size: 0.85rem; color: var(--tmc-ink-2); margin-top: var(--tmc-space-1); }
+
+/* `all: unset`-first so Cowork's host form CSS cannot bleed in (locked decision:
+   widget-fonts-system-only — "all: unset beats Cowork form CSS"), then re-style. */
+.tmc-input, .tmc-textarea, .tmc-select {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  font-family: var(--tmc-font-text);
+  font-size: 0.95rem;
+  color: var(--tmc-ink);
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-md);
+  padding: 0.6em 0.75em;
+}
+.tmc-textarea { min-height: 6.5em; line-height: 1.5; resize: vertical; }
+.tmc-input:focus-visible,
+.tmc-textarea:focus-visible,
+.tmc-select:focus-visible {
+  border-color: var(--tmc-pine);
+  box-shadow: 0 0 0 3px var(--tmc-pine-tint);
+}
+
+.tmc-radio-row, .tmc-check-row {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  padding: var(--tmc-space-2) 0;
+}
+.tmc-radio-row input, .tmc-check-row input { accent-color: var(--tmc-pine); }
+
+/* ---- buttons ------------------------------------------------------------- */
+
+.tmc-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tmc-space-2);
+  cursor: pointer;
+  font-family: var(--tmc-font-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.65em 1.2em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine);
+  color: var(--tmc-on-pine);
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+.tmc-btn:hover { background: var(--tmc-pine-strong); }
+.tmc-btn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-btn--ghost {
+  background: transparent;
+  color: var(--tmc-pine-strong);
+  border-color: var(--tmc-hairline);
+}
+.tmc-btn--ghost:hover { background: var(--tmc-pine-tint); }
+.tmc-actions {
+  display: flex;
+  gap: var(--tmc-space-3);
+  margin-top: var(--tmc-space-5);
+}
+
+/* ---- callout (static explainers) ---------------------------------------- */
+
+.tmc-callout {
+  border-left: 3px solid var(--tmc-pine);
+  background: var(--tmc-pine-tint);
+  border-radius: var(--tmc-r-md);
+  padding: var(--tmc-space-3) var(--tmc-space-4);
+  margin: var(--tmc-space-4) 0;
+  color: var(--tmc-ink);
+}
+.tmc-callout--gold { border-left-color: var(--tmc-gold); background: var(--tmc-gold-tint); }
+
+/* ---- simple keyframe support (static "video" explainers) ---------------- */
+
+@keyframes tmc-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tmc-anim { animation: tmc-fade-up 0.5s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tmc-anim { animation: none; }
+  .tmc-btn { transition: none; }
+}
+
+@media (max-width: 560px) {
+  .tmc-card { padding: var(--tmc-space-5) var(--tmc-space-4); }
+  .tmc h1, .tmc-title { font-size: 1.4rem; }
+  .tmc-actions { flex-direction: column; }
+  .tmc-btn { width: 100%; }
+}
