@@ -43,8 +43,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { pathway, COMPLETE } from "./pathway.mjs";
-import { migrateFile } from "./migrate-progress.mjs";
+import { pathway, COMPLETE, inFlightResume, CONFIRMED, PROVISIONAL } from "./pathway.mjs";
+import { migrateFile, CURRENT_VERSION, PLUGIN as PLUGIN_SENTINEL } from "./migrate-progress.mjs";
 
 // ---------------------------------------------------------------------------
 // Constants — the concrete workspace marker (canon "Data model" + the guard).
@@ -55,14 +55,13 @@ const WORKSPACE_DIR = ".teach-me";
 const PROGRESS_BASENAME = "progress.json";
 const PREFERENCES_BASENAME = "preferences.json";
 
-// The CONCRETE sentinel: a genuine TMC progress file carries this field. Bare
-// file-existence is NOT the marker (it trips on a cloned/synced folder that merely
-// contains a `.teach-me/progress.json`). The sentinel + the `.teach-me/` location
-// together are the marker.
-const PLUGIN_SENTINEL = "teach-me-claude";
-
-// The current state-shape version. A file below this is an old shape → migrate.
-const CURRENT_VERSION = 3;
+// The CONCRETE sentinel (`PLUGIN_SENTINEL`) and the current state-shape version
+// (`CURRENT_VERSION`) are IMPORTED from migrate-progress.mjs — the module that
+// WRITES them — so the workspace guard checks the exact value migration produces and
+// the version threshold can never drift from the migration's own. (A genuine TMC
+// progress file carries the sentinel; bare file-existence is NOT the marker — it
+// trips on a cloned/synced folder that merely contains a `.teach-me/progress.json`.
+// The sentinel + the `.teach-me/` location together are the marker.)
 
 // Action signals the orchestrator returns (the caller / hook branches on these):
 //   proceed   — workspace ok, state present & usable → inject greeting+position+next
@@ -231,8 +230,8 @@ export function cappedSummary(progress) {
   let unmet = 0;
   for (const entry of Object.values(outcomesMap)) {
     const status = entry && entry.status;
-    if (status === "confirmed") confirmed += 1;
-    else if (status === "provisional") provisional += 1;
+    if (status === CONFIRMED) confirmed += 1;
+    else if (status === PROVISIONAL) provisional += 1;
     else unmet += 1; // unmet OR any unexpected/absent status → counted as not-yet-met
   }
 
@@ -497,9 +496,15 @@ export function composeSessionContext({ cwd, runsheets } = {}) {
   const sheets = Array.isArray(runsheets) ? runsheets : loadRunsheets(workspaceDir);
   // pathway() over an EMPTY runsheet set is vacuously COMPLETE — but "no content yet"
   // is NOT "every taught outcome confirmed". Only ask pathway when content exists; with
-  // no runsheets, leave `next` null so renderProceed presents the none-yet position
-  // (its else branch) instead of a misleading completion claim against unmet outcomes.
-  // (Real conformant runsheets land with deliverable B; this is the skill↔spine seam.)
+  // no runsheets, do NOT claim completion against unmet outcomes.
+  //
+  // BUT the no-content path must still honour a genuine RESUME: a learner who paused
+  // mid-challenge has `current.status === "in_progress"` with a `current.runsheet`, and
+  // that resume does not depend on the runsheet set being loadable. Dropping it (the
+  // earlier `: null`) would strand a real in-flight learner on the none-yet message.
+  // So with no runsheets we fall back to the shared inFlightResume() — resume if one is
+  // genuinely in flight, else null (the none-yet position). (Real conformant runsheets
+  // land with deliverable B; this is the skill↔spine seam.)
   const next =
     sheets.length > 0
       ? pathway({
@@ -507,7 +512,7 @@ export function composeSessionContext({ cwd, runsheets } = {}) {
           runsheets: sheets,
           current: progress.current,
         })
-      : null;
+      : inFlightResume(progress.current);
 
   return {
     action: ACTION.PROCEED,

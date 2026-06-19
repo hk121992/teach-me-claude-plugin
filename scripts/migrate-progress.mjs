@@ -187,6 +187,14 @@ export function migrate(input, { priorPreferences } = {}) {
   const capstone_briefs = carryArray(input.capstone_briefs, []);
   const reflections = carryArray(input.reflections, []);
 
+  // --- credential (the series-completion record; null until COMPLETE) -------
+  // The credential flow stamps `{ id, completed }` onto this on the COMPLETE
+  // state — the opaque claim-link id + the completion date the certificate
+  // renders. A v2 file has none; an already-v3 file preserves its record
+  // (idempotent). NEVER fabricated — it stays null until a real COMPLETE mints it.
+  const credential =
+    alreadyV3 && isPlainObject(input.credential) ? input.credential : null;
+
   const progress = {
     version: CURRENT_VERSION,
     plugin: typeof input.plugin === "string" && input.plugin !== "" ? input.plugin : PLUGIN,
@@ -197,6 +205,7 @@ export function migrate(input, { priorPreferences } = {}) {
     kit,
     capstone_briefs,
     reflections,
+    credential,
   };
 
   // structuredClone so the returned object shares NO references with `input`
@@ -356,5 +365,7 @@ if (isMain) {
   }
 }
 
-// Re-export constants useful to tests / callers.
-export { CURRENT_VERSION, VALID_AI_MATURITY, DEFAULT_AI_MATURITY, DEFAULT_LANGUAGE };
+// Re-export constants useful to tests / callers. `PLUGIN` (the sentinel migration
+// writes) is single-sourced here so the SessionStart workspace guard imports the
+// SAME value it must match — it can never drift from what migration produces.
+export { CURRENT_VERSION, PLUGIN, VALID_AI_MATURITY, DEFAULT_AI_MATURITY, DEFAULT_LANGUAGE };

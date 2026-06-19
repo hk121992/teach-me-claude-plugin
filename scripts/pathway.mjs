@@ -38,8 +38,11 @@
 //   outcome it covers is `confirmed`.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const CONFIRMED = "confirmed";
-const PROVISIONAL = "provisional";
+// The v3 outcome-status vocabulary. Exported as the single source so the other
+// modules that read the outcomes map (e.g. the SessionStart summary) share the
+// exact same status strings rather than re-spelling the literals.
+export const CONFIRMED = "confirmed";
+export const PROVISIONAL = "provisional";
 
 // The COMPLETE sentinel — a distinct object so callers can branch on it
 // unambiguously (it is NOT a parked/in-flight state). Exported so consumers and
@@ -67,6 +70,23 @@ function coveredOutcomeIsDoneForSkip(status) {
 }
 
 /**
+ * The in-flight RESUME rule, extracted so a caller that computes position WITHOUT a
+ * runsheet set (the SessionStart composer before any content is authored) can still
+ * honour a genuine resume instead of dropping the learner who paused mid-sitting.
+ * An in-flight pointer (status `in_progress` with a runsheet) resumes that runsheet
+ * and is NOT re-derived; anything else returns null. Pure; no I/O.
+ *
+ * @param {{runsheet?:string, status?:string}} [current] the progress.json `current`.
+ * @returns {{next:string}|null} the resume result, or null when nothing is in flight.
+ */
+export function inFlightResume(current) {
+  if (current && current.status === "in_progress" && current.runsheet) {
+    return { next: current.runsheet };
+  }
+  return null;
+}
+
+/**
  * Compute the next runsheet to run from passed-in evidence — or COMPLETE.
  *
  * @param {Object}   args
@@ -78,10 +98,10 @@ function coveredOutcomeIsDoneForSkip(status) {
  */
 export function pathway({ outcomes = {}, runsheets = [], current } = {}) {
   // (4) In-flight resume — an in-flight pointer resumes; it is NOT re-derived.
-  // If `current.runsheet` is set with status "in_progress", return THAT runsheet.
-  if (current && current.status === "in_progress" && current.runsheet) {
-    return { next: current.runsheet };
-  }
+  // (Shared with the SessionStart composer via the exported helper, so a genuine
+  // resume is honoured even on the no-content path.)
+  const resume = inFlightResume(current);
+  if (resume) return resume;
 
   // (1)+(2) Single ordered pass. For each runsheet in series order, decide whether
   // it is the one to run:

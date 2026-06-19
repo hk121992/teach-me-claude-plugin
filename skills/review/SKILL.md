@@ -105,6 +105,13 @@ For **each covered uid** (and each uid you forward-credit), write its entry:
   or a **`challenge:ID#turn`** reference (for conversational / live-action /
   emergent).
 - **`verdict`** — `pass` | `refine`.
+- **`substrate`** — set to **`"claude"`** ONLY when the outcome is genuinely bound
+  to a Claude primitive/surface (the skill/agent/tool itself, not a transferable
+  habit). Otherwise **leave it unset** — absence means *agnostic* (a transferable
+  competency), the documented default; never write `"agnostic"` and never invent
+  `"claude"`. This is the one field the **certificate** and **claim-link** read to tag
+  each confirmed competency Claude-specific vs transferable, so stamp it honestly when
+  (and only when) you confirm a Claude-bound outcome.
 - **`history`** — **append-only** (never rewrite or fabricate past entries) and
   **capped** (keep the last N transitions plus a rolled-up count) so the
   SessionStart summary stays bounded.
@@ -154,6 +161,7 @@ FM-CERT-EARLY — no early certificate.)
 skill's only job is a **thin terminal write**: **`review` WRITES the `COMPLETE`
 state** into the outcomes map (the terminal marker) and **hands off**. **Do NOT
 generate the certificate here.** The separate **`credential` skill READS the
-`COMPLETE` state** and owns certificate generation and the claim-link. Write the
-terminal state, tell the learner they've completed the series, and hand off to
-`credential` — never mint the credential in this skill.
+`COMPLETE` state** (`${CLAUDE_PLUGIN_ROOT}/skills/credential/SKILL.md`) and owns the
+credential record, certificate generation, and the claim-link. Write the terminal
+state, tell the learner they've completed the series, and **invoke the `credential`
+skill** — never mint the credential in this skill.

@@ -23,6 +23,11 @@
       map is the single source of standing. An outcome carries `substrate: claude` iff
       it is bound to a Claude primitive/surface; otherwise it is agnostic-by-default
       (the default is left unstated — absence === agnostic, NOT a fabrication).
+    - "The credential & share loop": on COMPLETE the credential flow stamps a
+      `credential` record — `{ id, completed }` — onto progress.json (the opaque
+      claim-link id + the completion date). This cert's completion date binds to
+      `progress.credential.completed`; the date is therefore a REAL stamped field, not
+      an invented value. (The cert renders only AFTER that record exists.)
     - "The build contract": completion is challenge-based and a series' outcome/challenge
       count VARIES (and a series may split) — so this cert is COUNT-AGNOSTIC. It renders
       whatever confirmed outcomes the map holds; it does NOT say "completed all ten
@@ -34,10 +39,11 @@
        resolves them against {profile, preferences, progress} (real-state-only — a
        missing path THROWS, never blanks) and substitutes the data-tmc-bind sites.
        No hand-substitution.
-    2. The full progress state is injected into <script id="tmc-state"> (its `null`
-       body replaced with the JSON of {profile, preferences, progress}). This widget's
-       own JS reads `progress.outcomes`, keeps the `confirmed` ones, and iterates them
-       to render the competency list — count-agnostic, real-state-only.
+    2. widget-fill ALSO injects the full progress state into <script id="tmc-state">
+       (replacing its `null` body with the script-safe JSON of
+       {profile, preferences, progress} — it OWNS that injection, escaping included).
+       This widget's own JS reads `progress.outcomes`, keeps the `confirmed` ones, and
+       iterates them to render the competency list — count-agnostic, real-state-only.
     Both are the SAME real state; nothing here is fabricated.
 
   Styling is the shared TMC stylesheet (widgets/shared/tmc.css): pine on warm ivory,
@@ -57,12 +63,16 @@
      from the injected tmc-state block (an object can't be a scalar bind).
        learner_name  — shown in the cert body (NOT in the claim-link URL).
        series        — the completed series label.
-       completed     — the completion date (real; never invented). -->
+       completed     — the completion date, stamped on the credential record
+                       (progress.credential.completed) when the credential flow fires
+                       on COMPLETE. Real; never invented. The cert is rendered ONLY on
+                       COMPLETE, after the record is minted, so this path resolves;
+                       absent ⇒ widget-fill THROWS (real-state-only), never a blank. -->
 <script type="application/json" data-tmc-inputs>
 {
   "learner_name": "profile.name",
   "series": "progress.current.series",
-  "completed": "profile.completed"
+  "completed": "progress.credential.completed"
 }
 </script>
 
@@ -274,7 +284,12 @@
       if (seriesVal === undefined || seriesVal === null || seriesVal === "") {
         document.getElementById("series-line").classList.add("hidden");
       }
-      const completedVal = (STATE.profile && STATE.profile.completed);
+      // The completion date lives on the credential record (progress.credential),
+      // stamped by the credential flow on COMPLETE — the SAME real field the manifest
+      // binds. Hide the line if absent rather than printing a blank (defense-in-depth;
+      // the manifest fill already enforces real-state-only at fill time).
+      const cred = progress.credential;
+      const completedVal = cred && cred.completed;
       if (!completedVal) {
         document.getElementById("date-line").classList.add("hidden");
       }

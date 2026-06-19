@@ -274,8 +274,10 @@ present, and offer one resource pointer only where the runsheet calls for it.
 outcome `confirmed`, the pathway returning its sentinel — **never** on reaching
 the last challenge or passing the capstone as a step. A learner can sit on the
 last challenge with provisionals still open and is *not* complete. On `COMPLETE`,
-`review` writes the terminal state and hands off; the certificate + claim-link
-are owned by the credential flow, read from that state.
+`review` writes the terminal state and hands off to the **`credential` skill**,
+which stamps the `progress.credential` record (`{ id, completed }` — the opaque
+claim-link id + the completion date), renders the certificate, and generates the
+claim-link — all read from real state, never fabricated.
 
 ## Resources
 

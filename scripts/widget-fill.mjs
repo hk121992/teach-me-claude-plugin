@@ -40,6 +40,12 @@
 // block is stripped (it is an instantiation directive, not display content), and the
 // learner-facing handback machinery (nonce / sendPrompt) is left untouched for the
 // widget's own script to use at submit time.
+//
+// This module ALSO owns the tmc-state injection (step 4 below): for a runtime UI
+// widget that carries a `<script id="tmc-state">` block (journey-map, certificate),
+// fillWidget replaces its placeholder body with the script-safe JSON of the same
+// state — so the widget's own JS can iterate the outcomes map. There is ONE owner of
+// that injection (this module), not a hand-step a caller can forget or do unsafely.
 
 // ---------------------------------------------------------------------------
 // Errors — a dedicated class so callers (and tests) can branch on the failure
@@ -302,6 +308,70 @@ function fillInlineTokens(html, values) {
 }
 
 // ---------------------------------------------------------------------------
+// 4. TMC-STATE — the optional full-state injection for the runtime UI widgets.
+//
+// The runtime UI widgets (journey-map, certificate) carry a placeholder block
+//   <script id="tmc-state" type="application/json">null</script>
+// whose `null` body the runtime replaces with the JSON of the SAME
+// {profile, preferences, progress} state used to fill the bind sites. The widget's
+// own JS then reads it and iterates the outcomes map (count-agnostic, real-state
+// only). This module is that runtime: filling a widget OWNS this injection too, so
+// there is one owner, not a hand-step the caller can forget. A per-series lesson
+// widget has NO such block, so injectState is a NO-OP for those (never an error).
+//
+// SAFETY — the honour-system self-XSS guard. The state is learner-controlled (their
+// own name, profession, kit labels…), so a raw `</script>` inside a value would close
+// the script element and let the rest execute as markup. We JSON-encode, then escape
+// the characters that are significant in a <script> context — `<`, `>`, `&`, and the
+// JS line terminators U+2028 / U+2029 — as `\uXXXX`. These are valid JSON escapes that
+// JSON.parse restores to the original characters, so the block is byte-safe to embed
+// AND parses back to the exact state. (This is the local-side guard; the deeper tamper
+// / trust posture is owned by wi-web-wire-architecture.)
+// ---------------------------------------------------------------------------
+
+// Capture an `id="tmc-state"` script block as (open tag)(quote)(body)(close tag).
+// Not a global regex — there is exactly one such block per widget; we replace its body.
+const TMC_STATE_RE =
+  /(<script\b[^>]*\bid=(["'])tmc-state\2[^>]*>)([\s\S]*?)(<\/script\s*>)/i;
+
+/**
+ * Escape a JSON string for safe embedding inside an HTML <script> element. Every
+ * replaced character is emitted as a `\uXXXX` escape, which is valid JSON and
+ * round-trips through JSON.parse unchanged. Neutralises `</script>`, `<!--`, `<script`
+ * and `]]>`-style breakouts. PURE.
+ */
+export function escapeStateForScript(json) {
+  return json
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
+/**
+ * Inject the real {profile, preferences, progress} state into a widget's optional
+ * `<script id="tmc-state">` block, replacing its placeholder body with the
+ * script-safe JSON of the state. Returns the HTML UNCHANGED when the widget has no
+ * such block (every per-series lesson widget) — injection is opt-in by carrying the
+ * block. PURE: no I/O, mutates nothing.
+ *
+ * @param {string} html  the (already bind-filled) widget HTML.
+ * @param {{profile?:object, preferences?:object, progress?:object}} state
+ * @returns {string} the HTML with the tmc-state body filled, or unchanged.
+ */
+export function injectState(html, state) {
+  if (!TMC_STATE_RE.test(html)) return html; // no tmc-state block → no-op
+  const payload = {
+    profile: state.profile,
+    preferences: state.preferences,
+    progress: state.progress,
+  };
+  const safe = escapeStateForScript(JSON.stringify(payload));
+  return html.replace(TMC_STATE_RE, (_whole, open, _quote, _body, close) => open + safe + close);
+}
+
+// ---------------------------------------------------------------------------
 // PUBLIC INTERFACE.
 // ---------------------------------------------------------------------------
 
@@ -314,8 +384,9 @@ function fillInlineTokens(html, values) {
  *   learner state. `profile` = progress.json `learner`; `preferences` =
  *   preferences.json; `progress` = the progress.json object. The caller supplies it;
  *   this function does no I/O.
- * @returns {string} filledHtml — renderable HTML with every bound site substituted
- *   and the consumed manifest block stripped.
+ * @returns {string} filledHtml — renderable HTML with every bound site substituted,
+ *   the consumed manifest block stripped, and (for a widget that carries one) the
+ *   `<script id="tmc-state">` block injected with the script-safe JSON of `state`.
  * @throws {WidgetFillError} on a missing/duplicate/malformed manifest, an
  *   unresolvable source path, or a bind site naming an undeclared field. NEVER
  *   returns a fabricated or blank value for missing state (canon P5).
@@ -350,6 +421,12 @@ export function fillWidget(widgetHtml, state) {
   // but fixed for determinism.
   out = fillElementBinds(out, values);
   out = fillInlineTokens(out, values);
+
+  // Inject the full real state into the optional <script id="tmc-state"> block (the
+  // runtime UI widgets — journey-map, certificate — read it to iterate the outcomes
+  // map). Done LAST and as escaped JSON, so it is never re-scanned for binds/tokens.
+  // A per-series lesson widget has no such block → this is a no-op.
+  out = injectState(out, state);
 
   return out;
 }
