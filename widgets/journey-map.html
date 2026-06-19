@@ -1,90 +1,144 @@
 <!DOCTYPE html>
 <!--
-  Teach Me Claude — journey map widget (template).
-  The companion instantiates this into the learner's workspace:
-  replace the __PROGRESS_DATA__ placeholder below with the actual JSON
-  contents of .teach-me/progress.json, save as my-journey.html, and invite
-  the learner to open it in their browser. Render real progress only.
+  Teach Me Claude — journey-map widget (a RUNTIME UI widget, not a per-series
+  lesson widget). It renders the learner's standing from the v3 `outcomes` map:
+  confirmed / provisional / unmet, plus the kit. It is COUNT-AGNOSTIC — there is
+  no fixed list of ten challenges and no integer position. Completion is
+  challenge-based; a series' outcome count varies (and a series may split), so the
+  view is driven entirely by whatever the outcomes map contains.
 
-  Styling is the locked Teach Me Claude brand (brand/tokens.css): pine on warm
-  ivory, Bricolage Grotesque + Inter, light + dark. Real fonts load from Google
-  Fonts when online; the system-font stacks are the offline fallback.
+  CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
+    - "Widget delivery + handback" → "Instantiation — one convention": the runtime
+      fills every widget from a `data-tmc-inputs` JSON manifest over
+      `{profile, preferences, progress}`; widgets render REAL STATE ONLY (P5),
+      never fabricated. (journey-map / certificate are runtime UI widgets, distinct
+      from the per-series lesson widgets under curriculum/series/NN-<slug>/widgets/.)
+    - Data model: outcome states are `unmet | provisional | confirmed`; the
+      `outcomes` map is the single source of position — the integer
+      `current.challenge` is RETIRED. An outcome ABSENT from the map is `unmet`.
+
+  HOW THE RUNTIME FILLS THIS (the one convention):
+    1. The `data-tmc-inputs` manifest below maps the scalar header fields
+       (learner name, start date) to source paths; the runtime's widget-fill
+       parser resolves them against the supplied {profile, preferences, progress}
+       and substitutes the data-tmc-bind / {{token}} sites. No hand-substitution.
+    2. The full progress state is injected into the <script id="tmc-state"> block
+       (its `null` body is replaced with the JSON of {profile, preferences,
+       progress}). The widget's own JS reads `progress.outcomes` from there and
+       iterates it to render the confirmed/provisional/unmet view — count-agnostic.
+    Both are the SAME real state; nothing here is fabricated.
+
+  Styling is the shared TMC stylesheet (widgets/shared/tmc.css): pine on warm
+  ivory, system-font stacks, light + dark. System fonts only (Cowork's show_widget
+  cannot load external/brand fonts).
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Teach Me Claude journey</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="widgets/shared/tmc.css">
+
+<!-- data-tmc-inputs manifest — the ONE fill convention. field name → source path
+     within {profile, preferences, progress}. The runtime's widget-fill parser
+     resolves these (real-state-only) and fills the data-tmc-bind / {{token}}
+     sites below. The outcomes map itself is iterated by the widget's JS from the
+     injected tmc-state block (an object can't be a scalar bind); these are the
+     scalar header values. -->
+<script type="application/json" data-tmc-inputs>
+{
+  "learner_name": "profile.name",
+  "started": "profile.started"
+}
+</script>
+
 <style>
-  :root {
-    --pine: #1C7D74; --pine-strong: #115A53; --pine-tint: #E4F1F0;
-    --paper: #FBF8F2; --surface: #FFFFFF; --surface-2: #F3EDE2;
-    --ink: #241F1A; --ink-2: #6E665B; --ink-3: #9A9184; --hairline: #E2D9C9;
-    --done: #2E7D4F; --doing: #B26C2A;
-    --font-display: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --font-text: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --pine: #33C1B3; --pine-strong: #54C9BD; --pine-tint: #1F3D3A;
-      --paper: #18140F; --surface: #221C16; --surface-2: #2C251D;
-      --ink: #F2ECDF; --ink-2: #B3A998; --ink-3: #837A6B; --hairline: #3A3026;
-      --done: #5FB07E; --doing: #E0A35C;
-    }
-  }
-  [data-theme="dark"] {
-    --pine: #33C1B3; --pine-strong: #54C9BD; --pine-tint: #1F3D3A;
-    --paper: #18140F; --surface: #221C16; --surface-2: #2C251D;
-    --ink: #F2ECDF; --ink-2: #B3A998; --ink-3: #837A6B; --hairline: #3A3026;
-    --done: #5FB07E; --doing: #E0A35C;
-  }
-  * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 2.5rem 1.25rem; background: var(--paper); color: var(--ink);
-    font-family: var(--font-text); line-height: 1.5; -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: var(--tmc-space-6) var(--tmc-space-4);
+    background: var(--tmc-paper);
+    color: var(--tmc-ink);
+    font-family: var(--tmc-font-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
   main { max-width: 680px; margin: 0 auto; }
-  .mark { width: 30px; height: 30px; display: block; margin-bottom: .85rem; }
-  h1 { font-family: var(--font-display); font-size: 1.7rem; font-weight: 600; letter-spacing: -.01em; margin: 0 0 .3rem; }
-  .sub { color: var(--ink-2); font-size: .95rem; margin-bottom: 1.75rem; }
-  .bar { height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin-bottom: 2rem; }
-  .bar > div { height: 100%; background: var(--pine); border-radius: 999px; transition: width .6s ease; }
-  ol.map { list-style: none; padding: 0; margin: 0 0 2.25rem; }
-  ol.map li {
-    background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px;
-    padding: .7rem 1rem; margin-bottom: .5rem; display: flex; align-items: baseline; gap: .75rem;
+  .mark { width: 30px; height: 30px; display: block; margin-bottom: var(--tmc-space-3); }
+  h1 {
+    font-family: var(--tmc-font-display); font-size: 1.7rem; font-weight: 600;
+    letter-spacing: -0.01em; margin: 0 0 0.3rem;
   }
-  .dot { font-size: 1.05rem; width: 1.4rem; text-align: center; flex: none; color: var(--ink-3); }
-  li.done .dot { color: var(--done); }
-  li.doing .dot { color: var(--doing); }
-  li.doing { border-color: var(--doing); }
-  li.ahead { opacity: .6; }
-  .num { color: var(--ink-3); font-size: .85rem; width: 1.4rem; flex: none; font-variant-numeric: tabular-nums; }
+  .sub { color: var(--tmc-ink-2); font-size: 0.95rem; margin-bottom: var(--tmc-space-5); }
+
+  /* Standing summary — the three outcome states, count-agnostic. */
+  .standing {
+    display: flex; flex-wrap: wrap; gap: var(--tmc-space-3);
+    margin: 0 0 var(--tmc-space-5);
+  }
+  .standing .stat {
+    flex: 1 1 0; min-width: 8rem;
+    background: var(--tmc-surface); border: 1px solid var(--tmc-hairline);
+    border-radius: var(--tmc-r-md); padding: var(--tmc-space-3) var(--tmc-space-4);
+  }
+  .standing .stat .n {
+    font-family: var(--tmc-font-display); font-size: 1.6rem; font-weight: 600;
+    line-height: 1.1; font-variant-numeric: tabular-nums;
+  }
+  .standing .stat .l {
+    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--tmc-ink-2); margin-top: 0.15rem;
+  }
+  .stat.confirmed .n { color: var(--tmc-done); }
+  .stat.provisional .n { color: var(--tmc-doing); }
+  .stat.unmet .n { color: var(--tmc-ink-3); }
+
+  .bar { height: 10px; background: var(--tmc-surface-2); border-radius: var(--tmc-r-pill); overflow: hidden; margin-bottom: var(--tmc-space-5); display: flex; }
+  .bar > .seg { height: 100%; transition: width 0.6s ease; }
+  .bar > .seg.confirmed { background: var(--tmc-done); }
+  .bar > .seg.provisional { background: var(--tmc-doing); }
+
+  /* Outcomes list — one row per outcome in the map (count-agnostic). */
+  ol.map { list-style: none; padding: 0; margin: 0 0 var(--tmc-space-5); }
+  ol.map li {
+    background: var(--tmc-surface); border: 1px solid var(--tmc-hairline);
+    border-radius: var(--tmc-r-md); padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+    display: flex; align-items: baseline; gap: var(--tmc-space-3);
+  }
+  .dot { font-size: 1.05rem; width: 1.4rem; text-align: center; flex: none; color: var(--tmc-ink-3); }
+  li.confirmed .dot { color: var(--tmc-done); }
+  li.provisional .dot { color: var(--tmc-doing); }
+  li.provisional { border-color: var(--tmc-doing); }
+  li.unmet { opacity: 0.6; }
+  .uid { color: var(--tmc-ink-3); font-size: 0.8rem; flex: none; font-family: var(--tmc-font-mono); }
   .title { flex: 1; }
-  .made { display: block; font-size: .85rem; color: var(--ink-2); font-style: italic; }
-  .when { font-size: .8rem; color: var(--ink-3); flex: none; }
-  h2 { font-family: var(--font-text); font-size: .8rem; font-weight: 600; letter-spacing: .1em;
-       text-transform: uppercase; color: var(--pine-strong); margin: 0 0 .75rem; }
-  ul.kit { list-style: none; padding: 0; margin: 0 0 2.25rem; columns: 2; column-gap: 1.5rem; }
-  ul.kit li { padding: .25rem 0; font-size: .95rem; break-inside: avoid; color: var(--ink-2); }
-  ul.kit li::before { content: "□  "; color: var(--ink-3); }
-  ul.kit li.have { color: var(--ink); }
-  ul.kit li.have::before { content: "■  "; color: var(--done); }
-  footer { color: var(--ink-3); font-size: .85rem; border-top: 1px solid var(--hairline); padding-top: 1rem; }
+  .ev { display: block; font-size: 0.85rem; color: var(--tmc-ink-2); font-style: italic; }
+  .state { font-size: 0.78rem; color: var(--tmc-ink-3); flex: none; }
+  .empty { color: var(--tmc-ink-2); font-style: italic; padding: 0.5rem 0 var(--tmc-space-5); }
+
+  h2 {
+    font-family: var(--tmc-font-text); font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--tmc-pine-strong);
+    margin: 0 0 0.75rem;
+  }
+  ul.kit { list-style: none; padding: 0; margin: 0 0 var(--tmc-space-5); columns: 2; column-gap: 1.5rem; }
+  ul.kit li { padding: 0.25rem 0; font-size: 0.95rem; break-inside: avoid; color: var(--tmc-ink-2); }
+  ul.kit li::before { content: "\25A1  "; color: var(--tmc-ink-3); }
+  ul.kit li.have { color: var(--tmc-ink); }
+  ul.kit li.have::before { content: "\25A0  "; color: var(--tmc-done); }
+  footer { color: var(--tmc-ink-3); font-size: 0.85rem; border-top: 1px solid var(--tmc-hairline); padding-top: 1rem; }
   @media (max-width: 540px) { ul.kit { columns: 1; } }
 </style>
 </head>
-<body>
+<body class="tmc">
 <main>
-  <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--pine)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+  <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-pine)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
   </svg>
   <h1 id="headline">My Teach Me Claude journey</h1>
-  <div class="sub" id="subline"></div>
-  <div class="bar"><div id="barfill" style="width:0%"></div></div>
+  <div class="sub" id="subline"><span data-tmc-bind="learner_name">Learner</span> · Series 1 — Foundations · started <span data-tmc-bind="started">—</span></div>
+
+  <div class="standing" id="standing"></div>
+  <div class="bar" id="bar"></div>
 
   <ol class="map" id="map"></ol>
 
@@ -93,71 +147,154 @@
 
   <footer id="foot"></footer>
 </main>
+
+<!-- tmc-state — the runtime replaces this `null` body with the JSON of
+     {profile, preferences, progress} (the SAME real state the manifest fills from).
+     The widget JS reads progress.outcomes and iterates it; nothing is fabricated. -->
+<script id="tmc-state" type="application/json">null</script>
+
 <script>
-  // The companion replaces the placeholder below with the JSON contents
-  // of .teach-me/progress.json when instantiating this template.
-  const PROGRESS = __PROGRESS_DATA__;
+  // Read the injected state (real progress only). If it is absent (e.g. opened as
+  // an un-filled template), render an honest empty view rather than fabricating.
+  let STATE = null;
+  try {
+    const raw = document.getElementById("tmc-state").textContent.trim();
+    STATE = JSON.parse(raw);
+  } catch (_) { STATE = null; }
 
-  const SERIES1 = [
-    "Meet your AI coworker", "Your first real delegation", "Say what you mean",
-    "Make it grill you", "Trust, but verify", "Compute, don't guess",
-    "Big jobs, small pieces", "Give your agent a memory", "Working safely",
-    "Build your own machine"
-  ];
-  const KIT = [
-    ["grill_me_skill", "Grill-me skill"], ["brief_template", "Brief template"],
-    ["verification_checklist", "Verification checklist"], ["delegation_map", "Delegation map"],
-    ["claude_md", "Agent memory (CLAUDE.md)"], ["first_machine", "My first machine"]
-  ];
+  const progress = (STATE && STATE.progress) || {};
+  const profile = (STATE && STATE.profile) || progress.learner || {};
+  // The outcomes map is the SINGLE source of standing. An outcome absent from the
+  // map is `unmet` (the pathway's rule) — so the map is populated as outcomes are
+  // encountered, and we render exactly what it contains. No fixed challenge count.
+  const outcomes = (progress && progress.outcomes) || {};
+  const kit = (progress && progress.kit) || {};
 
-  const learner = (PROGRESS && PROGRESS.learner) || {};
-  const challenges = (PROGRESS && PROGRESS.challenges) || {};
-  const current = (PROGRESS && PROGRESS.current) || {};
-
-  // Tolerate different key shapes the companion may have used: "3", "03", "1.03"…
-  function entryFor(n) {
-    const keys = [String(n), String(n).padStart(2, "0"), "1." + String(n).padStart(2, "0"), "1." + n];
-    for (const k of keys) if (challenges[k]) return challenges[k];
-    return null;
+  // A friendly label per outcome. The shipped runtime does NOT carry the outcomes
+  // matrix (curriculum/outcomes.md is a design file that does not ship), so we
+  // label from the outcome entry's own fields (a `title`/`label` if the runtime
+  // wrote one, else its uid) — never from a hardcoded series list.
+  function labelFor(uid, entry) {
+    return (entry && (entry.title || entry.label)) || uid;
+  }
+  function evidenceLine(entry) {
+    if (!entry) return "";
+    if (entry.evidence_ref) return entry.evidence_ref;
+    if (entry.evidence_kind) return entry.evidence_kind;
+    return "";
   }
 
-  let done = 0;
+  // Tally the three states across the whole map (count-agnostic).
+  const STATES = ["confirmed", "provisional", "unmet"];
+  const counts = { confirmed: 0, provisional: 0, unmet: 0 };
+  const entries = Object.entries(outcomes);
+  for (const [, entry] of entries) {
+    const s = (entry && entry.status) || "unmet";
+    if (counts[s] === undefined) counts.unmet++; else counts[s]++;
+  }
+  const total = entries.length;
+
+  // Header: the learner's name (filled by the manifest bind above) is already in
+  // place; nothing here re-substitutes it. We only set the dynamic, map-derived
+  // subline copy.
+  const sub = document.getElementById("subline");
+  if (sub && total === 0) {
+    sub.textContent = "Series 1 — Foundations · your journey starts here";
+  }
+
+  // Standing summary — the three outcome states.
+  const STAND_LABEL = { confirmed: "confirmed", provisional: "provisional", unmet: "still ahead" };
+  const standing = document.getElementById("standing");
+  STATES.forEach((s) => {
+    const div = document.createElement("div");
+    div.className = "stat " + s;
+    div.innerHTML = '<div class="n"></div><div class="l"></div>';
+    div.querySelector(".n").textContent = String(counts[s]);
+    div.querySelector(".l").textContent = STAND_LABEL[s];
+    standing.appendChild(div);
+  });
+
+  // Progress bar — confirmed + provisional segments, proportion of the map.
+  const bar = document.getElementById("bar");
+  if (total > 0) {
+    ["confirmed", "provisional"].forEach((s) => {
+      const seg = document.createElement("div");
+      seg.className = "seg " + s;
+      seg.style.width = ((counts[s] / total) * 100) + "%";
+      bar.appendChild(seg);
+    });
+  }
+
+  // The outcomes list — one row per outcome the map contains, in map order.
+  const DOT = { confirmed: "✓", provisional: "◐", unmet: "·" };
   const map = document.getElementById("map");
-  SERIES1.forEach((title, i) => {
-    const n = i + 1;
-    const e = entryFor(n);
-    const passed = e && e.status === "passed";
-    const doing = !passed && (e ? e.status === "in_progress" : Number(current.challenge) === n);
-    if (passed) done++;
+  if (total === 0) {
     const li = document.createElement("li");
-    li.className = passed ? "done" : (doing ? "doing" : "ahead");
-    const made = e && (e.note || e.artifact || (Array.isArray(e.artifacts) && e.artifacts.join(", ")));
-    li.innerHTML =
-      '<span class="dot">' + (passed ? "✓" : (doing ? "▸" : "·")) + "</span>" +
-      '<span class="num">' + n + "</span>" +
-      '<span class="title">' + title + (made ? '<span class="made"></span>' : "") + "</span>" +
-      '<span class="when">' + ((e && e.completed) || "") + "</span>";
-    if (made) li.querySelector(".made").textContent = made;
+    li.className = "empty-row";
+    li.innerHTML = '<span class="empty">No outcomes recorded yet — they’ll appear here as you meet them.</span>';
     map.appendChild(li);
-  });
+  } else {
+    for (const [uid, entry] of entries) {
+      const s = (entry && entry.status) || "unmet";
+      const li = document.createElement("li");
+      li.className = STATES.includes(s) ? s : "unmet";
+      const ev = evidenceLine(entry);
+      li.innerHTML =
+        '<span class="dot">' + (DOT[s] || "·") + "</span>" +
+        '<span class="uid"></span>' +
+        '<span class="title"></span>' +
+        '<span class="state">' + (s === "unmet" ? "ahead" : s) + "</span>";
+      li.querySelector(".uid").textContent = uid;
+      const titleEl = li.querySelector(".title");
+      titleEl.textContent = labelFor(uid, entry);
+      if (ev) {
+        const e = document.createElement("span");
+        e.className = "ev";
+        e.textContent = ev;
+        titleEl.appendChild(e);
+      }
+      map.appendChild(li);
+    }
+  }
 
-  document.getElementById("headline").textContent =
-    (learner.name ? learner.name + "’s" : "My") + " Teach Me Claude journey";
-  document.getElementById("subline").textContent =
-    "Series 1 — Foundations · " + done + " of 10 challenges complete" +
-    (learner.started ? " · started " + learner.started : "");
-  document.getElementById("barfill").style.width = (done * 10) + "%";
-
+  // The kit — a GENERIC map keyed by slot-id, each entry `{label, ref}`. The label
+  // is authored per challenge (the runsheet's kit_contribution) and the ref is the
+  // produced artefact's path. We render whatever progress.kit contains — series- and
+  // count-agnostic, with NO hardcoded slot list. An entry is "have" once it has a
+  // ref. (A legacy string-form entry — an un-upgraded old kit — is tolerated: the
+  // string is the ref and the slot-id stands in as the label.)
+  function kitLabel(slot, entry) {
+    if (entry && typeof entry === "object") return entry.label || slot;
+    return slot; // legacy string form (or empty): fall back to the slot-id
+  }
+  function kitHave(entry) {
+    if (entry && typeof entry === "object") return !!entry.ref;
+    return !!entry; // legacy non-empty string ⇒ present
+  }
   const kitEl = document.getElementById("kit");
-  const kit = (PROGRESS && PROGRESS.kit) || {};
-  KIT.forEach(([key, label]) => {
+  const kitEntries = Object.entries(kit);
+  if (kitEntries.length === 0) {
     const li = document.createElement("li");
-    if (kit[key]) li.className = "have";
-    li.textContent = label;
+    li.className = "empty-kit";
+    // SECURITY: static copy, but use textContent for consistency with the rule below.
+    li.textContent = "Your kit grows as you go — pieces appear here.";
     kitEl.appendChild(li);
-  });
+  } else {
+    for (const [slot, entry] of kitEntries) {
+      const li = document.createElement("li");
+      if (kitHave(entry)) li.className = "have";
+      // SECURITY (critical): the label is AUTHOR-CONTROLLED (it comes from the
+      // runsheet's kit_contribution, carried through progress.kit). It MUST render as
+      // inert text — NEVER innerHTML — so a markup-bearing label (e.g.
+      // `<img src=x onerror=...>`) cannot execute. journey-map is not scanned by the
+      // conformance linter, so this is the only thing keeping such a label inert.
+      li.textContent = kitLabel(slot, entry);
+      kitEl.appendChild(li);
+    }
+  }
 
-  const refl = (PROGRESS && PROGRESS.reflections || []).length;
+  // Footer — a count of reflections, and the honesty note (real local state only).
+  const refl = (progress && progress.reflections || []).length;
   document.getElementById("foot").textContent =
     (refl ? refl + " reflection" + (refl === 1 ? "" : "s") + " recorded · " : "") +
     "This map renders your local progress file — it’s yours.";

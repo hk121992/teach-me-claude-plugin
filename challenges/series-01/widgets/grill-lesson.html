@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--
+  grill-lesson.html — the interactive SD-1 lesson widget for challenge 04 (grill-me).
+  Authored by challenge-author to the widget-craft doctrine (SD-1 + the three security
+  disciplines). scanWidgetBody returns ZERO violations: exactly ONE data-tmc-inputs
+  manifest, exactly ONE submit <script> calling sendPrompt, no on* handler attributes,
+  no network egress, inert SVG (same-document fragment refs only), a LOCAL shared
+  stylesheet (no remote/web font), the brand tokens via tmc.css (no hard-coded colour).
+
+  SD-1: the manifest binds provenance (nonce/widget_id/challenge) via hidden
+  data-tmc-bind spans + the declared display fields (profile.name,
+  preferences.ai_maturity); on submit the widget maps its own named form inputs 1:1 to
+  the opaque `answers`, builds the full ENVELOPE_KEYS envelope from the BOUND real state,
+  and hands back via sendPrompt. outcome_signals is advisory-only and carries ONLY the
+  conversational outcome (01-DSCN-04) — never the artifact outcome (01-DESC-04), since a
+  form cannot evidence a built file.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — make it grill you</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<script type="application/json" data-tmc-inputs>
+{
+  "learnerName": "profile.name",
+  "level": "preferences.ai_maturity",
+  "nonce": "progress.current.nonce",
+  "widgetId": "progress.current.widget_id",
+  "challenge": "progress.current.runsheet"
+}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card" id="widget-interactive">
+  <div class="tmc-brand">
+    <svg class="tmc-mark" viewBox="0 0 100 100" aria-hidden="true" fill="none"
+         stroke="var(--tmc-pine)" stroke-width="7" stroke-linecap="round">
+      <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/>
+    </svg>
+    <div class="tmc-wordmark">Teach Me <b>Claude</b></div>
+  </div>
+
+  <div class="tmc-eyebrow">Try it</div>
+  <h1 class="tmc-title">
+    Let's draft your brief, <span class="tmc-fill" data-tmc-bind="learnerName">…</span>
+  </h1>
+  <p class="tmc-muted">Tuned for the {{level}} level. Tell your grill-me skill where to
+     start — your answers hand straight back to your companion, so you copy nothing by
+     hand.</p>
+
+  <span hidden data-tmc-bind="nonce"></span>
+  <span hidden data-tmc-bind="widgetId"></span>
+  <span hidden data-tmc-bind="challenge"></span>
+
+  <form id="brief-form" novalidate>
+    <div class="tmc-field">
+      <label class="tmc-label" for="f-goal">What's the real goal of the ask?</label>
+      <input class="tmc-input" id="f-goal" name="goal" type="text"
+             placeholder="e.g. a go/no-go memo on the new vendor" required>
+    </div>
+    <div class="tmc-field">
+      <label class="tmc-label" for="f-thin">Write the laziest version of that ask</label>
+      <input class="tmc-input" id="f-thin" name="thin_ask" type="text"
+             placeholder="e.g. &quot;write me a memo about the vendor&quot;">
+    </div>
+    <div class="tmc-field">
+      <span class="tmc-label">After your two fresh-session demos, how clearly could you
+        name the difference in register — and explain why it happens?</span>
+      <label class="tmc-radio-row"><input type="radio" name="register_read" value="shaky"> Still shaky on it</label>
+      <label class="tmc-radio-row"><input type="radio" name="register_read" value="getting-it"> I'm getting it</label>
+      <label class="tmc-radio-row"><input type="radio" name="register_read" value="could-warn-a-colleague"> I could warn a colleague</label>
+    </div>
+    <div class="tmc-actions">
+      <button class="tmc-btn" type="submit">Hand back to my companion</button>
+    </div>
+  </form>
+</section>
+
+<script>
+  (function () {
+    var form = document.getElementById("brief-form");
+    if (!form) return;
+    function bound(field) {
+      var el = document.querySelector('[data-tmc-bind="' + field + '"]');
+      return el ? el.textContent.trim() : "";
+    }
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var data = new FormData(form);
+      var answers = {
+        goal: (data.get("goal") || "").toString(),
+        thin_ask: (data.get("thin_ask") || "").toString(),
+        register_read: (data.get("register_read") || "").toString()
+      };
+      var envelope = {
+        tmc_handback: true,
+        nonce: bound("nonce"),
+        widget_id: bound("widgetId"),
+        challenge: bound("challenge"),
+        kind: "interactive",
+        answers: answers,
+        outcome_signals: [
+          { uid: "01-DSCN-04", self_report: answers.register_read }
+        ]
+      };
+      if (typeof sendPrompt === "function") {
+        sendPrompt(JSON.stringify(envelope));
+      }
+    });
+  })();
+</script>
+</body>
+</html>

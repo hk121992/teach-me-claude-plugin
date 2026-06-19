@@ -1,73 +1,140 @@
 <!DOCTYPE html>
 <!--
-  Teach Me Claude — graduation certificate widget (template).
-  The companion instantiates this when a series capstone passes:
-  fill the four placeholders below from real progress data —
-    __NAME__      the learner's name
-    __SERIES__    e.g. "Series 1 — Foundations"
-    __CAPSTONE__  one line on what they built ("a weekly report machine
-                  for her client updates")
-    __DATE__      completion date, written out
-  — save into the workspace (e.g. foundations-certificate.html) and invite
-  the learner to open or print it. Never fabricate its contents.
+  Teach Me Claude — series-completion CERTIFICATE (a RUNTIME UI widget, not a
+  per-series lesson widget). It renders the learner's REAL confirmed competencies
+  from the v3 `outcomes` map and is shown inline (show_widget) ONLY on the `COMPLETE`
+  state — every taught outcome confirmed — NEVER on merely reaching the last
+  challenge.
 
-  Styling is the locked Teach Me Claude brand (brand/tokens.css): pine on warm
-  ivory, Bricolage Grotesque + Inter. Real fonts load from Google Fonts when
-  online; the system-font stacks below are the offline/​print fallback.
+  CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
+    - "The credential & share loop" → NOW (zero website infra): on COMPLETE the runtime
+      renders this certificate viewer inline AND generates a claim-link
+      (plugin-src/scripts/claim-link.mjs) carrying { name, confirmed outcomes,
+      integrity hash }. The NAME renders in THIS cert BODY (from real local state); it
+      is deliberately NOT in the claim-link URL. The local sign-off is HONOUR-SYSTEM —
+      "not the credential's source of truth"; the website is the future authority.
+      So this cert makes NO server-side-verifiability claim (trust posture is owned by
+      wi-web-wire-architecture and deferred).
+    - "Widget delivery + handback" → "Instantiation — one convention": the runtime fills
+      every widget from a `data-tmc-inputs` JSON manifest over {profile, preferences,
+      progress}; widgets render REAL STATE ONLY (P5), NEVER fabricated. A missing field
+      is an ERROR, not a blank/invented value.
+    - "Data model": outcome states are `unmet | provisional | confirmed`; the `outcomes`
+      map is the single source of standing. An outcome carries `substrate: claude` iff
+      it is bound to a Claude primitive/surface; otherwise it is agnostic-by-default
+      (the default is left unstated — absence === agnostic, NOT a fabrication).
+    - "The build contract": completion is challenge-based and a series' outcome/challenge
+      count VARIES (and a series may split) — so this cert is COUNT-AGNOSTIC. It renders
+      whatever confirmed outcomes the map holds; it does NOT say "completed all ten
+      challenges" or any fixed count.
+
+  HOW THE RUNTIME FILLS THIS (the one convention, same as journey-map):
+    1. The `data-tmc-inputs` manifest maps the scalar header fields (learner name,
+       series, completion date) to source paths; the runtime's widget-fill parser
+       resolves them against {profile, preferences, progress} (real-state-only — a
+       missing path THROWS, never blanks) and substitutes the data-tmc-bind sites.
+       No hand-substitution.
+    2. The full progress state is injected into <script id="tmc-state"> (its `null`
+       body replaced with the JSON of {profile, preferences, progress}). This widget's
+       own JS reads `progress.outcomes`, keeps the `confirmed` ones, and iterates them
+       to render the competency list — count-agnostic, real-state-only.
+    Both are the SAME real state; nothing here is fabricated.
+
+  Styling is the shared TMC stylesheet (widgets/shared/tmc.css): pine on warm ivory,
+  SYSTEM fonts only (Cowork's show_widget cannot load external/brand fonts), light + dark.
 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Teach Me Claude — Certificate</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="widgets/shared/tmc.css">
+
+<!-- data-tmc-inputs manifest — the ONE fill convention. field name → source path
+     within {profile, preferences, progress}. The runtime resolves these
+     (real-state-only) and fills the data-tmc-bind sites below. Only SCALAR header
+     values live here; the confirmed-competency list is iterated by this widget's JS
+     from the injected tmc-state block (an object can't be a scalar bind).
+       learner_name  — shown in the cert body (NOT in the claim-link URL).
+       series        — the completed series label.
+       completed     — the completion date (real; never invented). -->
+<script type="application/json" data-tmc-inputs>
+{
+  "learner_name": "profile.name",
+  "series": "progress.current.series",
+  "completed": "profile.completed"
+}
+</script>
+
 <style>
-  :root {
-    /* brand tokens (light) */
-    --pine: #1C7D74; --pine-strong: #115A53; --pine-tint: #E4F1F0;
-    --paper: #FBF8F2; --surface: #FFFFFF; --surface-2: #F3EDE2;
-    --ink: #241F1A; --ink-2: #6E665B; --ink-3: #9A9184; --hairline: #E2D9C9;
-    --font-display: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --font-text: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --r-lg: 14px;
-  }
-  * { box-sizing: border-box; }
   body {
     margin: 0; min-height: 100vh; display: flex; align-items: center;
-    justify-content: center; background: var(--surface-2); padding: 2rem;
-    font-family: var(--font-text); color: var(--ink);
-    -webkit-font-smoothing: antialiased;
+    justify-content: center; background: var(--tmc-surface-2);
+    padding: var(--tmc-space-6);
+    font-family: var(--tmc-font-text); color: var(--tmc-ink);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
   }
   .cert {
-    position: relative; background: var(--paper); max-width: 720px; width: 100%;
+    position: relative; background: var(--tmc-paper);
+    max-width: 720px; width: 100%;
     padding: 3.75rem 3.25rem 3.25rem; text-align: center;
-    border: 1px solid var(--hairline); border-radius: var(--r-lg);
-    box-shadow: 0 18px 50px rgba(36, 31, 26, .12);
+    border: 1px solid var(--tmc-hairline); border-radius: var(--tmc-r-lg);
+    box-shadow: var(--tmc-shadow);
   }
-  /* inner pine frame (replaces the old double terracotta rule) */
+  /* inner pine frame */
   .cert::before {
     content: ""; position: absolute; inset: 14px;
-    border: 1.5px solid var(--pine); border-radius: 8px; pointer-events: none;
+    border: 1.5px solid var(--tmc-pine); border-radius: 8px; pointer-events: none;
   }
   .cert > * { position: relative; }
 
-  .brand { display: flex; flex-direction: column; align-items: center; gap: .5rem; margin-bottom: 2rem; }
+  .brand { display: flex; flex-direction: column; align-items: center; gap: .5rem; margin-bottom: var(--tmc-space-6); }
   .brand .mark { width: 46px; height: 46px; display: block; }
-  .wordmark { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; letter-spacing: -.01em; color: var(--ink); }
-  .wordmark b { font-weight: 600; color: var(--pine-strong); }
+  .wordmark { font-family: var(--tmc-font-display); font-weight: 600; font-size: 1.25rem; letter-spacing: -.01em; color: var(--tmc-ink); }
+  .wordmark b { font-weight: 600; color: var(--tmc-pine-strong); }
 
-  .eyebrow { font-family: var(--font-text); font-weight: 500; letter-spacing: .26em; text-transform: uppercase; font-size: .7rem; color: var(--pine-strong); }
-  h1 { font-family: var(--font-display); font-weight: 600; font-size: 2.1rem; line-height: 1.1; margin: .85rem 0 .35rem; color: var(--ink); }
-  .series { font-family: var(--font-text); color: var(--ink-2); margin-bottom: 2rem; }
-  .lead { max-width: 480px; margin: 0 auto .75rem; line-height: 1.65; color: var(--ink-2); }
-  .name { font-family: var(--font-display); font-weight: 600; font-size: 2.4rem; line-height: 1.1; margin: .5rem 0 .65rem; color: var(--ink); }
-  .rule { width: 220px; border-bottom: 1px solid var(--hairline); margin: 0 auto 1.6rem; }
-  .body { max-width: 500px; margin: 0 auto; line-height: 1.7; color: var(--ink); }
-  .capstone { font-style: italic; color: var(--pine-strong); }
-  .date { margin-top: 2.25rem; color: var(--ink-3); font-size: .95rem; font-family: var(--font-text); }
-  .seal { width: 104px; height: 104px; margin: 1.75rem auto 0; display: block; }
+  .eyebrow { font-weight: 600; letter-spacing: .26em; text-transform: uppercase; font-size: .7rem; color: var(--tmc-pine-strong); }
+  h1 { font-family: var(--tmc-font-display); font-weight: 600; font-size: 2.1rem; line-height: 1.1; margin: .85rem 0 .35rem; color: var(--tmc-ink); }
+  .series { color: var(--tmc-ink-2); margin-bottom: var(--tmc-space-6); }
+  .lead { max-width: 480px; margin: 0 auto .75rem; color: var(--tmc-ink-2); }
+  .name { font-family: var(--tmc-font-display); font-weight: 600; font-size: 2.4rem; line-height: 1.1; margin: .5rem 0 .65rem; color: var(--tmc-ink); }
+  .rule { width: 220px; border-bottom: 1px solid var(--tmc-hairline); margin: 0 auto 1.6rem; }
+  .body { max-width: 520px; margin: 0 auto var(--tmc-space-5); color: var(--tmc-ink); }
+
+  /* The confirmed-competency roll — count-agnostic, one row per confirmed outcome. */
+  .competencies { max-width: 560px; margin: 0 auto var(--tmc-space-5); text-align: left; }
+  .competencies h2 {
+    font-family: var(--tmc-font-text); font-size: .72rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--tmc-pine-strong);
+    margin: 0 0 var(--tmc-space-3); text-align: center;
+  }
+  ul.comp { list-style: none; padding: 0; margin: 0; }
+  ul.comp li {
+    display: flex; align-items: baseline; gap: var(--tmc-space-3);
+    padding: .55rem .25rem; border-bottom: 1px solid var(--tmc-hairline);
+  }
+  ul.comp li:last-child { border-bottom: none; }
+  .check { color: var(--tmc-done); flex: none; font-size: 1rem; width: 1.2rem; text-align: center; }
+  .comp-title { flex: 1; color: var(--tmc-ink); }
+  .uid { color: var(--tmc-ink-3); font-size: .78rem; font-family: var(--tmc-font-mono); flex: none; }
+  /* substrate distinction: Claude-specific vs transferable (agnostic). */
+  .tag {
+    flex: none; font-size: .68rem; font-weight: 600; letter-spacing: .02em;
+    padding: .12em .6em; border-radius: var(--tmc-r-pill);
+  }
+  .tag.claude { background: var(--tmc-pine-tint); color: var(--tmc-pine-strong); }
+  .tag.agnostic { background: var(--tmc-surface-2); color: var(--tmc-ink-2); }
+  .comp-note { font-size: .8rem; color: var(--tmc-ink-3); text-align: center; margin: var(--tmc-space-3) 0 0; }
+
+  .date { margin-top: var(--tmc-space-5); color: var(--tmc-ink-3); font-size: .95rem; }
+  .seal { width: 104px; height: 104px; margin: 1.5rem auto 0; display: block; }
+  /* honour-system note — explicitly NOT a server-verified claim. */
+  .attest { max-width: 520px; margin: var(--tmc-space-5) auto 0; font-size: .8rem; color: var(--tmc-ink-3); line-height: 1.5; }
+
+  /* honest empty/guard state — shown rather than fabricating a certificate. */
+  .guard { max-width: 460px; margin: 0 auto; color: var(--tmc-ink-2); }
+  .guard .eyebrow { color: var(--tmc-doing); }
+  .hidden { display: none; }
 
   @media print {
     body { background: #fff; padding: 0; }
@@ -75,35 +142,171 @@
   }
   @media (max-width: 560px) {
     .cert { padding: 2.5rem 1.5rem; } h1 { font-size: 1.8rem; } .name { font-size: 2rem; }
+    ul.comp li { flex-wrap: wrap; }
   }
 </style>
 </head>
-<body>
+<body class="tmc">
   <div class="cert">
     <div class="brand">
-      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--pine)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-pine)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
         <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
       </svg>
       <div class="wordmark">Teach Me <b>Claude</b></div>
     </div>
 
-    <h1>Certificate of Completion</h1>
-    <div class="series">__SERIES__</div>
+    <!-- The certificate proper. Hidden until the JS confirms real COMPLETE state with
+         at least one confirmed competency — so we never render a fabricated/empty cert. -->
+    <div id="cert-body" class="hidden">
+      <div class="eyebrow">Certificate of Completion</div>
+      <h1>Certificate of Completion</h1>
+      <!-- series label filled from real state (data-tmc-bind); JS hides it if absent. -->
+      <div class="series" id="series-line">Series <span data-tmc-bind="series">—</span></div>
 
-    <p class="lead">This certifies that</p>
-    <div class="name">__NAME__</div>
-    <div class="rule"></div>
-    <p class="body">completed all ten challenges of this series — graduating with a
-       working personal toolkit and, as a capstone,
-       <span class="capstone">__CAPSTONE__</span>.</p>
+      <p class="lead">This certifies that</p>
+      <!-- the learner name renders HERE, in the body, from real state — and is
+           deliberately NOT carried in the claim-link URL (see claim-link.mjs / S3). -->
+      <div class="name" id="name-line" data-tmc-bind="learner_name">—</div>
+      <div class="rule"></div>
 
-    <div class="date">__DATE__</div>
+      <!-- COUNT-AGNOSTIC body copy: no "all ten challenges". The proof is the confirmed
+           competency roll below, whatever its size. -->
+      <p class="body">has completed this series of Teach Me Claude — building a working
+         personal toolkit and confirming the competencies below.</p>
 
-    <svg class="seal" viewBox="0 0 120 120" role="img" aria-label="Earned">
-      <circle cx="60" cy="60" r="56" fill="none" stroke="var(--pine)" stroke-width="1.5" stroke-dasharray="2.5 4"/>
-      <circle cx="60" cy="60" r="47" fill="none" stroke="var(--pine)" stroke-width="1"/>
-      <path d="M43 61 l11 12 l23 -25" fill="none" stroke="var(--pine)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+      <div class="competencies">
+        <h2>Competencies confirmed</h2>
+        <ul class="comp" id="comp"></ul>
+        <p class="comp-note" id="comp-note"></p>
+      </div>
+
+      <div class="date" id="date-line">Completed <span data-tmc-bind="completed">—</span></div>
+
+      <svg class="seal" viewBox="0 0 120 120" role="img" aria-label="Earned">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="var(--tmc-pine)" stroke-width="1.5" stroke-dasharray="2.5 4"/>
+        <circle cx="60" cy="60" r="47" fill="none" stroke="var(--tmc-pine)" stroke-width="1"/>
+        <path d="M43 61 l11 12 l23 -25" fill="none" stroke="var(--tmc-pine)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
+      <!-- Honour-system attestation — explicitly NOT a claim of server-side
+           verification (trust posture deferred to the website work item). -->
+      <p class="attest">This is your personal record of what you confirmed in Teach Me
+         Claude. It reflects your local progress — an honest account of the competencies
+         you demonstrated, not a server-verified credential. A verifiable, shareable
+         version is issued when you claim it online.</p>
+    </div>
+
+    <!-- Guard state — shown when there is NO real COMPLETE state to certify. We refuse
+         to fabricate a certificate from absent/partial data (FM-FABRICATED-STATE /
+         FM-CERT-EARLY). -->
+    <div id="cert-guard" class="guard hidden">
+      <div class="eyebrow">Not yet</div>
+      <h1>No certificate to show yet</h1>
+      <p class="body">A certificate appears once every taught outcome of a series is
+         confirmed. Keep going — this page will fill itself in from your real progress
+         when you complete the series.</p>
+    </div>
   </div>
+
+  <!-- tmc-state — the runtime replaces this `null` body with the JSON of
+       {profile, preferences, progress} (the SAME real state the manifest fills from).
+       This widget's JS reads progress.outcomes and renders only the confirmed ones.
+       Nothing is fabricated; if this is null/absent we show the guard state. -->
+  <script id="tmc-state" type="application/json">null</script>
+
+  <script>
+    // Read the injected real state. If absent (e.g. opened un-filled), show the guard
+    // rather than fabricating a certificate.
+    let STATE = null;
+    try {
+      const raw = document.getElementById("tmc-state").textContent.trim();
+      STATE = JSON.parse(raw);
+    } catch (_) { STATE = null; }
+
+    const progress = (STATE && STATE.progress) || null;
+    const outcomes = (progress && progress.outcomes) || {};
+
+    // A friendly label per outcome. The shipped runtime does NOT carry the outcomes
+    // matrix (curriculum/outcomes.md is a design file that does not ship), so we label
+    // from the outcome entry's OWN fields (a title/label if the runtime wrote one, else
+    // the uid) — never from a hardcoded series list, never fabricated.
+    function labelFor(uid, entry) {
+      return (entry && (entry.title || entry.label)) || uid;
+    }
+
+    // Extract the CONFIRMED outcomes (real-state-only), sorted by uid for a stable
+    // order. substrate: explicit "claude" stays; absence === agnostic (the documented
+    // default), NOT invented as claude.
+    const confirmed = Object.entries(outcomes)
+      .filter(([, e]) => e && e.status === "confirmed")
+      .map(([uid, e]) => ({
+        uid,
+        entry: e,
+        substrate: e && e.substrate === "claude" ? "claude" : "agnostic",
+      }))
+      .sort((a, b) => (a.uid < b.uid ? -1 : a.uid > b.uid ? 1 : 0));
+
+    // The certificate is shown ONLY on a real COMPLETE state: there must be at least
+    // one confirmed competency to certify. (The runtime gates rendering on COMPLETE;
+    // this is the widget's own real-state-only floor so it never shows an empty cert.)
+    const body = document.getElementById("cert-body");
+    const guard = document.getElementById("cert-guard");
+    // A certificate needs a real learner NAME (the identity field) AND at least one
+    // confirmed competency. Without a real name we show the guard — never a cert bearing
+    // a placeholder. The name is the one field whose absence must VOID the cert, not just
+    // drop a line (real-state-only; FM-FABRICATED-STATE). In the normal pipeline
+    // widget-fill throws on an absent profile.name before render; this is the widget's
+    // own defense-in-depth floor for any path that injects state but skips the fill.
+    const learnerName =
+      STATE && STATE.profile && typeof STATE.profile.name === "string"
+        ? STATE.profile.name.trim()
+        : "";
+    if (!progress || confirmed.length === 0 || learnerName === "") {
+      guard.classList.remove("hidden");
+    } else {
+      body.classList.remove("hidden");
+
+      // Hide header lines whose real value is absent rather than printing a blank/dash.
+      // (The widget-fill parser fills data-tmc-bind sites; when a source path is absent
+      // it throws at fill time — but when the cert is rendered with partial state we
+      // also defensively hide the unfilled line here.)
+      const seriesVal = progress.current && progress.current.series;
+      if (seriesVal === undefined || seriesVal === null || seriesVal === "") {
+        document.getElementById("series-line").classList.add("hidden");
+      }
+      const completedVal = (STATE.profile && STATE.profile.completed);
+      if (!completedVal) {
+        document.getElementById("date-line").classList.add("hidden");
+      }
+
+      // Render the confirmed-competency roll — count-agnostic, real-state-only.
+      const SUB_LABEL = { claude: "Claude", agnostic: "Transferable" };
+      const list = document.getElementById("comp");
+      confirmed.forEach(({ uid, entry, substrate }) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+          '<span class="check">✓</span>' +
+          '<span class="comp-title"></span>' +
+          '<span class="uid"></span>' +
+          '<span class="tag ' + substrate + '"></span>';
+        li.querySelector(".comp-title").textContent = labelFor(uid, entry);
+        li.querySelector(".uid").textContent = uid;
+        li.querySelector(".tag").textContent = SUB_LABEL[substrate];
+        list.appendChild(li);
+      });
+
+      // Count-agnostic summary line — derived from the REAL number of confirmed
+      // outcomes, distinguishing the Claude-specific from the transferable ones.
+      const n = confirmed.length;
+      const claudeN = confirmed.filter((c) => c.substrate === "claude").length;
+      const agnosticN = n - claudeN;
+      const parts = [];
+      if (agnosticN) parts.push(agnosticN + " transferable");
+      if (claudeN) parts.push(claudeN + " Claude-specific");
+      document.getElementById("comp-note").textContent =
+        n + " competenc" + (n === 1 ? "y" : "ies") + " confirmed" +
+        (parts.length ? " (" + parts.join(", ") + ")" : "") + ".";
+    }
+  </script>
 </body>
 </html>

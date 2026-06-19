@@ -1,27 +1,23 @@
 {
-  "version": 2,
+  "version": 3,
   "plugin": "teach-me-claude",
   "learner": {
     "name": "",
     "profession": "",
     "goals": [],
-    "comfort_level": "",
     "started": "",
     "workflow_profile": []
   },
   "current": {
     "series": 1,
-    "challenge": 1
+    "runsheet": null,
+    "status": null,
+    "nonce": null,
+    "widget_id": null
   },
+  "outcomes": {},
   "challenges": {},
-  "kit": {
-    "grill_me_skill": "",
-    "brief_template": "",
-    "verification_checklist": "",
-    "delegation_map": "",
-    "claude_md": "",
-    "first_machine": ""
-  },
+  "kit": {},
   "capstone_briefs": [],
   "reflections": []
 }
