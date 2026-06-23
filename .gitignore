@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Caches / build output
+.cache/
+dist/
+
+# Learner state — never commit
+.teach-me/
+
+# Local / OS
+*.local
+.DS_Store

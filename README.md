@@ -58,7 +58,7 @@ Each challenge file (`challenges/series-01/`) carries: **Lesson**,
 where relevant, a domain **Vehicle** previewing the paid packs. The
 companion teaches from these — it never pastes them.
 
-## Install (for trial users)
+## Install
 
 From a clone of this repo:
 
@@ -67,28 +67,11 @@ claude --plugin-dir /path/to/teach-me-claude
 ```
 
 or add the plugin through your Cowork plugin settings pointing at this
-directory / its future marketplace entry. Then say **"I want to learn
+directory / its marketplace entry. Then say **"I want to learn
 Claude"** or run `/teach-me-claude:teach-me`.
 
 Requirements: a Claude paid plan (Cowork or Claude Code). No technical
 background needed — that's the point.
-
-## Trial protocol (v0.2)
-
-What we want to learn from trial users:
-
-1. Does onboarding land — do they reach a first win inside one session?
-2. Do the time budgets hold (especially the 5–10 minute opener)?
-3. Does Challenge 4 deliver — does the grill-me skill get built, fire,
-   and get *used* in later challenges?
-4. Where do learners stall (challenge number, refine loops, drop-off)?
-5. Does rubric grading feel fair and motivating?
-6. Does the kit + roadmap framing generate pack interest (ask at exit)?
-
-Ask trial users to share their `.teach-me/progress.json` and impressions
-after a week. Known v0.2 caveats — notably: verify plugin CLAUDE.md
-auto-load and workspace-skill installation mechanics on the tester's
-Cowork build; the skills are self-sufficient regardless.
 
 ## Repository layout
 
@@ -106,7 +89,10 @@ teach-me-claude/
 └── README.md                    this file
 ```
 
-This plugin tree is a **generated artifact** — projected from the
-`teach-me-claude-plugin-dev` source repository by its `tmc-build` tooling
-(`bun run build`) and never hand-edited. Design, methodology, and
-curriculum sources live in the dev repo, not here.
+This plugin tree is a **generated artifact** — projected from a private
+source repository by its build tooling and never hand-edited. Design,
+methodology, and curriculum sources are maintained privately.
+
+## License
+
+[MIT](LICENSE) © 2026 Henry Kernot.
