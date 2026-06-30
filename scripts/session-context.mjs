@@ -38,13 +38,16 @@
 // entry prints `result.output`.
 //
 // Dependency-free ESM; node: built-ins only. Imports the already-built runtime
-// helpers pathway() and migrateFile().
+// helpers pathway() and migrateFile(), and parseFrontmatter() (the runtime runsheet
+// frontmatter parser) for loading the shipped runsheets.
 
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { pathway, COMPLETE, inFlightResume, CONFIRMED, PROVISIONAL } from "./pathway.mjs";
 import { migrateFile, CURRENT_VERSION, PLUGIN as PLUGIN_SENTINEL } from "./migrate-progress.mjs";
+import { parseFrontmatter } from "./frontmatter.mjs";
 
 // ---------------------------------------------------------------------------
 // Constants — the concrete workspace marker (canon "Data model" + the guard).
@@ -252,28 +255,114 @@ export function cappedSummary(progress) {
 }
 
 // ---------------------------------------------------------------------------
-// Runsheet loading — read the in-flight series' runsheets if present (graceful
-// none-yet). NO conformant runsheets exist this sprint; the test supplies fixtures
-// via the `runsheets` override so the pathway-next composition is provable.
+// Runsheet loading — read the in-flight series' runsheets from the SHIPPED plugin
+// (graceful none-yet when the series has none authored).
+//
+// THE ON-DISK LAYOUT DECISION (see curriculum/authoring/runsheet-ondisk-layout.md):
+//   This code runs inside the learner's INSTALLED plugin, so it reads the runsheets
+//   the build ships, NOT the learner's `.teach-me/` workspace (that holds only their
+//   progress.json / preferences.json — never content). The build projection
+//   (build/build.ts PROJECTION + handbook DevOps) maps
+//       curriculum/series/NN-<slug>/challenges/  →  <pluginRoot>/challenges/series-NN/
+//   and the runtime scripts
+//       plugin-src/scripts/                      →  <pluginRoot>/scripts/
+//   so from THIS module's own location (<pluginRoot>/scripts/session-context.mjs)
+//   the plugin root is the parent dir, and the in-flight series' runsheets are at
+//   <pluginRoot>/challenges/series-NN/.
+//
+//   ORDER = the on-disk `NN-slug.md` filename sequence (handbook runsheet contract:
+//   "Series order is a separate axis — the on-disk NN-slug.md filename sequence; the
+//   pathway iterates runsheets in that order"). The runsheet `id` is a STABLE OPAQUE
+//   UID, NOT the position — so we sort by FILENAME (zero-padded NN- prefixes sort
+//   lexically into series order) and never parse order out of the id. The `00-`
+//   overview is not a challenge runsheet and is excluded.
+//
+//   In the DEV tree this module sits at plugin-src/scripts/, whose parent has no
+//   challenges/ dir, so loadRunsheets finds nothing and returns [] — the seam is
+//   exercised in tests via an explicit dir / the `runsheets`/`pluginRoot` overrides.
 // ---------------------------------------------------------------------------
 
+const CHALLENGES_DIR = "challenges";
+const OVERVIEW_PREFIX = "00-"; // the series overview, not a challenge runsheet
+
 /**
- * Best-effort load of ordered runsheet metadata for the in-flight series. This
- * sprint ships NO conformant runsheets, so the default is `[]` — the position
- * summary still shows the outcome standing and pathway() returns COMPLETE or the
- * first unmet by an empty set (handled by the caller). Returns `[]` on any absence
- * or read error; never throws. (The test injects `runsheets` directly rather than
- * relying on a directory, proving the composition independent of an on-disk
- * authoring layout that does not exist yet.)
- *
- * @param {string} _workspaceDir reserved for a future on-disk runsheet layout
- * @returns {Array} ordered runsheet metadata (empty this sprint)
+ * The installed plugin's root, resolved from THIS module's own location: the build
+ * projects plugin-src/scripts/ → <pluginRoot>/scripts/, so the root is the parent
+ * of this script's directory. (Used as the default base; tests pass an explicit
+ * `pluginRoot` instead.) No I/O.
+ * @returns {string}
  */
-export function loadRunsheets(_workspaceDir) {
-  // No conformant runsheets exist this sprint and there is no settled on-disk
-  // location to read them from yet (deliverable B authors them). Returning [] is
-  // the graceful none-yet path; the test drives the populated case via override.
-  return [];
+export function installedPluginRoot() {
+  return path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+}
+
+/**
+ * The shipped runsheet directory for an in-flight series number. The build emits
+ * `challenges/series-NN` (zero-padded ≥2), so e.g. series 1 → `challenges/series-01`.
+ * A non-positive / non-integer series falls back to 1 (the only series shipped today).
+ * Pure; no I/O.
+ * @param {string} pluginRoot the installed plugin root
+ * @param {number} series     the in-flight series number (progress.current.series)
+ * @returns {string} absolute path to the series' runsheet directory
+ */
+export function inFlightSeriesDir(pluginRoot, series) {
+  const n = Number.isInteger(series) && series > 0 ? series : 1;
+  return path.join(pluginRoot, CHALLENGES_DIR, `series-${String(n).padStart(2, "0")}`);
+}
+
+/**
+ * Load the ordered runsheet metadata for one series from its shipped directory.
+ *
+ * Scans `<seriesDir>/*.md` in FILENAME order (= series order; see the layout
+ * decision above), skips the `00-` overview, parses each one's YAML frontmatter
+ * with the runtime parser, and returns the ordered array pathway() consumes. Each
+ * element is the runsheet's full parsed frontmatter — so `id`, `compulsory`,
+ * `compulsory_reason`, and `covers_outcomes` (with its per-outcome `floor_confirmable`
+ * booleans) are ALL forwarded, never a hand-picked subset. (CONTRACT — wi-compulsory:
+ * pathway() reads `runsheet.compulsory`; silently dropping it would make a
+ * `compulsory: true` challenge skippable in production. Forwarding the whole
+ * frontmatter means no field a consumer needs is lost.)
+ *
+ * GRACEFUL by construction — NEVER throws (it runs in the SessionStart hook):
+ *   - the directory is absent / unreadable → `[]` (the none-yet path: a series with
+ *     no authored runsheets yet, or the dev tree where there is no challenges/ dir);
+ *   - an individual file is unreadable, has no frontmatter fence, or carries no
+ *     string `id` → that file is skipped (it is not a usable runsheet).
+ *
+ * @param {string} seriesDir absolute path to the in-flight series' runsheet dir
+ *        (resolved by composeSessionContext from the plugin root + current.series).
+ * @returns {Array<object>} ordered runsheet metadata; `[]` when none.
+ */
+export function loadRunsheets(seriesDir) {
+  if (typeof seriesDir !== "string" || seriesDir === "") return [];
+
+  let entries;
+  try {
+    entries = fs.readdirSync(seriesDir);
+  } catch {
+    return []; // dir absent / unreadable → graceful none-yet
+  }
+
+  const files = entries
+    .filter((name) => name.endsWith(".md") && !name.startsWith(OVERVIEW_PREFIX))
+    .sort(); // filename order == series order (zero-padded NN- prefixes)
+
+  const sheets = [];
+  for (const name of files) {
+    let raw;
+    try {
+      raw = fs.readFileSync(path.join(seriesDir, name), "utf8");
+    } catch {
+      continue; // unreadable file → skip, never throw
+    }
+    const fm = parseFrontmatter(raw);
+    // A usable runsheet has a string `id` (pathway() returns it as `next`). A file
+    // with no fence / no id (e.g. a stray note, or a not-yet-authored stub) is not a
+    // runsheet — skip it rather than feed pathway() an id-less entry.
+    if (!fm || typeof fm.id !== "string" || fm.id === "") continue;
+    sheets.push(fm);
+  }
+  return sheets;
 }
 
 // ---------------------------------------------------------------------------
@@ -299,7 +388,7 @@ export function renderProceed({ summary, next, migrated = false }) {
   const lines = [];
   lines.push(OPEN);
   lines.push(
-    "This folder is the user's Teach Me Claude workspace. You are their learning companion.",
+    "This folder is the user's Teach Me Claude workspace. You are their learning guide.",
   );
   lines.push(`Greet ${summary.name ? summary.name : "the learner"} warmly by name and continue from where they left off.`);
   lines.push("");
@@ -355,7 +444,7 @@ export function renderProceed({ summary, next, migrated = false }) {
   }
 
   lines.push("");
-  lines.push("Follow the companion contract in the teach-me-claude plugin CLAUDE.md.");
+  lines.push("Follow the learning-guide contract at `learning-guide/CLAUDE.md`.");
   lines.push("The /teach-me-claude:teach-me skill resumes the journey.");
   lines.push(CLOSE);
   return lines.join("\n");
@@ -445,16 +534,21 @@ export function renderAsk(progressPath) {
  *
  * @param {object} args
  * @param {string} args.cwd  the session working directory
- * @param {Array}  [args.runsheets]  ordered runsheet metadata override (the test
- *        supplies fixtures; production loads via loadRunsheets()). When omitted,
- *        loadRunsheets() is used (→ [] this sprint).
+ * @param {Array}  [args.runsheets]  ordered runsheet metadata override — when an
+ *        array is given it is used verbatim (the test injects fixtures directly).
+ *        When omitted, production loads the in-flight series' runsheets from the
+ *        shipped plugin via loadRunsheets() (→ [] when the series has none authored).
+ * @param {string} [args.pluginRoot]  installed-plugin-root override for resolving
+ *        the shipped runsheet dir; defaults to installedPluginRoot() (this module's
+ *        own location). The test points it at a fixture plugin tree to exercise the
+ *        loadRunsheets→pathway seam end-to-end. Ignored when `runsheets` is given.
  * @returns {{ action:string, reason?:string, migrated?:boolean, output:string, progressPath:string }}
  */
-export function composeSessionContext({ cwd, runsheets } = {}) {
+export function composeSessionContext({ cwd, runsheets, pluginRoot } = {}) {
   if (typeof cwd !== "string" || cwd === "") {
     throw new TypeError("composeSessionContext: cwd must be a non-empty string");
   }
-  const { workspaceDir, progressPath, preferencesPath } = resolveWorkspacePath(cwd);
+  const { progressPath, preferencesPath } = resolveWorkspacePath(cwd);
 
   // 2 + 3 — single read, then classify (guard runs first inside classify).
   const readResult = readState(progressPath);
@@ -493,7 +587,15 @@ export function composeSessionContext({ cwd, runsheets } = {}) {
 
   // Capped position summary + the deterministic next step.
   const summary = cappedSummary(progress);
-  const sheets = Array.isArray(runsheets) ? runsheets : loadRunsheets(workspaceDir);
+  // Runsheets: the explicit override wins (tests inject fixtures); otherwise load
+  // the in-flight series' runsheets from the SHIPPED plugin (NOT workspaceDir — the
+  // learner's workspace holds only progress, never content). The series dir is
+  // resolved from the plugin root + progress.current.series; see loadRunsheets.
+  const base =
+    typeof pluginRoot === "string" && pluginRoot !== "" ? pluginRoot : installedPluginRoot();
+  const sheets = Array.isArray(runsheets)
+    ? runsheets
+    : loadRunsheets(inFlightSeriesDir(base, progress.current && progress.current.series));
   // pathway() over an EMPTY runsheet set is vacuously COMPLETE — but "no content yet"
   // is NOT "every taught outcome confirmed". Only ask pathway when content exists; with
   // no runsheets, do NOT claim completion against unmet outcomes.

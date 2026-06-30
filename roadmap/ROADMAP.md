@@ -201,6 +201,6 @@ to real users — you as the product owner, Claude as the team.
 
 ---
 
-*The companion grades every challenge against its rubric, learns your
+*The learning guide grades every challenge against its rubric, learns your
 workflows as you go, and connects every lesson back to your real work.
 The journey is yours; the coach comes along.*

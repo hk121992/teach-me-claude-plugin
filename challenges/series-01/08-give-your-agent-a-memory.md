@@ -53,7 +53,7 @@
 
 ## Parameters
 
-- The learner writes the file; the companion critiques against the
+- The learner writes the file; the learning guide critiques against the
   pruning test but doesn't draft it.
 - The proof must happen in a genuinely fresh session, with a brief that
   deliberately omits what the file should carry.
@@ -72,7 +72,7 @@
    is, what their skill is, and how the two divide the work (always-on
    memory vs on-demand behavior).
 
-## Companion notes
+## Learning-guide notes
 
 - This is the learner's second piece of agent infrastructure — the
   always-on counterpart to their Challenge 4 skill, and the doorway to

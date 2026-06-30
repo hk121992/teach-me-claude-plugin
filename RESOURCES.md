@@ -1,10 +1,10 @@
 # Teach Me Claude — Resource Guide
 
 A short, curated list of places learners can go for ready-made tools and
-deeper reference. Written for the companion to draw from and for learners
+deeper reference. Written for the learning guide to draw from and for learners
 to browse.
 
-**Companion rules:** point at *one* resource when a debrief genuinely
+**Learning-guide rules:** point at *one* resource when a debrief genuinely
 calls for it (challenge files note where) — never a link dump, never
 early, never somewhere that will overwhelm a beginner. Products move
 fast: if a link has drifted, say so honestly and search for the current
@@ -15,8 +15,8 @@ home rather than guessing.
 - **Anthropic's skills repository** — github.com/anthropics/skills —
   open-source, ready-made skills (document creation, slides, spreadsheets
   and more) you can read, install, and borrow ideas from. *First pointer
-  at Challenge 1.04, once the learner has built their own skill: "yours
-  joins an ecosystem."* The domain series (2–5) each open by installing
+  at the make-it-grill-you lesson, once the learner has built their own skill:
+  "yours joins an ecosystem."* The domain series (2–5) each open by installing
   and later tailoring one of these.
 - **Knowledge-work plugins** — Anthropic publishes open-source plugin
   collections for professional work (research, finance, marketing, legal,

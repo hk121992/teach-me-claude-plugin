@@ -68,7 +68,7 @@
 5. In conversation, the learner can say when they'd start a fresh session
    rather than keep correcting.
 
-## Companion notes
+## Learning-guide notes
 
 - This challenge is also quiet retrieval practice: a good chain uses the
   brief template (3), the grill-me skill (4), verification at checkpoints

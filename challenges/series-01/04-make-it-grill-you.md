@@ -16,7 +16,7 @@
 #               body … encodes …; a proof run surfaced …"  → a real built FILE → artifact
 #   01-DSCN-04  checks → "across two fresh-session demos … names the difference in
 #               register … explain *why* … warn a colleague"  → a DIALOGUE → conversational
-id: "1.04"
+id: "01-L-YNFB"
 slug: make-it-grill-you
 concept: "sycophancy, and the guardrail that beats prompting — a skill that interrogates you"
 time: { min: 15, max: 20 }
@@ -35,10 +35,12 @@ widgets:
 
 ## Demo — failure-first (runs before the lesson)
 
+runs in: fresh
+
 Before the lesson, meet the failure it fixes. Pick a deliberately half-baked idea from
 your own world — a plausible-but-flawed plan whose holes you can see ("move the whole
 team to daily two-hour status meetings"). In a **fresh session** — not here with your
-companion — pitch it twice, a new session each time:
+learning guide — pitch it twice, a new session each time:
 
 1. "Here's my idea: […]. What do you think?"
 2. New session: "Here's my idea: […]. Be my fiercest critic — argue against it, find
@@ -54,7 +56,7 @@ the lesson open.
   orders for an interrogator that, when you hand over a meaty ask, **interviews you one
   question at a time** until it could write the brief itself, **challenges a weak
   premise** instead of cheerleading, and **shows you the assembled brief for sign-off
-  before doing anything**. The body is in your own words; the companion does only the
+  before doing anything**. The body is in your own words; the learning guide does only the
   file mechanics and the trigger description.
 - **Stretch:** point the installed skill at a real ask you have this week, starting from
   a deliberately thin, lazy prompt, and note what the interrogation surfaced that your
@@ -64,7 +66,7 @@ the lesson open.
 
 - The pitched idea must be genuinely half-baked — you should be able to name its flaws
   yourself afterwards.
-- The skill body is your writing; the companion handles file mechanics and the
+- The skill body is your writing; the learning guide handles file mechanics and the
   trigger-description only.
 - The proof run happens in a fresh session, on a real task, from a minimal ask.
 
@@ -82,7 +84,7 @@ the frontmatter).
   happens (the trained lean toward agreement; framing assigns the role), and could warn
   a colleague.
 
-## Companion notes
+## Learning-guide notes
 
 - This is the learner's first piece of *infrastructure* — let it land like one: most
   people learn to write better prompts; the learner just taught the agent to fix their

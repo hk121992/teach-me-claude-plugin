@@ -61,7 +61,7 @@ Deliver this lesson AFTER step 1 of the task — the failure comes first.
    make sense to them in a month.
 4. In conversation, the learner can name what each of the four loads does.
 
-## Companion notes
+## Learning-guide notes
 
 - Resist improving the lazy brief — execute it with statistically average
   blandness. The gap between the two outputs IS the lesson; the wider it

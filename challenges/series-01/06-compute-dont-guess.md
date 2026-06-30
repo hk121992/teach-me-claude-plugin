@@ -83,7 +83,7 @@ Deliver after the demo in task step 1.
 4. At least one hybrid task is genuinely decomposed into its AI part and
    its deterministic part, and 1–2 capstone candidates are marked.
 
-## Companion notes
+## Learning-guide notes
 
 - This is the keystone judgment challenge — the map gets used in the
   capstone and for the rest of the journey. Invest in its quality.

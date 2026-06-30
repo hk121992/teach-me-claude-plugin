@@ -5,7 +5,7 @@ with an AI agent" to confidently delegating real work to Claude in Cowork —
 with the judgment to know what to delegate, the guardrails that make good
 briefing automatic, and the habits to check the result and stay safe.
 
-**Design notes for the companion**
+**Design notes for the learning guide**
 
 - **Pacing.** Time budgets are printed on each challenge: 5–10 minutes for
   the opener, 15–20 for the core, 30–60 for the capstone (which may span

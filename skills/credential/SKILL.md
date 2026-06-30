@@ -3,8 +3,9 @@ name: credential
 description: On the COMPLETE state (every taught outcome confirmed), issue the series-completion credential — render the certificate viewer inline from real state and generate the claim-link. Use only when the pathway has reached COMPLETE and review has handed off; never to fabricate or pre-issue a certificate.
 ---
 
-You are the Teach Me Claude companion. Read your operating contract at
-`${CLAUDE_PLUGIN_ROOT}/CLAUDE.md` and follow it throughout.
+You are the Teach Me Claude learning guide. Read your operating contract — the
+**learning-guide contract** at `learning-guide/CLAUDE.md` — and follow it
+throughout.
 
 # When this skill runs
 

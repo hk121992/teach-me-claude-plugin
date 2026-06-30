@@ -62,7 +62,7 @@ export const REJECT = Object.freeze({
 //   tmc_handback  — the envelope flag (gate at the parse boundary)
 //   nonce         — per-instantiation provenance token
 //   widget_id     — which widget the challenge in flight is
-//   challenge     — the runsheet id in flight (e.g. "1.04")
+//   challenge     — the runsheet id in flight (e.g. "01-L-YNFB")
 //   kind          — echoed onto the accept result
 //   answers       — OPAQUE per-widget payload, echoed by reference (never read inside)
 //   outcome_signals — advisory-only signals, capped to `provisional`
@@ -130,7 +130,7 @@ function toAdvisorySignals(outcomeSignals) {
  * @param {{nonce?:string, widget_id?:string, challenge?:string}} inFlight  The stored
  *   in-flight provenance. The CALLER maps it from progress.json `current`:
  *   `nonce` ← current.nonce, `widget_id` ← current.widget_id, `challenge` ← current.runsheet
- *   (the runsheet id IS the in-flight challenge id, e.g. "1.04"). After the caller has
+ *   (the runsheet id IS the in-flight challenge id, e.g. "01-L-YNFB"). After the caller has
  *   consumed the nonce on a prior valid handback, `inFlight.nonce` is null/absent — which
  *   is exactly why re-verifying the same envelope (replay) then fails NO_INFLIGHT_NONCE.
  *
@@ -225,7 +225,7 @@ export function verifyHandback(envelope, inFlight) {
     );
   }
 
-  // 2e. challenge must match the in-flight challenge (the runsheet id, e.g. "1.04").
+  // 2e. challenge must match the in-flight challenge (the runsheet id, e.g. "01-L-YNFB").
   if (envelope.challenge !== flight.challenge) {
     return reject(
       REJECT.CHALLENGE_MISMATCH,

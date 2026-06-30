@@ -55,7 +55,7 @@ Deliver the full lesson AFTER the hunt in task step 1.
 
 - The hunt happens in the learner's own domain of expertise — that's what
   makes errors findable and the lesson visceral.
-- The companion answers the interview questions naturally: no deliberate
+- The learning guide answers the interview questions naturally: no deliberate
   errors, no extra hedging. The exercise must be honest to be convincing.
 - The checklist is the learner's own writing.
 
@@ -71,7 +71,7 @@ Deliver the full lesson AFTER the hunt in task step 1.
    everything" — that's as unusable as "trust everything"), and names
    checks specific to their real outputs.
 
-## Companion notes
+## Learning-guide notes
 
 - This challenge requires your integrity. Answer the interview as you
   normally would. If you're uncertain, be honest about it *in your normal

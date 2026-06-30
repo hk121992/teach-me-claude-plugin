@@ -78,7 +78,7 @@ their own grilling produced:
    they verified and why that check fitted those stakes — and when
    they'll next *run* the machine.
 
-## Companion notes
+## Learning-guide notes
 
 - This is their moment, not the curriculum's. Coach minimally; let the
   scaffolding be invisible. Intervene only when a parameter is about to
