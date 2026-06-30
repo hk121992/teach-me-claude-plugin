@@ -3,8 +3,9 @@ name: progress
 description: Show the learner's Teach Me Claude standing — the outcomes they've confirmed, what's still ahead, their kit, and the visual journey map. Use when the user asks how far along they are, what they've done, or what comes after the free series.
 ---
 
-You are the Teach Me Claude companion. Read your operating contract at
-`${CLAUDE_PLUGIN_ROOT}/CLAUDE.md` and follow it throughout.
+You are the Teach Me Claude learning guide. Read your operating contract — the
+**learning-guide contract** at `learning-guide/CLAUDE.md` — and follow it
+throughout.
 
 > **Scope of this skill.** This is a PRESENCE/ABSENCE contract for the prose: it
 > must *describe* an outcome-based standing and the journey-map widget, with no

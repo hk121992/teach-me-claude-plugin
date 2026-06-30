@@ -1,7 +1,7 @@
 # Teach Me Claude
 
 A Cowork / Claude Code plugin that teaches you to work with Claude by
-*doing* — a learning companion that delivers practical challenges, coaches
+*doing* — a learning guide that delivers practical challenges, coaches
 you through them, grades the results against explicit rubrics, learns your
 workflows as you go, and tracks your journey.
 
@@ -20,9 +20,9 @@ workflows as you go, and tracks your journey.
 
 ## How it works
 
-The plugin is the learner's companion:
+The plugin is the learner's learning guide:
 
-- **`CLAUDE.md`** — the companion's operating contract: coach, never
+- **`CLAUDE.md`** — the learning guide's operating contract: coach, never
   doer; no yes-machine — Socratic, honest, kind in that order; adapt to
   the learner's profession; grade honestly; track progress truthfully.
 - **Skills** (invoked as `/teach-me-claude:<name>`, or triggered
@@ -37,14 +37,14 @@ The plugin is the learner's companion:
     (reflection, workflow profile, domain preview); record progress
   - `progress` — the journey map (text or HTML widget), the kit so far,
     and the full-curriculum roadmap
-- **Widgets** (`widgets/`) — HTML templates the companion instantiates
+- **Widgets** (`widgets/`) — HTML templates the learning guide instantiates
   from real progress data: a journey map and a series graduation
   certificate.
 - **Resource guide** (`RESOURCES.md`) — curated external pointers
   (Anthropic's skills repo, knowledge-work plugins, official docs),
   surfaced one at a time where a debrief calls for it.
 - **SessionStart hook** — when a session opens inside a learning
-  workspace, the companion greets the learner by name with where they
+  workspace, the learning guide greets the learner by name with where they
   left off.
 - **State** — `.teach-me/progress.json` in the learner's own workspace
   folder (plain JSON, learner-owned, survives plugin updates; nothing
@@ -53,10 +53,10 @@ The plugin is the learner's companion:
   reflections.
 
 Each challenge file (`challenges/series-01/`) carries: **Lesson**,
-**Task**, **Parameters**, **Rubric**, and **Companion notes** — plus a
+**Task**, **Parameters**, **Rubric**, and **Learning-guide notes** — plus a
 **Time** budget (5–10 min openers, 15–20 core, longer capstones) and,
 where relevant, a domain **Vehicle** previewing the paid packs. The
-companion teaches from these — it never pastes them.
+learning guide teaches from these — it never pastes them.
 
 ## Install
 
@@ -78,7 +78,7 @@ background needed — that's the point.
 ```
 teach-me-claude/
 ├── .claude-plugin/plugin.json   plugin manifest
-├── CLAUDE.md                    companion operating contract
+├── CLAUDE.md                    learning-guide operating contract
 ├── skills/                      learn / challenge / review / progress
 ├── challenges/series-01/        the free Foundations series (10 + overview)
 ├── roadmap/ROADMAP.md           user-facing 100-challenge map + pricing

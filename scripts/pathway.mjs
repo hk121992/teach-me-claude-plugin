@@ -64,9 +64,15 @@ function isCapstone(runsheet) {
 }
 
 // A covered outcome is "done" for skip purposes when it is confirmed OR provisional
-// (provisional = forward credit; the learner has effectively shown it).
-function coveredOutcomeIsDoneForSkip(status) {
-  return status === CONFIRMED || status === PROVISIONAL;
+// (provisional = forward credit; the learner has effectively shown it). A COMPULSORY
+// runsheet tightens this to CONFIRMED-ONLY: forward-credit cannot bypass it, so a
+// covered `provisional` keeps the runsheet returned and it runs IN PLACE.
+// (CANON: the "Compulsory challenges" rule in 05-session-mechanics — it governs
+// order/occurrence, not eventual confirmation, and is a no-op on a capstone.)
+function coveredOutcomeIsDoneForSkip(status, compulsory = false) {
+  if (status === CONFIRMED) return true;
+  if (status === PROVISIONAL) return !compulsory;
+  return false;
 }
 
 /**
@@ -92,7 +98,8 @@ export function inFlightResume(current) {
  * @param {Object}   args
  * @param {Object}   args.outcomes   v3 outcomes map: { "<uid>": { status, ... }, ... }.
  * @param {Array}    args.runsheets  ORDERED (series order) runsheet metadata:
- *                                   [{ id, covers_outcomes: [{ uid, role, floor_confirmable }] }].
+ *                                   [{ id, compulsory?, covers_outcomes: [{ uid, role, floor_confirmable }] }].
+ *                                   `compulsory: true` ⇒ never skipped on forward-credit (runs in place).
  * @param {Object}  [args.current]   in-flight pointer { runsheet, status } from progress.json.
  * @returns {{ next: string } | { complete: true }}  COMPLETE === the exported sentinel.
  */
@@ -113,13 +120,17 @@ export function pathway({ outcomes = {}, runsheets = [], current } = {}) {
   for (const runsheet of runsheets) {
     const covers = runsheet.covers_outcomes || [];
     const capstone = isCapstone(runsheet);
+    // `compulsory: true` ⇒ never skipped on forward-credit. Threaded ONLY into
+    // coveredOutcomeIsDoneForSkip below — NOT into hasUnconfirmed / the capstone branch —
+    // so it is a deliberate no-op on a capstone (already un-skippable while unconfirmed).
+    const compulsory = runsheet.compulsory === true;
 
     let hasUnmet = false;
     let hasUnconfirmed = false; // unmet OR provisional
     for (const c of covers) {
       const status = statusOf(outcomes, c.uid);
       if (status !== CONFIRMED) hasUnconfirmed = true;
-      if (!coveredOutcomeIsDoneForSkip(status)) hasUnmet = true;
+      if (!coveredOutcomeIsDoneForSkip(status, compulsory)) hasUnmet = true;
     }
 
     if (capstone) {
@@ -128,7 +139,8 @@ export function pathway({ outcomes = {}, runsheets = [], current } = {}) {
       // else: every covered outcome confirmed → capstone done → fall through (skip).
     } else {
       // Ordinary runsheet: run on a genuine unmet; skip the all-done (the
-      // skip-the-basics adaptive path).
+      // skip-the-basics adaptive path). For a COMPULSORY runsheet a covered
+      // `provisional` makes hasUnmet true → it is returned (runs in place), not skipped.
       if (hasUnmet) return { next: runsheet.id };
       // else: all covered outcomes confirmed-or-provisional → skip → fall through.
     }

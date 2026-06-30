@@ -49,7 +49,7 @@
 
 - Prefer a real task with the learner's own material; the defined fallback
   is acceptable but say why real is better.
-- The learner fills the template and judges the output; the companion
+- The learner fills the template and judges the output; the learning guide
   executes and coaches but does not pick the task or write the review.
 - At least one revision round — even if the first draft was good, finding
   the improvable thing is the skill being trained.
@@ -63,7 +63,7 @@
    artifact reflects it.
 4. The learner can say whether they'd actually use the result, and why.
 
-## Companion notes
+## Learning-guide notes
 
 - If they struggle to choose, ask about their week: "what's sitting in
   your inbox that involves reading or writing?" Steer toward small —

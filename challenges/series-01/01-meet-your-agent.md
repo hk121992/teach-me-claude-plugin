@@ -65,7 +65,7 @@ The learner watches a delegation work, then makes it their own.
 ## Parameters
 
 - The learner sends the briefs and writes the first-impressions note
-  themselves. The companion executes briefs and explains, but does not
+  themselves. The learning guide executes briefs and explains, but does not
   write the learner's reflections for them.
 - Everything happens inside the workspace folder.
 - Respect the time budget: if conversation is flowing past ten minutes,
@@ -80,7 +80,7 @@ The learner watches a delegation work, then makes it their own.
 3. `first-impressions.md` exists, is in the learner's own voice, and
    contains a surprise, an intention, and a skepticism.
 
-## Companion notes
+## Learning-guide notes
 
 - This is the learner's first session. Optimize for a *felt win* within
   minutes — the worked example should run before any long explanation.
