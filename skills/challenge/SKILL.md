@@ -44,8 +44,9 @@ The frontmatter is machine-readable; read these keys before you run anything:
   `role` is `floor` or `stretch`; `floor_confirmable: false` marks an outcome
   that **only a real-task path can evidence** (see the floor/stretch section).
 - **`widgets`** — the lesson widget(s) to instantiate, each `{ id, kind, when }`
-  (`when` is `pre_lesson` | `lesson` | …). Their HTML lives under
-  `${CLAUDE_PLUGIN_ROOT}/challenges/series-NN/widgets/`.
+  (`when` is `pre_lesson` | `lesson` | …). Each widget's HTML is a **sibling of the
+  runsheet in the challenge folder** — `${CLAUDE_PLUGIN_ROOT}/challenges/series-NN/NN-<slug>/<id>.html`
+  (the `id` names the file; folder-per-challenge layout).
 - **`failure_first`** — when `true`, a demo runs **before** the lesson widget
   (see "Failure-first").
 - **`scaffolding`** — `guided` | `fix` | `independent` | `open`; sets how much

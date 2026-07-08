@@ -33,18 +33,28 @@ Check for `.teach-me/progress.json` in the current working folder.
   elsewhere: ask the user if they've started before. If yes, help them locate or
   switch to that folder rather than creating a duplicate.
 
-# Onboarding a new learner
+# Onboarding a new learner — lesson zero
 
-## 1. Frame the journey (briefly)
+Onboarding IS the first lesson: it orients, it captures just enough profile to
+tailor everything after it, and it flows **directly into lesson 1 in the same
+sitting** — never "setup complete, come back later." Budget the whole of lesson
+zero at well under ten minutes of the learner's attention; the value lands in the
+lessons, so get them there.
 
-Two or three sentences, in your own words: this is a learn-by-doing curriculum;
-each challenge pairs a short opening lesson (delivered as an interactive widget)
-with a practical task — most take 15–20 minutes, the first ones less; the free
-Foundations series gets them a working personal toolkit (their first skill,
-their agent's memory file, a machine they commissioned themselves). Completion
-is **challenge-based** — they finish by working through the challenges, which are
+## 1. Frame the journey (briefly, value first)
+
+Two or three sentences, in your own words, leading with what they GET: **by the
+end of your next sitting the agent will have done a real piece of your work**;
+by the end of the course you'll own a working toolkit (a skill that grills your
+requests, your agent's memory file, a verification checklist calibrated to your
+work) and **a machine you commissioned for a task you're sick of doing by hand**.
+This is a learn-by-doing curriculum — each challenge pairs a short widget lesson
+with a practical task on *their real work*, most 15–30 minutes. Completion is
+**challenge-based** — they finish by working through the challenges, which are
 designed to cover everything the series teaches; don't promise a fixed number and
-don't list it all out.
+don't list it all out. If they clearly already know AI basics, say plainly that
+the course **fast-tracks**: anything they demonstrate along the way gets credited
+and skipped, so it never marches an experienced learner through basics.
 
 ## 2. Set up the workspace
 
@@ -64,6 +74,13 @@ it never reaches the home base). Build **exactly** this tree:
 └── series-01-foundations/       ← a series folder · MINIMAL context · context-clear challenges run here
     └── CLAUDE.md                    written from ${CLAUDE_PLUGIN_ROOT}/templates/series.md
 ```
+
+**Narrate the build as the first demonstration.** This setup is the learner's
+first sight of an agent *acting*: say what you're doing as you do it ("I'm
+creating real folders on your machine right now — when we're done, go look"),
+and when the tree is up, invite them to **find it themselves** in their file
+browser. Orientation starts here, not in lesson 1 — the lesson-1 activity then
+*re-runs this loop with them driving*.
 
 ### 2a. Create the container
 
@@ -162,32 +179,48 @@ Their permanent kit pieces home later as they appear — built-kit `/`-commands 
 the container `.claude/`, plain artefacts as ordinary files; don't pre-make a
 `kit/` folder now.
 
-## 3. Get to know them
+## 3. Get to know them — a few turns, not an interview
 
-A short, friendly conversation — not a form, and Socratic where it helps (a vague
-answer gets a curious follow-up, not a guess). Learn and record in
-`learning-guide/.teach-me/progress.json` (`learner.*`) and
-`learning-guide/.teach-me/preferences.json`:
+A short, friendly conversation — **two or three exchanges, not a form**. Open
+with ONE combined ask in your own words: *"Before we start — what should I call
+you, what do you do all day, and what's the one recurring task you'd most love
+to hand over?"* Then at most a follow-up or two where an answer is vague
+(Socratic, curious — never a re-ask). **Never ask for anything the conversation
+has already given you** — if they said their name, their language, or their job
+in passing, record it silently; re-asking answered questions is the fastest way
+to lose them. Record in `learning-guide/.teach-me/progress.json` (`learner.*`)
+and `learning-guide/.teach-me/preferences.json`:
 
 - **name** — what they'd like to be called (`learner.name`).
-- **profession** — what they do all day (`learner.profession`); ask a follow-up so
-  you can tailor examples ("what does a typical Tuesday look like?").
-- **goals** — what made them want to learn this; what they wish took less time
+- **profession** — what they do all day (`learner.profession`).
+- **goals** — what made them want this; what they wish took less time
   (`learner.goals`).
-- **language** + **ai_maturity** — into `preferences.json` (above).
-- **workflow_profile seeds** — one or two recurring tasks that eat their week
-  (the first `learner.workflow_profile` entries; you grow this picture at every
-  debrief, and it becomes their delegation map later).
+- **language** — from the language they're already writing in (confirm in one
+  word if ambiguous); **ai_maturity** — **infer it** from how they talk about AI
+  rather than quizzing them, into `preferences.json` (above).
+- **workflow_profile seeds** — the recurring tasks that eat their week,
+  **especially the hand-over task from the opening ask** (the first
+  `learner.workflow_profile` entries). These seeds are load-bearing: lesson 2
+  delegates one of them for real, the delegation map sorts them, and the
+  capstone machine is built for one — capture them concretely ("report cards
+  every term", not "admin").
 
-## 4. Launch the first challenge
+## 4. Launch the first challenge — the tight bridge
 
-Bridge straight into the first challenge. **Do not pick it by an integer** — ask
-the deterministic pathway for the next challenge over the freshly-seeded
-`outcomes` map (`${CLAUDE_PLUGIN_ROOT}/scripts/pathway.mjs`; on a brand-new map it
-returns the first challenge in series order), then run it via the `challenge`
-skill flow per the learning-guide contract. The opening challenge is deliberately
-short: the onboarding conversation should flow into it so the first session
-already delivers a felt win.
+**Lesson zero ends by starting lesson 1, now, in this same sitting.** Bridge in
+one breath — *"that's the setup done; your first lesson takes about fifteen
+minutes and ends with the agent touching a real piece of your work — let's do it
+now"* — and go. Never close onboarding on "come back when you're ready": the
+gap between setup and the first felt win is where learners are lost.
+
+**Do not pick the challenge by an integer** — ask the deterministic pathway for
+the next challenge over the freshly-seeded `outcomes` map
+(`${CLAUDE_PLUGIN_ROOT}/scripts/pathway.mjs`; on a brand-new map it returns the
+first challenge in series order), then run it via the `challenge` skill flow per
+the learning-guide contract. The opening challenge is deliberately short, and its
+widget + activity already know the learner's world (the workflow-profile seeds
+you just captured) — the onboarding conversation flows into it so the first
+session delivers a felt win end to end.
 
 Mark the in-flight challenge on `current` (`current.runsheet` + `current.status:
 in_progress`) with today's date — the `outcomes` map, not an integer, records the
@@ -195,11 +228,18 @@ standing.
 
 ## 5. Hand off to the home base
 
-Close onboarding on the handoff that makes `learning-guide/` the learner's
-permanent starting point: tell them, in your own warm words, **"this is your home
-base — always open `learning-guide/` to start."** From here on **every session
-opens in `learning-guide/`** — that is where the full contract, their progress and
-outcomes, and the pathway all live, and where the SessionStart greeting fires (its
-workspace guard resolves the `learning-guide/.teach-me/` bookkeeping there). A
-series folder or a fresh break-out session is reached **from** the home base, never
-opened cold. Leave them knowing the one move: open `learning-guide/`.
+Close (after lesson 1's debrief, or whenever the sitting genuinely ends) on the
+handoff that makes `learning-guide/` the learner's permanent starting point:
+tell them, in your own warm words, **"this is your home base —
+always open `learning-guide/` to start."** From here on
+**every session opens in `learning-guide/`** — that is where the full contract,
+their progress and outcomes, and the pathway all live, and where the
+SessionStart greeting fires (its workspace guard resolves the
+`learning-guide/.teach-me/` bookkeeping there). A series folder or a fresh
+break-out session is reached **from** the home base, never opened cold.
+
+Leave them with the **two moves they own**: open `learning-guide/` to start, and
+say **"continue my course"** (in their own words — teach the intent, not an
+incantation) to summon the next step anytime. Skills load on request, not by
+magic — telling them how to call for help is itself one of the course's day-one
+outcomes, so plant it here and let lesson 1 confirm it.

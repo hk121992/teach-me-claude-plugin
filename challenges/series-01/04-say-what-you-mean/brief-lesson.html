@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--
+  brief-lesson.html — the L4 lesson, a DETERMINISTIC two-slide widget (say what you mean).
+  Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
+  .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
+  pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
+  Failure-first choreography is the guide's: the activity's opening steps stage the fresh-session
+  contrast, and Slide 1's naming of the loads is held back until the learner has named the difference.
+  No JS. The "open in browser" takeaway is a GUIDE behaviour (link dropped below the widget), not a
+  widget affordance — see the runsheet's ## Learning-guide notes. Real Cowork labels per
+  cowork-ui-reference.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — say what you mean</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #bl-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #bl-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="bl-pager" id="bl-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="bl-pager" id="bl-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 4 · the brief</div>
+        <h1 class="tmc-title">Say what you mean</h1>
+        <p class="tmc-muted">Not run the two-brief experiment yet? It's on the next slide — start
+           there. This page lands harder once you've seen it with your own task.</p>
+
+        <div class="tmc-lsec">
+          <h2>Generic out usually means hollow in</h2>
+          <p>Given a vague ask, the model doesn't stall — it fills every gap with its best
+             plausible guess. Sometimes the guess is lucky. It is never dependably <em>yours</em>.</p>
+          <p><strong>Generic output is usually a hollow brief, not a weak model.</strong> A specific
+             brief is right every time; a vague one is right when you're lucky — and you can't tell
+             from the outside which kind of lucky you got.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>The four loads a brief carries</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Context</div><div class="tmc-fbody">what's going on that it can't see?</div></div>
+            <div class="tmc-fstep"><div class="tmc-flabel">Audience</div><div class="tmc-fbody">who reads this, and what do they care about?</div></div>
+            <div class="tmc-fstep"><div class="tmc-flabel">Format</div><div class="tmc-fbody">shape, length, structure, tone</div></div>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">Success criteria</div><div class="tmc-fbody">what must be true to call it right?</div></div>
+          </div>
+          <p>Look back at your good brief from the experiment — you'll find most of these already in
+             it, unlabelled. One of the four you naturally drop. <strong>That one is what your
+             template is for.</strong></p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Brief like a capable newcomer's day one</h2>
+          <p>There are no magic keywords to hunt for. Brief the agent the way you'd brief a smart
+             colleague who joined this morning: everything they'd need to get it right first time —
+             nothing mystical. <strong>More relevant detail beats clever phrasing, every
+             time.</strong></p>
+          <p>Then make it repeatable: a template in your own words, saved in your kit, means next
+             week's brief starts loaded instead of starting blank.</p>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="bl-s2">Run the experiment →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 4 · your activity</div>
+        <h1 class="tmc-title">Brief it twice</h1>
+        <p class="tmc-muted">Your own real writing task, briefed lazy and then loaded — same task,
+           two fresh sessions. Watch what changes, then keep the good version's shape for good.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Pick a real writing task</strong> from this week — an update, a tricky reply,
+             an announcement. Anything in the material that isn't yours to share? Swap in a
+             stand-in first.</li>
+          <li><strong>First send — the lazy ask.</strong> Click <strong>+ New task</strong>
+             (top-left) and don't pick a folder — this experiment needs no files. Send the laziest
+             version you'd really send on a busy day, and don't polish it:
+             <span class="tmc-say">Write an email about …</span></li>
+          <li><strong>Second send — the loaded ask.</strong> <strong>+ New task</strong> again, same
+             task: brief it the way you'd brief a capable newcomer on day one — what's going on,
+             who'll read it, the shape you want, and what has to be true to call it right.</li>
+          <li><strong>Come back and name it.</strong> Your course chat is under
+             <strong>Recents</strong> in the sidebar. Before your guide says anything, name two
+             concrete differences in the text:
+             <span class="tmc-say">The two answers differ in: 1) … 2) … — and the one I'd actually
+             send is …</span></li>
+          <li><strong>Put names on the loads.</strong> With your guide, mark what your good brief
+             carried — context, audience, format, success criteria — in your own words: which was
+             missing from the lazy ask, and which one you tend to drop.</li>
+          <li><strong>Keep the shape.</strong> Distil your reusable template — 4–8 lines, your
+             vocabulary — and save it to your kit:
+             <span class="tmc-say">Save my brief template in my series folder as
+             my-brief-template.md, with my good brief beside it as the worked example.</span></li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">You'll be away from this page for the two sends —
+             your guide will drop a link below to keep these beside you in your browser:</p>
+          <ul class="tmc-check">
+            <li>One real writing task; stand-ins for anything sensitive</li>
+            <li><strong>+ New task</strong> (no folder) → the laziest ask you'd really send</li>
+            <li><strong>+ New task</strong> again → same task, briefed like a capable newcomer's day one</li>
+            <li>Back via <strong>Recents</strong> → name two differences in the text, and which you'd send</li>
+            <li>Name the four loads on your good brief; note the one you tend to drop</li>
+            <li>Distil your template → <code>my-brief-template.md</code> joins your kit</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="bl-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

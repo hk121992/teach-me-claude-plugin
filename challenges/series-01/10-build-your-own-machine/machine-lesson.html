@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!--
+  machine-lesson.html — the L10 CAPSTONE lesson, a DETERMINISTIC two-slide widget (build your own
+  machine). Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css
+  (.tmc-banner, .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-flow/.tmc-steps/.tmc-take/…) — the only
+  per-widget CSS is the pure-CSS pager reveal rules (they key on this widget's radio ids). Slide 1 =
+  the LESSON, Slide 2 = the ACTIVITY. No JS. The kit checklist is deliberately STATIC (real-state
+  honesty: the learner checks it against their real folder; the guide reads what actually exists —
+  never a fabricated tally). The "open in browser" takeaway is a GUIDE behaviour (link dropped below
+  the widget), not a widget affordance — see the runsheet's ## Learning-guide notes.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — build your own machine</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #mc-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #mc-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="mc-pager" id="mc-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="mc-pager" id="mc-s2" aria-label="Slide 2: your build">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 10 · the capstone</div>
+        <h1 class="tmc-title">Build your own machine</h1>
+        <p class="tmc-muted">Nothing new to memorise today. You're going to use everything you
+           built — to build one more thing, for your own work.</p>
+
+        <div class="tmc-lsec">
+          <h2>Two failure modes. You built both guards.</h2>
+          <p>The two ways this technology quietly lets you down are <strong>siblings</strong>:
+             flattery on the way in, confident nonsense on the way out — both fluent, both sure of
+             themselves, both tilted away from truth. And without quite announcing it, you've
+             already built the matched set that guards them:</p>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Sycophancy</div><div class="tmc-fbody">agrees with your worst idea</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">Input guard</div><div class="tmc-fbody">your grill-me skill</div></div>
+          </div>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Hallucination</div><div class="tmc-fbody">wrong in a confident voice</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">Output guard</div><div class="tmc-fbody">your verification checklist</div></div>
+          </div>
+          <p>You didn't collect tips. You built a <strong>matched set</strong> — one guard on what
+             goes in, one on what comes out.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Pay for judgment once, keep the machine forever</h2>
+          <p>A <strong>machine</strong> is anything that does a recurring task again without you
+             re-thinking it: you spend your judgment once — on the brief, the shape, the checks —
+             and every future run is nearly free. A machine doesn't have to be code. In rising
+             order of power:</p>
+          <ol class="tmc-steps">
+            <li><strong>A template</strong> — fill in the blanks, done.</li>
+            <li><strong>A checklist</strong> — the steps, in order, nothing forgotten.</li>
+            <li><strong>A formula</strong> — a spreadsheet does the arithmetic, right every time.</li>
+            <li><strong>A script the agent writes and runs</strong> — you never touch the code.</li>
+            <li><strong>A staged workflow</strong> — a repeatable job with your checkpoints built in.</li>
+          </ol>
+          <p><strong>Pick the lowest rung that does the job.</strong> A script where a template
+             would do is over-build; hand-copying numbers a formula could fetch is under-build.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Your kit — check it against your real folder</h2>
+          <p class="tmc-muted">Tick what you actually built. An empty box is honest, not a
+             failure — your guide works with what's really there.</p>
+          <ul class="tmc-check">
+            <li><strong>Delegation map</strong> — your recurring work, sorted; capstone candidates marked</li>
+            <li><strong>Brief template</strong> — the four loads, in your own voice</li>
+            <li><strong>Grill-me skill</strong> — the interrogator that fixes your asks</li>
+            <li><strong>Verification checklist</strong> — what you always, sometimes, never check</li>
+            <li><strong><code>CLAUDE.md</code> + safety rules</strong> — your standing operating manual</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="mc-s2">Now commission yours →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 10 · your build</div>
+        <h1 class="tmc-title">Commission your machine</h1>
+        <p class="tmc-muted">Audit → choose → grill → build → prove it on real cases. You leave
+           with a machine you'll run next week.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Run your audit</strong> — with your guide, before you build. What's working?
+             What would you now do differently? No shame: the biggest "differently" is your build
+             target.</li>
+          <li><strong>Choose from your map's capstone candidates</strong> — the task you flagged
+             when you mapped your work. (No mark? Pick the recurring task that eats your week.)</li>
+          <li><strong>Start a new task</strong> (<strong>+ New task</strong>, top-left) → open
+             <strong>Work in a project or folder</strong> → <code>series-01-foundations</code>.
+             Bring the task's real material in — pause first for anything private, and copy what
+             you can't afford to lose.</li>
+          <li><strong>Grill the brief.</strong> If you own the grill-me skill, turn it on yourself:
+             <span class="tmc-say">Use my grill-me skill on this: I want a machine that …</span>
+             Sign the brief off before anything gets built.</li>
+          <li><strong>Pick the lowest rung that does the job</strong> — template, checklist,
+             formula, script, workflow — and say why it's enough.</li>
+          <li><strong>Build.</strong> The agent does the building; you judge at every gate. Read
+             what you approve before you approve it.</li>
+          <li><strong>Test on two real cases</strong> — one where you already know what good looks
+             like. Open the outputs yourself; send it back in your own words until it's right.</li>
+          <li><strong>Write the how-to-use note</strong> in your own words — what it does, how to
+             ask for a run, what to check after. Then book its first real run this week.</li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page —
+             your guide will drop a link below to keep these beside you:</p>
+          <ul class="tmc-check">
+            <li><strong>+ New task</strong> → <strong>Work in a project or folder</strong> → <code>series-01-foundations</code></li>
+            <li>The target = a marked candidate from your delegation map</li>
+            <li>Grill the brief (grill-me on yourself) — sign off before building</li>
+            <li>Lowest rung that does the job — say why it's enough</li>
+            <li>Copy what matters; read what you approve</li>
+            <li>Two real test cases — one where you know the right answer</li>
+            <li>how-to-use note in your words → book this week's first real run</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="mc-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

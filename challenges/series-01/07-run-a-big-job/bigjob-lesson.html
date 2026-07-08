@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--
+  bigjob-lesson.html — the L7 lesson, a DETERMINISTIC two-slide widget (run a big job).
+  Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
+  .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
+  pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
+  No JS. The "open in browser" takeaway is a GUIDE behaviour (link dropped below the widget), not a widget
+  affordance — see the runsheet's ## Learning-guide notes. Real Cowork labels per cowork-ui-reference.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — run a big job</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #bj-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #bj-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="bj-pager" id="bj-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="bj-pager" id="bj-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 7 · running consequential work</div>
+        <h1 class="tmc-title">Run a big job</h1>
+        <p class="tmc-muted">Today you run a real, meaty piece of your work to done — staged your way,
+           judged at your checkpoints.</p>
+
+        <div class="tmc-lsec">
+          <h2>Why one breath wanders</h2>
+          <p>Hand over a whole project in one ask — <em>"turn all this into a report"</em> — and you
+             force dozens of silent decisions: structure, emphasis, what to leave out. All made at
+             once, all invisible until the end, when fixing means redoing. You'd never brief a
+             colleague that way; you'd agree an outline first.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Checkpoints are where your judgment enters</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Stage</div><div class="tmc-fbody">one piece of the job</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">Checkpoint</div><div class="tmc-fbody">your verdict, before it goes on</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">Next stage</div><div class="tmc-fbody">built on what you approved</div></div>
+          </div>
+          <p>Cut the job into <strong>3–6 pieces</strong> and place a checkpoint wherever a wrong
+             guess would hurt — where <em>your</em> judgment matters, not where a template says. A
+             classic chain: gather → outline → draft one section → review it → draft the rest →
+             final pass.</p>
+          <p>At each checkpoint, a <strong>real verdict</strong>: specific praise or a specific
+             change — <em>"fine, continue"</em> is not a verdict. Catch yourself about to wave a
+             stage through? That pause <em>is</em> the skill. Cheap to correct here; expensive at
+             the end.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Restart is the experienced move</h2>
+          <p>Corrected the same problem twice and it's still drifting? Stop arguing. Failed attempts
+             linger in a session's memory and pollute what comes next. The pro closes the task and
+             <strong>starts fresh with a better brief</strong> that carries the lessons — not
+             defeat, expertise.</p>
+          <div class="tmc-callout">You own what ships: anything that goes out under
+             <strong>your name</strong> gets your check first — sized to the stakes.</div>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="bj-s2">Now run one for real →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 7 · your activity</div>
+        <h1 class="tmc-title">Stage it, judge it, finish it</h1>
+        <p class="tmc-muted">A real deliverable, done by the end — with your judgment at every
+           gate.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Pick the meaty task.</strong> A real multi-part deliverable from your
+             delegation map — or one you name now: a report from scattered notes, a review over a
+             messy folder. Big enough that one breath would disappoint; numbers in it? Even
+             better.</li>
+          <li><strong>Stage it, 3–6 pieces.</strong> With your guide, write what <em>you</em> will
+             judge at each checkpoint — your criteria, not just stage names. Put checkpoints where a
+             wrong guess would hurt most.</li>
+          <li><strong>Break out and run it.</strong> <strong>+ New task</strong> →
+             <strong>Work in a project or folder</strong> → <code>series-01-foundations</code>. First
+             move:
+             <span class="tmc-say">Create job-plan.md with my stages and what I'll judge at each
+             checkpoint — then let's start stage 1.</span></li>
+          <li><strong>Verdict at every checkpoint.</strong> Specific praise or a specific change, in
+             your own words — about to type "ok"? Look again and find the one thing. Add a one-line
+             verdict under each stage in <code>job-plan.md</code> as you go.</li>
+          <li><strong>If it drifts, restart with a better brief.</strong> Corrected the same thing
+             twice? Close it, open a new task, and brief it better — carry the lessons, not the
+             clutter.</li>
+          <li><strong>Finish it for real.</strong> Final pass, then your own last check: would you
+             put your name on it? Then bring it home to debrief.</li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page — your
+             guide will drop a link below to keep these beside you:</p>
+          <ul class="tmc-check">
+            <li><strong>+ New task</strong> → <strong>Work in a project or folder</strong> → <code>series-01-foundations</code></li>
+            <li>First move: <code>job-plan.md</code> — 3–6 stages + what you'll judge at each</li>
+            <li>Every checkpoint: specific praise or a specific change — never "fine, continue"</li>
+            <li>One-line verdict into the plan as you go</li>
+            <li>Drifting after two corrections? New task, better brief, carry the lessons</li>
+            <li>Done = final pass + your own last check — then bring it home</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="bj-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

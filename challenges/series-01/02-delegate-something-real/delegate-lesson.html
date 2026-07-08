@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--
+  delegate-lesson.html — the L2 lesson, a DETERMINISTIC two-slide widget (delegate something real).
+  Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
+  .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
+  pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
+  No JS. The "open in browser" takeaway is a GUIDE behaviour (link dropped below the widget), not a widget
+  affordance — see the runsheet's ## Learning-guide notes. Real Cowork labels per cowork-ui-reference.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — delegate something real</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #dl-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #dl-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="dl-pager" id="dl-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="dl-pager" id="dl-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 2 · your first real delegation</div>
+        <h1 class="tmc-title">Delegate something real</h1>
+        <p class="tmc-muted">Today the agent does an actual piece of your work — and you learn the
+           three habits that make handing work over feel safe.</p>
+
+        <div class="tmc-lsec">
+          <h2>Pick the right first job</h2>
+          <p>Not every task is a good <em>first</em> delegation. The best ones share three traits:</p>
+          <ul class="tmc-check">
+            <li>the <strong>input already exists</strong> — notes, a document, a messy draft</li>
+            <li>the <strong>output has a known shape</strong> — you could describe what "done" looks like</li>
+            <li>it's <strong>your own domain</strong> — you can judge the result at a glance</li>
+          </ul>
+          <p>Choosing what to hand over — and what not to — is itself the skill. Delegation is a
+             decision, not a reflex.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>You stay the owner</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Brief</div><div class="tmc-fbody">say the job in your words</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">Receive</div><div class="tmc-fbody">a draft arrives</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">Review</div><div class="tmc-fbody">judge it — you're the expert</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">Revise</div><div class="tmc-fbody">send it back, in your words</div></div>
+          </div>
+          <p>The first result is a <strong>draft for your judgment</strong>, not a verdict on your
+             brief. Sending it back — <em>"closer, but warmer"</em> — is the normal move, not a
+             failure. The work isn't done when the agent stops typing; it's done when <strong>you'd
+             put your name on it</strong>.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Three habits make it safe</h2>
+          <ul class="tmc-check">
+            <li><strong>Copy before courage.</strong> Duplicate anything you can't afford to lose
+               <em>before</em> the agent touches it. A copy makes every bold ask cheap — you can say
+               yes to anything.</li>
+            <li><strong>Read before you approve.</strong> When it's about to change or delete
+               something, it says so and waits. Read that, say it back in plain words, then decide.
+               Deleting, overwriting, moving — the actions you can't easily undo — get the most
+               awake look. Resist "always allow" while you're learning.</li>
+            <li><strong>Pause before you paste.</strong> Other people's private details,
+               confidential material, passwords — check for them before real material goes in, and
+               swap in a stand-in. (The full treatment comes later in the course.)</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="dl-s2">Now hand one over →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 2 · your activity</div>
+        <h1 class="tmc-title">Hand over one real task</h1>
+        <p class="tmc-muted">A real task from your week — you'll leave this lesson with it actually
+           done.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Start a new task</strong> (<strong>+ New task</strong>, top-left) and point it
+             at your series folder via <strong>Work in a project or folder</strong> →
+             <code>series-01-foundations</code>.</li>
+          <li><strong>Bring your material in — pause first.</strong> Anything private, confidential,
+             or not yours to share? Swap it for a stand-in. Then copy the document into the folder.</li>
+          <li><strong>Copy before courage.</strong> Duplicate anything you can't afford to lose —
+             e.g. <span class="tmc-say">Make a copy of report-notes.md called report-notes-backup.md
+             before we start.</span></li>
+          <li><strong>Brief the job in your own words</strong> — what it is, who it's for, what good
+             looks like. Like briefing a capable new colleague on day one.</li>
+          <li><strong>Read what it asks before you say yes.</strong> When it's about to act on a
+             file, say the action back to yourself in plain words — <em>then</em> decide.</li>
+          <li><strong>Own the draft.</strong> Save a copy of version one, then ask for a
+             <strong>bold</strong> revision in your own words — the copy makes it free. Compare,
+             keep the best of both, and <strong>restore once from your copy</strong> so you know the
+             way back.</li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page — your
+             guide will drop a link below to keep these beside you:</p>
+          <ul class="tmc-check">
+            <li><strong>+ New task</strong> → <strong>Work in a project or folder</strong> → <code>series-01-foundations</code></li>
+            <li>Pause before pasting: private / confidential / credentials → stand-ins</li>
+            <li>Copy anything you can't afford to lose — <em>then</em> be bold</li>
+            <li>Read what it's about to do; say it back; then approve</li>
+            <li>Brief → receive → review → <strong>revise in your own words</strong></li>
+            <li>Try one restore from your copy — know the way back</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="dl-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

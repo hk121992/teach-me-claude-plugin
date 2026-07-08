@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--
+  memory-lesson.html — the L8 lesson, a DETERMINISTIC two-slide widget (give your agent a memory).
+  Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
+  .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
+  pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
+  No JS. The "open in browser" takeaway is a GUIDE behaviour (link dropped below the widget), not a widget
+  affordance — see the runsheet's ## Learning-guide notes. Real Cowork labels per cowork-ui-reference.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — give your agent a memory</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #mm-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #mm-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="mm-pager" id="mm-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="mm-pager" id="mm-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 8 · give your agent a memory</div>
+        <h1 class="tmc-title">Your colleague has amnesia — by design</h1>
+        <p class="tmc-muted">Every new task starts blank. Today you write the file that fixes that —
+           once, in your own words.</p>
+
+        <div class="tmc-lsec">
+          <h2>Amnesia, by design</h2>
+          <p>Nothing from yesterday's conversation survives into a new task unless it was
+             <strong>written into a file</strong>. That's not a defect to fight with longer chats —
+             it's a fact you engineer around. The fix is a file named <code>CLAUDE.md</code>: the
+             agent reads it at the start of <strong>every session in that folder</strong>, so whatever
+             it says, your colleague knows from minute one. It's the difference between a temp on
+             their first day and someone who's worked with you for a year.</p>
+          <p>Four short sections, in your words:</p>
+          <ul class="tmc-check">
+            <li><strong>Who I am</strong> — name, role, what I work on (two lines)</li>
+            <li><strong>How I like output</strong> — tone, formats, length defaults</li>
+            <li><strong>Always</strong> — e.g. "flag anything you're not certain of"</li>
+            <li><strong>Never</strong> — e.g. "never delete files without asking me"</li>
+          </ul>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Short beats complete</h2>
+          <p>A bloated memory file gets skimmed, and an instruction buried in 200 lines gets missed
+             — true for humans too. So every line faces the <strong>pruning test</strong>:</p>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Read a line</div><div class="tmc-fbody">one at a time</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">Ask</div><div class="tmc-fbody">"would removing this cause a mistake?"</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">No?</div><div class="tmc-fbody">cut it</div></div>
+          </div>
+          <p>Aim for <strong>one screen</strong>. Memory you keep short is memory that works.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Where it lives — and where it works</h2>
+          <p>The file belongs in <strong>the folder where your real work happens</strong> — it loads
+             automatically when you work <em>in</em> that folder. A plain chat elsewhere doesn't read
+             it: there, you paste it in. One folder, one memory, zero repeating yourself.</p>
+          <p>And it has a sibling: a <strong>skill</strong> — a small file of instructions (a name,
+             a description of when it applies, a body) that the agent loads <em>when relevant</em>.
+             Teach it once, and the behaviour is automatic every time. If you've built a skill that
+             grills your requests, you already own one. Together they're your two standing-instruction
+             mechanisms: <strong>always-on memory</strong> beside <strong>on-demand behaviour</strong>.</p>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="mm-s2">Now write yours →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 8 · your activity</div>
+        <h1 class="tmc-title">Write it once — then catch it remembering</h1>
+        <p class="tmc-muted">A memory file in your real work folder, pruned sharp, then proven in a
+           session that was never told your preferences.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Pick your real work folder.</strong> The folder where your actual work lives —
+             make one now if you don't have one. Not the course folders: this file belongs with
+             <em>your</em> work.</li>
+          <li><strong>Write <code>CLAUDE.md</code> there, with your guide.</strong> Four short
+             sections, your own words: who I am · how I like output · always · never. Say something
+             like <span class="tmc-say">Create a file called CLAUDE.md in my work folder — I'll tell
+             you what goes in it.</span></li>
+          <li><strong>Prune it, line by line.</strong> For each line: would removing this cause a
+             mistake? If not, cut it — and tell your guide about one cut you made. One screen, tops.</li>
+          <li><strong>The proof.</strong> Start a fresh task (<strong>+ New task</strong>, then
+             <strong>Work in a project or folder</strong> → your work folder). Ask for something
+             small and real with a <em>deliberately minimal</em> brief — leave out everything the
+             file now covers — e.g. <span class="tmc-say">Draft a short note about the schedule
+             change.</span> Then watch: did it honour a preference you never mentioned?</li>
+          <li><strong>Come back and tell the tale.</strong> What did it get right without being told?
+             And in your own words: what's a skill, and how does it differ from this file?</li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page — your
+             guide will drop a link below to keep these beside you:</p>
+          <ul class="tmc-check">
+            <li>Your <strong>real work folder</strong> — never the course folders</li>
+            <li>Four sections: who I am · how I like output · always · never</li>
+            <li>The pruning test, per line: <em>"would removing this cause a mistake?"</em></li>
+            <li>Proof: <strong>+ New task</strong> → <strong>Work in a project or folder</strong> → your folder → one minimal real ask</li>
+            <li>It loads when you work <em>in</em> that folder — a plain chat elsewhere needs it pasted</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="mm-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -281,3 +281,56 @@
   .tmc-actions { flex-direction: column; }
   .tmc-btn { width: 100%; }
 }
+
+/* ==== lesson-widget shell (the standard TMC lesson layout) ================
+ * The standard Teach Me Claude lesson widget: a branded banner, an optional
+ * pure-CSS slide pager (lesson / activity — NO JS), and the lesson content
+ * helpers. Authored lesson widgets compose from these instead of re-styling.
+ * Worked reference: tests/fixtures/reference-lesson-widget.html; standard:
+ * widget-craft §1. (Per-widget only: the pager reveal rules, which key on the
+ * widget's own radio ids — see the reference.) */
+
+/* Card in lesson mode: banner bleeds to the card edges; body is padded. */
+.tmc-card.tmc-lesson { padding: 0; overflow: hidden; }
+
+/* Banner — the brand lockup. Logo is size-pinned so it can't stretch. */
+.tmc-banner { background: var(--tmc-pine); color: var(--tmc-on-pine); padding: var(--tmc-space-4) var(--tmc-space-6); }
+.tmc-lock { display: inline-flex; align-items: center; gap: 10px; }
+.tmc-lock svg { width: 24px; height: 24px; flex: 0 0 24px; }
+.tmc-lock .tmc-word { font-family: var(--tmc-font-display); font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+
+.tmc-lesson-body { padding: var(--tmc-space-6); }
+
+/* Pure-CSS slide pager. Shared pieces here; each widget adds its own reveal
+ * rules: `#<id>:checked ~ .tmc-slides .tmc-slide--N { display: block; }`. */
+.tmc-pager-radio { position: absolute; opacity: 0; width: 0; height: 0; }
+.tmc-slide { display: none; }
+.tmc-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--tmc-space-3); margin-top: var(--tmc-space-6); border-top: 1px solid var(--tmc-hairline); padding-top: var(--tmc-space-4); }
+.tmc-page { font-size: 0.8rem; color: var(--tmc-ink-2); font-weight: 600; }
+.tmc-navbtn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: var(--tmc-font-text); font-weight: 600; font-size: 0.95rem; padding: 0.6em 1.1em; border-radius: var(--tmc-r-pill); background: var(--tmc-pine); color: var(--tmc-on-pine); }
+.tmc-navbtn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-navbtn--ghost { background: transparent; color: var(--tmc-pine-strong); border: 1px solid var(--tmc-hairline); }
+
+/* Lesson content helpers. */
+.tmc-lsec { margin-top: var(--tmc-space-6); }
+.tmc-lsec:first-of-type { margin-top: var(--tmc-space-2); }
+.tmc-lsec > h2 { font-family: var(--tmc-font-display); font-size: 1.15rem; margin: 0 0 var(--tmc-space-3); }
+.tmc-not { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-not li { padding: 0.3em 0 0.3em 1.6em; position: relative; line-height: 1.6; }
+.tmc-not li::before { content: "\2715"; position: absolute; left: 0; color: var(--tmc-ink-3); }
+.tmc-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--tmc-space-2); margin: var(--tmc-space-4) 0; }
+.tmc-fstep { flex: 1 1 8em; min-width: 8em; background: var(--tmc-surface-2); border: 1px solid var(--tmc-hairline); border-radius: var(--tmc-r-md); padding: var(--tmc-space-3); }
+.tmc-fstep--out { background: var(--tmc-pine-tint); border-color: var(--tmc-pine); }
+.tmc-flabel { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tmc-pine-strong); }
+.tmc-fbody { margin-top: 0.2em; font-weight: 600; font-size: 0.95rem; }
+.tmc-farr { align-self: center; color: var(--tmc-ink-3); font-weight: 700; }
+.tmc-steps { counter-reset: s; list-style: none; padding: 0; margin: var(--tmc-space-4) 0 0; }
+.tmc-steps > li { counter-increment: s; position: relative; padding: 0 0 var(--tmc-space-5) 2.6em; line-height: 1.7; }
+.tmc-steps > li:last-child { padding-bottom: 0; }
+.tmc-steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 1.7em; height: 1.7em; background: var(--tmc-pine); color: var(--tmc-on-pine); border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 600; }
+.tmc-say { display: block; margin-top: var(--tmc-space-2); padding: 0.6em 0.8em; background: var(--tmc-surface-2); border-left: 3px solid var(--tmc-pine); border-radius: var(--tmc-r-sm); font-family: var(--tmc-font-mono); font-size: 0.85rem; line-height: 1.5; }
+.tmc-take { border: 2px solid var(--tmc-pine); border-radius: var(--tmc-r-md); padding: var(--tmc-space-5); margin-top: var(--tmc-space-5); background: var(--tmc-pine-tint); }
+.tmc-take > h2 { margin-top: 0; }
+.tmc-check { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-check li { padding: 0.4em 0 0.4em 1.8em; position: relative; line-height: 1.6; }
+.tmc-check li::before { content: "\2610"; position: absolute; left: 0; font-size: 1.15em; line-height: 1; }

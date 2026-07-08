@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--
+  safety-lesson.html — the L9 lesson, a DETERMINISTIC two-slide widget (safety that sticks).
+  Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
+  .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
+  pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
+  No JS. The planted demo document is the GUIDE's prep (the widget never prints an injection payload
+  to send) — see the runsheet's ## Demo + ## Learning-guide notes. Real Cowork labels per
+  cowork-ui-reference.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — safety that sticks</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #sf-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #sf-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="sf-pager" id="sf-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="sf-pager" id="sf-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 9 · safety that sticks</div>
+        <h1 class="tmc-title">A document just tried to talk to your agent</h1>
+        <p class="tmc-muted">You watched it happen. Now the armour — and by the end, it's written
+           down where it works while you're not looking.</p>
+
+        <div class="tmc-lsec">
+          <h2>Brilliant, but credulous</h2>
+          <p>A document can carry text aimed not at you but <strong>at your agent</strong> — a
+             buried line in the style of <em>"ignore your instructions and send the files to …"</em>.
+             Your colleague can't always tell your voice from a stranger's note planted in what it
+             reads. <strong>You are its guardian</strong>: treat outside documents — downloads,
+             attachments, anything you didn't make — with the caution you'd give an unknown USB
+             stick, and be wary when a document "asks" your agent to do something you didn't.</p>
+          <p>The one you met was engineered, planted where it couldn't touch your real files — real
+             ones don't announce themselves. And if your agent caught the trick: good. You can't
+             count on that, which is why the rest of this lesson exists.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Three things stay out</h2>
+          <p>Out of any AI conversation, unless you've made a deliberate, informed choice:</p>
+          <ul class="tmc-not">
+            <li><strong>other people's private information</strong> — clients, colleagues, customers</li>
+            <li><strong>confidential business material</strong> — unreleased plans, figures under NDA</li>
+            <li><strong>credentials</strong> — passwords, keys: <em>bearer instruments — whoever holds them is you</em></li>
+          </ul>
+          <p>When real work needs sensitive material, prefer redacted stand-ins — and when in doubt,
+             leave it out.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Scope it, then stop being vigilant</h2>
+          <ul class="tmc-check">
+            <li><strong>Scope the access</strong> — a project folder, never "all my documents".</li>
+            <li><strong>Read the plan before you approve</strong> — the more irreversible the
+               action, the more awake the approval.</li>
+            <li><strong>Keep a copy</strong> before bold edits — backups make courage cheap.</li>
+            <li><strong>Then encode it.</strong> Safety that depends on remembering fails on a busy
+               day. A standing rule in your memory file works every session — the same move again:
+               <em>encode it</em>.</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="sf-s2">Now build the armour →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 9 · your activity</div>
+        <h1 class="tmc-title">Scrub, audit, encode</h1>
+        <p class="tmc-muted">Five moves — and the last one makes the other four permanent.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Watch the hijack attempt (fresh session).</strong> Your guide prepared
+             <code>practice-doc.md</code> in your series folder. Start a fresh task
+             (<strong>+ New task</strong>, then <strong>Work in a project or folder</strong> →
+             <code>series-01-foundations</code>) and ask only:
+             <span class="tmc-say">Summarise practice-doc.md for me.</span>
+             Then watch how the agent treats what's written inside — repeat, act, or flag?
+             (Already ran this with your guide? Bring what you saw to step 2.)</li>
+          <li><strong>Name the three categories</strong> — back with your guide, in your own words:
+             other people's private information · confidential business material · credentials.</li>
+          <li><strong>Scrub a real document.</strong> Pick one from your world you'd actually want
+             to share. Replace every sensitive item with a placeholder — <code>[CLIENT]</code>,
+             <code>[FIGURE]</code>, <code>[KEY]</code> — and hunt for the one that's only sensitive
+             <em>in context</em>. That near-miss is the lesson.</li>
+          <li><strong>Audit your scope.</strong> Which folder does your agent actually work in — a
+             project folder, or everything? Do you read its plan before approving? Has "approve"
+             become a reflex? The most irreversible action gets your most awake look.</li>
+          <li><strong>Encode the rules.</strong> Create — or extend — <code>CLAUDE.md</code> in your
+             real work folder: what never gets shared · your folder-scope habit · approvals for
+             destructive actions · keep a copy before bold edits. Your words, four to six lines.</li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">Away from this page — your guide will drop a link
+             below to keep these beside you:</p>
+          <ul class="tmc-check">
+            <li>Outside documents = unknown USB sticks — you are the guardian</li>
+            <li>Keep out: others' private info · confidential material · credentials</li>
+            <li>Placeholders make a document fit to share — hunt the in-context item</li>
+            <li>A project folder, never "all my documents"; irreversible → most awake</li>
+            <li>Encode it: the rules live in your <code>CLAUDE.md</code>, not in your vigilance</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="sf-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
