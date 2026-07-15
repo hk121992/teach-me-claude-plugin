@@ -39,7 +39,7 @@ recounting, below, not a cross-folder read.)
 # Grade per evidence-kind
 
 For each covered uid, gather evidence of its declared `evidence_kind` and judge
-it against the rubric criterion. The four evidence kinds, and how you confirm each:
+it against the rubric criterion. The three evidence kinds, and how you confirm each:
 
 - **artifact** — open and **inspect the real file** the learner produced and
   judge it against the rubric criterion (e.g. read their `grill-me` skill, their
@@ -48,11 +48,11 @@ it against the rubric criterion. The four evidence kinds, and how you confirm ea
   actually said/did in the session shows the move. Read the real turns.
 - **live-action** — confirm an **observed in-session moment** that happened in
   front of you (e.g. they caught a hallucination live).
-- **emergent** — a **watch-and-confirm** outcome. It is confirmable
-  **opportunistically from any later challenge** where the move spontaneously
-  recurs — it is **not gated to one owning challenge**. Keep watching for it
-  across the series and confirm it the moment you genuinely see it, wherever it
-  surfaces.
+
+A **`role: taught`** outcome is the watch-and-confirm case: credited
+`provisional` at its own challenge's close, it is **not gated to one owning
+challenge** — keep watching across the series and confirm it **by its declared
+kind** the moment you genuinely see it, wherever it surfaces.
 
 **`confirmed` requires real evidence of the outcome's kind — never self-report
 alone.** A handback `outcome_signal` or a "yes I did that" is advisory only; it
@@ -182,11 +182,10 @@ the rest.
 For **each covered uid** (and each uid you forward-credit or reassess), write its entry:
 
 - **`status`** — `unmet` | `provisional` | `confirmed`.
-- **`evidence_kind`** — `artifact` | `conversational` | `live-action` |
-  `emergent` (the kind you graded against).
+- **`evidence_kind`** — `artifact` | `conversational` | `live-action` (the kind
+  you graded against).
 - **`evidence_ref`** — where the evidence is: a **file path** (for `artifact`)
-  or a **`challenge:ID#turn`** reference (for conversational / live-action /
-  emergent).
+  or a **`challenge:ID#turn`** reference (for conversational / live-action).
 - **`verdict`** — `pass` | `refine`.
 - **`substrate`** — set to **`"claude"`** ONLY when the outcome is genuinely bound
   to a Claude primitive/surface (the skill/agent/tool itself, not a transferable

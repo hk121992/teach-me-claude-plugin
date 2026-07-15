@@ -272,3 +272,166 @@ runs in: series
 - **Not a test — commissioning.** Hold the register to the end: no exam voice, no drumroll. The
   reward is the machine and the certificate; the emotional payoff is the distance travelled,
   named at last and earned.
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DLGT-07` · build-the-machine-once** — The learner can commission a reusable *machine* for a recurring task — the lowest rung that does the job (template → checklist → formula → a script Claude writes and runs → a staged workflow) — applying "pay for judgment once, keep the machine forever" instead of redoing the task by hand each time.
+  ↳ checks: a working, reusable machine for a real recurring task plus its `how-to-use.md`, runnable again on new inputs; the learner can say when they'll next *run* it.
+
+- **`01-DSCN-09` · pair-the-failure-modes** — The learner can connect sycophancy and hallucination as siblings — both fluent, confident, and tilted away from truth — and locate their two countermeasures: the grill-me skill guards the input, the verification checklist guards the output.
+  ↳ checks: in conversation the learner pairs the two failure modes and assigns each guard to input vs output.
+
+- **`01-DILG-08` · audit-my-practice** — The learner can run an honest retro on their own past practice — what worked, what they'd do differently, and how their habits are holding up (including whether their folder scope is sensible and whether "approve" has become a reflex) — not only their safety reflexes — and name at least one thing they'd now do differently, without shame.
+  ↳ checks: the retro covers what worked and what they'd change as well as folder scope, past sharing, and approval habits; the learner identifies a change they'd make or defends why their current practice is already sound.
+
+- **`01-DILG-09` · own-the-result** — The learner can keep the thinking behind delegated work recognisably their own and be transparent about what the agent produced versus what they judged — owning the result rather than hiding behind the tool.
+  ↳ checks: in the capstone the brief, plan, and verdicts are recognisably the learner's; in review they can narrate their loop (why this task, what the grilling surfaced, what they verified and why).
+
+- **`01-DSCN-10` · transfer-a-move** — The learner can take a habit they built — grilling a brief, decomposing with checkpoints, computing rather than estimating — and apply it, unprompted, to a task it was never demonstrated on.
+  ↳ checks: in a later challenge the learner spontaneously reaches for a prior move on new material and can say why it fits.
+
+- **`01-DLGT-01` · choose-a-delegation** — The learner can choose a good task to hand to an agent rather than delegating by reflex — selecting work whose input already exists, whose output has a known shape, and which sits in their own domain so they can judge the result at a glance.
+  ↳ checks: the learner picks a real task and can name why it's a good first delegation (input exists / shape known / they can judge it); the chosen task meets those traits.
+
+- **`01-DLGT-02` · stay-the-owner** — The learner treats a delegated result as a *draft for their judgment* and runs the brief→receive→review→revise loop, requesting at least one revision as a normal part of the work rather than accepting the first output or treating revision as failure.
+  ↳ checks: a revision was requested in the learner's own words and the final artifact reflects it; the learner can say whether they'd actually use the result and why.
+
+- **`01-DLGT-03` · sort-judgment-vs-rules** — The learner can sort a piece of work into judgment/language work (where an AI model is the right tool) versus fully-specifiable rules-work (where a deterministic tool — formula, script, filter, template — is better because it's rerunnable, auditable, and right every time), applying "if you can fully write down the rules, don't use the model to guess them."
+  ↳ checks: given real tasks, the learner buckets them with a stated reason that shows the sorting rule; "AI because it's hard" is caught and corrected.
+
+- **`01-DLGT-04` · build-delegation-map** — The learner can build a delegation map of their own recurring work — each real task triaged AI / deterministic / hybrid / human-only with one line of reasoning — and can decompose at least one hybrid task into its AI part and its deterministic part.
+  ↳ checks: artifact `delegation-map.md` with 8+ real tasks, each bucketed with a sound reason; at least one hybrid genuinely split; 1–2 "capstone candidates" marked.
+
+- **`01-DLGT-05` · keep-it-human** — The learner can identify work to keep human-only — relationships, accountability, judgment calls they own — and can defend *not* delegating it as a delegation decision in its own right, not a gap.
+  ↳ checks: the delegation map's human-only bucket is populated with a defended reason; in conversation the learner can name something they will deliberately never hand over and why.
+
+- **`01-DLGT-06` · make-it-compute** — The learner can redirect the agent from estimating to *computing* — asking it to write and run a deterministic calculation and show its working — rather than accepting a fluent guessed number.
+  ↳ checks: on a real question the learner requires the computed-with-working treatment and the answer is produced by a rerunnable computation, not an estimate.
+
+- **`01-DLGT-08` · pick-the-right-rung** — The learner can choose the *simplest* tool that solves a recurring task — recognising over-build (a script where a template would do) and under-build (not seeing that a tool could absorb a manual copy-paste ritual).
+  ↳ checks: in the capstone the machine sits on the lowest adequate rung and the learner can justify the rung; OR at debrief the learner re-sorts a task they'd previously over/under-automated.
+
+- **`01-DLGT-09` · agent-not-chatbot** — The learner can state that the thing in front of them is an *agent* that can open, read, create, and edit files and take actions in their workspace — not only a chat window that returns text — and can name one action it took on a file during the session.
+  ↳ checks: the learner describes, in their own words, that the agent "did something to a file" (created/edited/moved), corroborated by an actual file the agent created or changed during onboarding.  · substrate: claude
+
+- **`01-DLGT-10` · name-workspace-scope** — The learner can identify which folder the agent is currently working in and articulate that the agent acts within that scope — that it is not silently operating over their whole computer.
+  ↳ checks: asked "where is the agent working right now?" the learner names the workspace folder (or asks the agent and reads it back correctly), and can say that files outside it are not in play by default.  · substrate: claude
+
+- **`01-DLGT-11` · same-engine-many-faces** — The learner can state that Cowork is one face of the agent and that the same engine has other surfaces (e.g. Claude Code) they may meet later — so "the agent" is a capability, not a single screen.
+  ↳ checks: the learner can say, unprompted at review, that what they're learning transfers beyond this one window. (Day-one reassurance only; the depth is owned by `09-DLGT-01`.)  · substrate: claude
+
+- **`01-DLGT-12` · name-surface-limits** — The learner can name at least two things the surface/agent cannot do on its own — e.g. it will not remember this conversation in a brand-new chat unless something was written down, it cannot reach files they never brought into the workspace, and memory and skills load automatically in their workspace but must be pasted into a plain chat.
+  ↳ checks: the learner lists concrete "it can't" items correctly; the memory limit and the file-reach limit are the two that must appear. (Scoped to operational consequences; the fuller "three things it is not" model is `01-DSCN-01`.)  · substrate: claude
+
+- **`01-DESC-01` · carry-four-loads** — The learner can brief a task carrying the four loads — context, audience, format, success criteria — and can name what each load does, recognising that generic output is usually a hollow brief rather than a weak model.
+  ↳ checks: an improved brief identifiably carries all four loads; the learner can say what each does and which one they personally tend to drop.
+
+- **`01-DESC-02` · brief-like-newcomer** — The learner can brief the agent the way they'd brief a capable newcomer on day one — supplying relevant specifics rather than hunting for "magic keywords" — and can recognise that more relevant detail beats clever phrasing.
+  ↳ checks: the same task briefed vague then specifics-rich (run live, in fresh sessions that write nothing), with two concrete output differences named; the learner attributes the improvement to specifics, not phrasing. *(2026-07-01: dropped the legacy `before-after.md` artifact — the re-composed demo is writes-nothing by design; the evidence is the recounted contrast.)*
+
+- **`01-DESC-03` · distil-brief-template** — The learner can distil a reusable brief template in their own words that they'd still understand in a month — making good briefing repeatable rather than re-invented each time.
+  ↳ checks: artifact `my-brief-template.md` in the learner's own voice, the four loads recognisable however phrased; it joins the kit.
+
+- **`01-DESC-04` · build-grill-me-skill** — The learner can build and use a personal skill that inverts the briefing relationship — Claude interrogates *them* one question at a time until it could write the brief itself, challenges weak premises, and shows the brief for sign-off before doing anything — so gaps in their asks are caught by machinery, not memory.
+  ↳ checks: an installed `grill-me` skill that fires when invoked; its body (the learner's own words) encodes interview-until-complete, challenge-the-premise, and brief-sign-off-before-work; a proof run surfaced something the learner's lazy ask had omitted.
+
+- **`01-DESC-05` · explain-a-skill** — The learner can explain what a skill *is* — a small file of instructions (name, a description of when it applies, a body) that Claude loads when relevant — and that teaching it once makes the behaviour automatic every time.
+  ↳ checks: walking their own skill file (e.g. the grill-me skill they built), the learner points at its parts — name, the when-it-applies description, the body — and contrasts "teach it once and it fires automatically" with re-typing the instruction each session. (The craft of skills is owned by 07.)
+
+- **`01-DESC-06` · decompose-with-checkpoints** — The learner can break a big job into 3–6 staged pieces with checkpoints placed where *their* judgment should enter (gather → outline → draft one section → review → draft the rest → final pass), instead of handing over a whole project in one breath.
+  ↳ checks: a staged plan existed before execution with the learner's own checkpoint criteria (not just stage names); at least one mid-course correction occurred and shows in the final artifact.
+
+- **`01-DESC-07` · write-agent-memory** — The learner can write a persistent memory file the agent reads at the start of every session — encoding who they are, how they like output, their conventions, and their always/never rules — so persistent preferences are engineered with a file rather than re-explained each chat.
+  ↳ checks: a `CLAUDE.md` exists in the workspace, fits ~one screen, encodes real preferences traceable to their template/checklist/map (not boilerplate), and proved itself in a fresh session that followed preferences it was never told.
+
+- **`01-DESC-08` · apply-pruning-test** — The learner can keep a memory file short and sharp by applying the pruning test to every line — "would removing this cause a mistake?" — recognising that a bloated file gets skimmed and buried instructions get missed.
+  ↳ checks: the learner's `CLAUDE.md` is roughly one screen and every line plausibly passes the pruning test; the learner can defend a cut they made.
+
+- **`01-DESC-09` · restart-with-better-brief** — The learner can recognise when a session has derailed *or simply run too long / wandered* and stop correcting it, starting fresh with a *better* brief that carries the lessons — knowing that failed attempts and accumulated drift linger in a session's context and that restarting is the experienced move, not defeat.
+  ↳ checks: in conversation the learner can say when they'd start a fresh session rather than keep correcting; ideally demonstrated once when a run derails. (Operational floor owned by `01-DILG-14`.)
+
+- **`01-DESC-10` · first-instruction-lands** — The learner can type a single concrete instruction to the agent, send it, and recognise in the result that the agent did what was asked — closing the first send→act→see loop end to end.
+  ↳ checks: the learner sends a first real instruction (e.g. "create a file called notes.md and write one line in it"), the file appears, and the learner confirms the loop completed.  · substrate: claude
+
+- **`01-DSCN-01` · model-the-agent** — The learner can articulate what an AI agent is and the three things it is not — not a search engine (confidently wrong is possible), not a database (knowledge cutoff; doesn't know their company's facts unless shown), not learning from them in real time — and use that model to set expectations.
+  ↳ checks: the learner can state at least two of the "three things it is not" in their own words.
+
+- **`01-DSCN-02` · confident-not-correct** — The learner can recognise that a wrong answer arrives in the same fluent, confident voice as a right one — that hallucination is a property of the technology with no tone-of-voice warning — and that they cannot prompt it away.
+  ↳ checks: having hunted in their own domain, the learner can explain (unprompted) that confidence is not evidence of correctness, and name where the model sounded sure but was wrong/unverifiable.
+
+- **`01-DSCN-03` · locate-jagged-risk** — The learner can locate where hallucination risk is high vs low — low over supplied material (summarising their document), high over remembered specifics (citations, statistics, dates, names, niche facts) — and calibrate suspicion to the work accordingly.
+  ↳ checks: during their own hunt the learner aims suspicion where the risk sits — trusting a summary of supplied material, scrutinising remembered specifics (citations, statistics, dates, names) — and can say which of their own tasks are riskiest and why.
+
+- **`01-DSCN-04` · recognise-sycophancy** — The learner can recognise sycophancy — the agent's trained lean toward agreement — and knows that framing assigns the role: "what do you think?" hires a cheerleader, "argue against this / red-team this" hires a critic.
+  ↳ checks: across two fresh-session demos (praise-seeking vs critique-seeking on a half-baked idea of their own) the learner names the difference in register and can explain *why* it happens; can warn a colleague.
+
+- **`01-DSCN-05` · cited-not-verified** — The learner treats a citation as unverified until opened — never trusting an unopened source — and tests formulas/calculations on a case where they already know the answer.
+  ↳ checks: in conversation and in their checklist, the learner states "cited is not verified" and "open the source / test on a known case" as standing checks.
+
+- **`01-DSCN-06` · write-verification-checklist** — The learner can write a stakes-calibrated verification checklist for their own outputs — what they will always check, sometimes check, and never worry about — rejecting both "verify everything" and "trust everything" as unusable.
+  ↳ checks: artifact `verification-checklist.md`, organised by stakes, naming checks specific to their real outputs; the learner can justify why a low-stakes item isn't checked.
+
+- **`01-DSCN-07` · check-the-numbers** — The learner can judge a delivered number the way they judge prose — knowing a fluent estimate is *more* dangerous than an obvious error because it invites trust — and checks at least one figure independently.
+  ↳ checks: on a computed answer the learner verifies one figure against a known value or by hand, and can say why a plausible-but-wrong number is the trap.
+
+- **`01-DSCN-08` · review-at-checkpoints** — The learner can give a substantive verdict at a checkpoint — specific praise or a specific change — acting as the editor of the agent's work rather than waving stages through with "fine, continue", including catching themselves about to wave work through when no checkpoint was set, and stopping to review unprompted.
+  ↳ checks: every checkpoint in a staged job got a real verdict; at least one produced a course-correction; the learner can say which checkpoint earned its keep.
+
+- **`01-DSCN-11` · did-it-actually-act** — The learner can tell the difference between the agent *reporting* that it did something and the agent *actually* having done it — checking that the file/change is really there rather than trusting the chat's summary.
+  ↳ checks: at least once the learner verifies a claimed action by looking at the workspace/file itself ("let me check it's actually there") instead of taking the agent's word — the operational seed of the whole verification habit.  · substrate: claude
+
+- **`01-DSCN-12` · know-markdown-default** — The learner can say what a Markdown (`.md`) file is — plain text with light, readable formatting — and why an agent reaches for plain-text/code formats by default (portable, openable anywhere, easy to version), so the files the agent creates aren't a mystery.
+  ↳ checks: shown a `.md` file the agent made, the learner can describe what it is, open it, and say in their own words why the agent didn't reach for a heavier format; they treat `.md` as a normal, openable file, not something technical.
+
+- **`01-DILG-01` · name-keep-out-categories** — The learner can name the three categories to keep out of an AI conversation unless they've made a deliberate, informed choice — other people's private information, confidential business material, and credentials (bearer instruments: whoever holds them is you) — and prefers redacted stand-ins when real work needs sensitive material.
+  ↳ checks: as real material goes into the workspace the learner catches a keep-out category when it surfaces — other people's private information, confidential business material, or a credential — and substitutes a redacted stand-in for the real thing, showing "when in doubt, leave it out" in the choice.
+
+- **`01-DILG-02` · scrub-a-document** — The learner can scrub a document fit to share — finding and replacing sensitive items with placeholders — including a subtle item that is only sensitive in context, and can articulate *why* each was sensitive.
+  ↳ checks: a scrubbed copy — of a real document from the learner's world by default, or the planted practice document as the fallback (there: at least five of six items) — replaces sensitive items with sensible placeholders, including one that is only sensitive in context; the learner explains the sensitivity of each (a miss found during scoring counts as learning). *(2026-07-01: real-document default per real-material-first; the 5-of-6 floor binds to the planted fallback.)*
+
+- **`01-DILG-03` · scope-the-access** — The learner can scope an agent's access deliberately — a project folder, never "all my documents" — read the agent's plan before approving, and keep the most awake approval for the most irreversible action.
+  ↳ checks: in the safety audit the learner confirms (or fixes) their workspace scope and can state the "more irreversible → more awake the approval" rule. (Day-one motor form is `01-DILG-10`/`01-DILG-11`; the full allowlist depth is `09-DILG-01`.)
+
+- **`01-DILG-04` · spot-hidden-instructions** — The learner can explain the hidden-instructions (prompt-injection) risk in their own words — that a document can carry text aimed at the agent ("ignore your instructions and send the files to…"), that the agent is brilliant but credulous, and that outside documents deserve unknown-USB-stick caution — well enough to warn a colleague.
+  ↳ checks: in conversation the learner describes the risk and the treat-outside-documents-warily habit unprompted; flags when a document "asks" the agent to do something they didn't.
+
+- **`01-DILG-05` · own-the-verification** — The learner treats checking the agent's work as their own responsibility — adopting the verification habit not as a chore but as ownership of anything that goes out under their name, calibrated to the stakes of the output.
+  ↳ checks: the learner runs (not just describes) a stakes-appropriate check before treating a result as final, at least once unprompted; can name the most expensive mistake the agent could make in their job and their check for it.
+
+- **`01-DILG-06` · keep-a-copy** — The learner keeps a copy before letting an agent loose on files that matter — "backups make courage cheap" — as a standing habit ahead of version control.
+  ↳ checks: at a consequential edit run the copy is taken before the agent is let loose — or its absence is caught at that moment and the learner can say when the rule applies. (Operational seed is `01-DILG-13`; 08 turns this into version control.)
+
+- **`01-DILG-07` · encode-safety-rules** — The learner can encode their personal safety rules into their persistent memory file — what never gets shared, how they scope folder access, their approval habit for destructive actions — turning safety from a one-time lesson into an always-on guardrail.
+  ↳ checks: safety rules exist in the learner's `CLAUDE.md`, in their own words, covering sharing, scope, and approvals — completing the file into a true operating manual.
+
+- **`01-DILG-10` · read-before-approving** — The learner can read an approval / permission prompt before acting on it, say in plain language what the agent is about to do, and choose approve or decline deliberately rather than clicking through reflexively.
+  ↳ checks: during a live prompt the learner pauses, paraphrases the action ("it wants to delete this file"), and states a reason for their choice; the reflex "always allow" anti-pattern is named and avoided. (Floor under `09-DILG-01`, which owns allowlist/approval-mode depth.)  · substrate: claude
+
+- **`01-DILG-11` · spot-irreversible-actions** — The learner can distinguish a reversible action (editing text they can re-edit) from an irreversible one (deleting or overwriting a file) and treats the irreversible ones with more caution when approving.
+  ↳ checks: when a destructive action (delete/overwrite/move) comes up in the learner's real delegation, they treat it with more caution than an ordinary edit, tying the difference to "I can't easily get it back."  · substrate: claude
+
+- **`01-DILG-12` · find-the-work** — The learner can locate, on their own machine, the folder where the agent's work is being saved, and open one file the agent produced outside the chat — so finished work is never trapped inside a conversation.
+  ↳ checks: the learner navigates (in Finder/Explorer or via the agent) to the workspace folder and opens a produced file independently of the chat; can state the folder's location in words.  · substrate: claude
+
+- **`01-DILG-13` · copy-before-courage** — Before letting the agent loose on a file that matters, the learner makes a copy first — adopting "a copy makes courage cheap" at the operational level, ahead of the version-control treatment much later.
+  ↳ checks: a duplicate of an important file exists before an edit run — or its absence is caught at that run. (Motor-habit seed of `01-DILG-06`.)  · substrate: claude
+
+- **`01-DILG-14` · start-fresh-chat** — The learner can start a brand-new chat / session on purpose and return to it, knowing that a fresh chat starts blank — so they can deliberately separate one piece of work from another instead of piling everything into one runaway conversation.
+  ↳ checks: the learner opens a fresh session unaided when asked, and can explain that the new chat won't carry the previous one's context unless it was written down. (Operational floor under `01-DESC-09`.)  · substrate: claude
+
+- **`01-DILG-15` · resume-my-work** — The learner can get back to work they started in an earlier session — reopening their workspace so the agent can pick up the thread — rather than losing progress when a session ends.
+  ↳ checks: returning after a break, the learner reopens the agent in their workspace folder and the session resumes with progress intact; the learner knows *where* to go to continue, without being walked through it again, and can tell whether prior progress actually loaded rather than assuming it did.  · substrate: claude
+
+- **`01-DILG-16` · invoke-help-deliberately** — The learner knows how to summon their learning guide / a skill on purpose (e.g. "continue my course", "review this") rather than assuming the right help loads invisibly — so they are never stuck not knowing how to get the next step.
+  ↳ checks: the learner re-enters the course or asks for a review using their own words and it triggers; in review the learner can say they know how to call for the next thing rather than waiting for it to appear.  · substrate: claude
+
+- **`01-DILG-17` · pause-before-pasting** — Before pasting or dragging material into the agent on day one, the learner can pause and ask whether it contains other people's private information, confidential business material, or credentials — not blundering in before the full treatment.
+  ↳ checks: when reaching for something sensitive during onboarding, the learner flags it and substitutes a safer stand-in; a pointer to the full treatment is made once. (Thin precursor to `01-DILG-01`/`01-DILG-02`.)  · substrate: claude
+
+- **`01-DILG-18` · usage-limit-literacy** — The learner can recognise a usage / credit / limit interruption for what it is — a metered pause, not a broken course or lost work — and knows their work is saved and how to resume when it clears.
+  ↳ checks: shown (or hitting) a limit message, names it a temporary cap, confirms progress is safe, and resumes without abandoning the task.  · substrate: claude
+
+- **`01-DILG-19` · recover-from-a-bad-action** — The learner can respond to an agent doing the wrong thing — undo it, ask the agent to put it back, or restore from the copy they made — rather than freezing or assuming the work is ruined.
+  ↳ checks: after a wrong edit, the learner gets the prior state back and can name their recovery options before approving risky actions. (Pairs with `01-DILG-13` copy-before-courage; `08-DILG-01` undo-for-agents specialises it.)  · substrate: claude

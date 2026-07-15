@@ -148,3 +148,25 @@ the frontmatter).
   now be suspicious, and where can they finally relax?
 - **Compulsory (the kit floor):** the checklist is a keeper, built for real, calibrated
   to their work — never forward-credit the artifact into existence.
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DSCN-02` · confident-not-correct** — The learner can recognise that a wrong answer arrives in the same fluent, confident voice as a right one — that hallucination is a property of the technology with no tone-of-voice warning — and that they cannot prompt it away.
+  ↳ checks: having hunted in their own domain, the learner can explain (unprompted) that confidence is not evidence of correctness, and name where the model sounded sure but was wrong/unverifiable.
+
+- **`01-DSCN-03` · locate-jagged-risk** — The learner can locate where hallucination risk is high vs low — low over supplied material (summarising their document), high over remembered specifics (citations, statistics, dates, names, niche facts) — and calibrate suspicion to the work accordingly.
+  ↳ checks: during their own hunt the learner aims suspicion where the risk sits — trusting a summary of supplied material, scrutinising remembered specifics (citations, statistics, dates, names) — and can say which of their own tasks are riskiest and why.
+
+- **`01-DSCN-05` · cited-not-verified** — The learner treats a citation as unverified until opened — never trusting an unopened source — and tests formulas/calculations on a case where they already know the answer.
+  ↳ checks: in conversation and in their checklist, the learner states "cited is not verified" and "open the source / test on a known case" as standing checks.
+
+- **`01-DSCN-06` · write-verification-checklist** — The learner can write a stakes-calibrated verification checklist for their own outputs — what they will always check, sometimes check, and never worry about — rejecting both "verify everything" and "trust everything" as unusable.
+  ↳ checks: artifact `verification-checklist.md`, organised by stakes, naming checks specific to their real outputs; the learner can justify why a low-stakes item isn't checked.
+
+- **`01-DLGT-06` · make-it-compute** — The learner can redirect the agent from estimating to *computing* — asking it to write and run a deterministic calculation and show its working — rather than accepting a fluent guessed number.
+  ↳ checks: on a real question the learner requires the computed-with-working treatment and the answer is produced by a rerunnable computation, not an estimate.
+
+- **`01-DSCN-07` · check-the-numbers** — The learner can judge a delivered number the way they judge prose — knowing a fluent estimate is *more* dangerous than an obvious error because it invites trust — and checks at least one figure independently.
+  ↳ checks: on a computed answer the learner verifies one figure against a known value or by hand, and can say why a plausible-but-wrong number is the trap.

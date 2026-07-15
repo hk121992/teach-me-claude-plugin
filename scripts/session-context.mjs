@@ -621,12 +621,21 @@ export function composeSessionContext({ cwd, runsheets, pluginRoot } = {}) {
   // So with no runsheets we fall back to the shared inFlightResume() — resume if one is
   // genuinely in flight, else null (the none-yet position). (Real conformant runsheets
   // land with deliverable B; this is the skill↔spine seam.)
+  // `attended` — the per-series LAYER 2 navigation list (two-layer compulsory
+  // model; see pathway.mjs). Forwarded from progress.json verbatim, defaulting to
+  // [] when absent (an old / not-yet-migrated record — see migrate-progress.mjs).
+  // (CONTRACT, parity with the `compulsory` forwarding note above: pathway() reads
+  // `attended` to decide whether a compulsory runsheet has been genuinely run;
+  // silently dropping it here would make EVERY compulsory challenge permanently
+  // un-skippable in production, never the intended "skip once attended".)
+  const attended = Array.isArray(progress.attended) ? progress.attended : [];
   const next =
     sheets.length > 0
       ? pathway({
           outcomes: progress.outcomes || {},
           runsheets: sheets,
           current: progress.current,
+          attended,
         })
       : inFlightResume(progress.current);
 

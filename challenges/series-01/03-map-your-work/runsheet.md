@@ -122,3 +122,19 @@ runs in: learning-guide
 - **Compulsory (confirmed-only skip):** the map is the tailoring input for everything after it and
   the home of the capstone candidates — the pathway may pass it only on confirmed evidence, never on
   forward credit alone.
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DLGT-03` · sort-judgment-vs-rules** — The learner can sort a piece of work into judgment/language work (where an AI model is the right tool) versus fully-specifiable rules-work (where a deterministic tool — formula, script, filter, template — is better because it's rerunnable, auditable, and right every time), applying "if you can fully write down the rules, don't use the model to guess them."
+  ↳ checks: given real tasks, the learner buckets them with a stated reason that shows the sorting rule; "AI because it's hard" is caught and corrected.
+
+- **`01-DLGT-08` · pick-the-right-rung** — The learner can choose the *simplest* tool that solves a recurring task — recognising over-build (a script where a template would do) and under-build (not seeing that a tool could absorb a manual copy-paste ritual).
+  ↳ checks: in the capstone the machine sits on the lowest adequate rung and the learner can justify the rung; OR at debrief the learner re-sorts a task they'd previously over/under-automated.
+
+- **`01-DLGT-04` · build-delegation-map** — The learner can build a delegation map of their own recurring work — each real task triaged AI / deterministic / hybrid / human-only with one line of reasoning — and can decompose at least one hybrid task into its AI part and its deterministic part.
+  ↳ checks: artifact `delegation-map.md` with 8+ real tasks, each bucketed with a sound reason; at least one hybrid genuinely split; 1–2 "capstone candidates" marked.
+
+- **`01-DLGT-05` · keep-it-human** — The learner can identify work to keep human-only — relationships, accountability, judgment calls they own — and can defend *not* delegating it as a delegation decision in its own right, not a gap.
+  ↳ checks: the delegation map's human-only bucket is populated with a defended reason; in conversation the learner can name something they will deliberately never hand over and why.

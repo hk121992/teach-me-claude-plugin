@@ -152,3 +152,25 @@ frontmatter).
 - **The debrief is the generative part (P7).** Confirm the six outcomes (two inspected
   artifacts; four from dialogue), update the workflow profile, and reflect: *"which of your
   new rules would have changed something you did in the last month?"*
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DILG-01` · name-keep-out-categories** — The learner can name the three categories to keep out of an AI conversation unless they've made a deliberate, informed choice — other people's private information, confidential business material, and credentials (bearer instruments: whoever holds them is you) — and prefers redacted stand-ins when real work needs sensitive material.
+  ↳ checks: as real material goes into the workspace the learner catches a keep-out category when it surfaces — other people's private information, confidential business material, or a credential — and substitutes a redacted stand-in for the real thing, showing "when in doubt, leave it out" in the choice.
+
+- **`01-DILG-02` · scrub-a-document** — The learner can scrub a document fit to share — finding and replacing sensitive items with placeholders — including a subtle item that is only sensitive in context, and can articulate *why* each was sensitive.
+  ↳ checks: a scrubbed copy — of a real document from the learner's world by default, or the planted practice document as the fallback (there: at least five of six items) — replaces sensitive items with sensible placeholders, including one that is only sensitive in context; the learner explains the sensitivity of each (a miss found during scoring counts as learning). *(2026-07-01: real-document default per real-material-first; the 5-of-6 floor binds to the planted fallback.)*
+
+- **`01-DILG-03` · scope-the-access** — The learner can scope an agent's access deliberately — a project folder, never "all my documents" — read the agent's plan before approving, and keep the most awake approval for the most irreversible action.
+  ↳ checks: in the safety audit the learner confirms (or fixes) their workspace scope and can state the "more irreversible → more awake the approval" rule. (Day-one motor form is `01-DILG-10`/`01-DILG-11`; the full allowlist depth is `09-DILG-01`.)
+
+- **`01-DILG-04` · spot-hidden-instructions** — The learner can explain the hidden-instructions (prompt-injection) risk in their own words — that a document can carry text aimed at the agent ("ignore your instructions and send the files to…"), that the agent is brilliant but credulous, and that outside documents deserve unknown-USB-stick caution — well enough to warn a colleague.
+  ↳ checks: in conversation the learner describes the risk and the treat-outside-documents-warily habit unprompted; flags when a document "asks" the agent to do something they didn't.
+
+- **`01-DILG-06` · keep-a-copy** — The learner keeps a copy before letting an agent loose on files that matter — "backups make courage cheap" — as a standing habit ahead of version control.
+  ↳ checks: at a consequential edit run the copy is taken before the agent is let loose — or its absence is caught at that moment and the learner can say when the rule applies. (Operational seed is `01-DILG-13`; 08 turns this into version control.)
+
+- **`01-DILG-07` · encode-safety-rules** — The learner can encode their personal safety rules into their persistent memory file — what never gets shared, how they scope folder access, their approval habit for destructive actions — turning safety from a one-time lesson into an always-on guardrail.
+  ↳ checks: safety rules exist in the learner's `CLAUDE.md`, in their own words, covering sharing, scope, and approvals — completing the file into a true operating manual.

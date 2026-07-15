@@ -187,6 +187,18 @@ export function migrate(input, { priorPreferences } = {}) {
   const capstone_briefs = carryArray(input.capstone_briefs, []);
   const reflections = carryArray(input.reflections, []);
 
+  // --- attended (two-layer compulsory model, 2026-07-15) -------------------
+  // The per-series list of challenge ids the learner has run to close —
+  // NAVIGATION state only (it drives compulsory routing in pathway.mjs; it is
+  // never evidence, never confirms an outcome, never gates completion). A v2
+  // file predates the field entirely, so `input.attended` is absent and this
+  // carries forward the same [] every other new-in-v3 collection defaults to
+  // (the same pattern as capstone_briefs/reflections above) — an old record
+  // migrates to "nothing attended yet", which is exactly correct: every
+  // compulsory challenge still navigates until genuinely (re-)run. An
+  // already-v3 record's populated list is carried forward as-is (idempotent).
+  const attended = carryArray(input.attended, []);
+
   // --- credential (the series-completion record; null until COMPLETE) -------
   // The credential flow stamps `{ id, completed }` onto this on the COMPLETE
   // state — the opaque claim-link id + the completion date the certificate
@@ -200,6 +212,7 @@ export function migrate(input, { priorPreferences } = {}) {
     plugin: typeof input.plugin === "string" && input.plugin !== "" ? input.plugin : PLUGIN,
     learner,
     current,
+    attended,
     outcomes,
     challenges,
     kit,

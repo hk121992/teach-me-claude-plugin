@@ -133,3 +133,19 @@ runs in: series
 - **Not compulsory by design:** an experienced operator may advance past; the checkpoint
   discipline is re-confirmed wherever staged work recurs (the capstone's build re-touches
   it).
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DESC-06` · decompose-with-checkpoints** — The learner can break a big job into 3–6 staged pieces with checkpoints placed where *their* judgment should enter (gather → outline → draft one section → review → draft the rest → final pass), instead of handing over a whole project in one breath.
+  ↳ checks: a staged plan existed before execution with the learner's own checkpoint criteria (not just stage names); at least one mid-course correction occurred and shows in the final artifact.
+
+- **`01-DSCN-08` · review-at-checkpoints** — The learner can give a substantive verdict at a checkpoint — specific praise or a specific change — acting as the editor of the agent's work rather than waving stages through with "fine, continue", including catching themselves about to wave work through when no checkpoint was set, and stopping to review unprompted.
+  ↳ checks: every checkpoint in a staged job got a real verdict; at least one produced a course-correction; the learner can say which checkpoint earned its keep.
+
+- **`01-DESC-09` · restart-with-better-brief** — The learner can recognise when a session has derailed *or simply run too long / wandered* and stop correcting it, starting fresh with a *better* brief that carries the lessons — knowing that failed attempts and accumulated drift linger in a session's context and that restarting is the experienced move, not defeat.
+  ↳ checks: in conversation the learner can say when they'd start a fresh session rather than keep correcting; ideally demonstrated once when a run derails. (Operational floor owned by `01-DILG-14`.)
+
+- **`01-DILG-05` · own-the-verification** — The learner treats checking the agent's work as their own responsibility — adopting the verification habit not as a chore but as ownership of anything that goes out under their name, calibrated to the stakes of the output.
+  ↳ checks: the learner runs (not just describes) a stakes-appropriate check before treating a result as final, at least once unprompted; can name the most expensive mistake the agent could make in their job and their check for it.

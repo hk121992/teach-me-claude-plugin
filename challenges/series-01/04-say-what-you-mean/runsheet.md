@@ -123,3 +123,16 @@ frontmatter).
   dialogue, the improved brief, the template file), record what writing work recurs for them in the
   workflow profile, and reflect: which load do they carry naturally, and which will they forget
   without the template?
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DESC-01` · carry-four-loads** — The learner can brief a task carrying the four loads — context, audience, format, success criteria — and can name what each load does, recognising that generic output is usually a hollow brief rather than a weak model.
+  ↳ checks: an improved brief identifiably carries all four loads; the learner can say what each does and which one they personally tend to drop.
+
+- **`01-DESC-02` · brief-like-newcomer** — The learner can brief the agent the way they'd brief a capable newcomer on day one — supplying relevant specifics rather than hunting for "magic keywords" — and can recognise that more relevant detail beats clever phrasing.
+  ↳ checks: the same task briefed vague then specifics-rich (run live, in fresh sessions that write nothing), with two concrete output differences named; the learner attributes the improvement to specifics, not phrasing. *(2026-07-01: dropped the legacy `before-after.md` artifact — the re-composed demo is writes-nothing by design; the evidence is the recounted contrast.)*
+
+- **`01-DESC-03` · distil-brief-template** — The learner can distil a reusable brief template in their own words that they'd still understand in a month — making good briefing repeatable rather than re-invented each time.
+  ↳ checks: artifact `my-brief-template.md` in the learner's own voice, the four loads recognisable however phrased; it joins the kit.

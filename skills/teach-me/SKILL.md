@@ -135,7 +135,7 @@ An `outcomes` entry, once written, has the v3 shape (the review fills it):
 ```jsonc
 "01-DESC-04": {
   "status": "unmet",           // unmet | provisional | confirmed
-  "evidence_kind": "artifact", // artifact | conversational | live-action | emergent
+  "evidence_kind": "artifact", // artifact | conversational | live-action
   "evidence_ref": "",          // file path | "challenge:01-L-YNFB#turn"
   "verdict": "",               // pass | refine
   "history": []                // append-only, capped

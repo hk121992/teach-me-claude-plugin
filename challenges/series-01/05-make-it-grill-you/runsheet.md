@@ -83,3 +83,13 @@ the frontmatter).
   learner hands *you* a vague ask, let the grill-me skill (or its spirit) interview them.
 - Reflect at close (P7): what changed, and where else does the learner get agreeable
   answers because of how they ask?
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DESC-04` · build-grill-me-skill** — The learner can build and use a personal skill that inverts the briefing relationship — Claude interrogates *them* one question at a time until it could write the brief itself, challenges weak premises, and shows the brief for sign-off before doing anything — so gaps in their asks are caught by machinery, not memory.
+  ↳ checks: an installed `grill-me` skill that fires when invoked; its body (the learner's own words) encodes interview-until-complete, challenge-the-premise, and brief-sign-off-before-work; a proof run surfaced something the learner's lazy ask had omitted.
+
+- **`01-DSCN-04` · recognise-sycophancy** — The learner can recognise sycophancy — the agent's trained lean toward agreement — and knows that framing assigns the role: "what do you think?" hires a cheerleader, "argue against this / red-team this" hires a critic.
+  ↳ checks: across two fresh-session demos (praise-seeking vs critique-seeking on a half-baked idea of their own) the learner names the difference in register and can explain *why* it happens; can warn a colleague.

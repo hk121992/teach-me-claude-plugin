@@ -118,3 +118,16 @@ runs in: fresh
 - **Not compulsory by design:** an experienced learner may advance past; the safety-rules kit
   artefact later in the series creates-or-extends this same file regardless of path, and the
   capstone re-touches these outcomes.
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DESC-07` · write-agent-memory** — The learner can write a persistent memory file the agent reads at the start of every session — encoding who they are, how they like output, their conventions, and their always/never rules — so persistent preferences are engineered with a file rather than re-explained each chat.
+  ↳ checks: a `CLAUDE.md` exists in the workspace, fits ~one screen, encodes real preferences traceable to their template/checklist/map (not boilerplate), and proved itself in a fresh session that followed preferences it was never told.
+
+- **`01-DESC-08` · apply-pruning-test** — The learner can keep a memory file short and sharp by applying the pruning test to every line — "would removing this cause a mistake?" — recognising that a bloated file gets skimmed and buried instructions get missed.
+  ↳ checks: the learner's `CLAUDE.md` is roughly one screen and every line plausibly passes the pruning test; the learner can defend a cut they made.
+
+- **`01-DESC-05` · explain-a-skill** — The learner can explain what a skill *is* — a small file of instructions (name, a description of when it applies, a body) that Claude loads when relevant — and that teaching it once makes the behaviour automatic every time.
+  ↳ checks: walking their own skill file (e.g. the grill-me skill they built), the learner points at its parts — name, the when-it-applies description, the body — and contrasts "teach it once and it fires automatically" with re-typing the instruction each session. (The craft of skills is owned by 07.)

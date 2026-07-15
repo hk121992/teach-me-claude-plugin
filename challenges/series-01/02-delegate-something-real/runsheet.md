@@ -132,3 +132,31 @@ runs in: series
   their work, and reflect — would they ship the result? What would they hand over next?
 - **Not compulsory by design:** an experienced delegator may advance past; the habits are encoded
   durably later in their CLAUDE.md safety rules (which creates-or-extends regardless of path).
+
+## Outcomes
+
+_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+
+- **`01-DLGT-01` · choose-a-delegation** — The learner can choose a good task to hand to an agent rather than delegating by reflex — selecting work whose input already exists, whose output has a known shape, and which sits in their own domain so they can judge the result at a glance.
+  ↳ checks: the learner picks a real task and can name why it's a good first delegation (input exists / shape known / they can judge it); the chosen task meets those traits.
+
+- **`01-DLGT-02` · stay-the-owner** — The learner treats a delegated result as a *draft for their judgment* and runs the brief→receive→review→revise loop, requesting at least one revision as a normal part of the work rather than accepting the first output or treating revision as failure.
+  ↳ checks: a revision was requested in the learner's own words and the final artifact reflects it; the learner can say whether they'd actually use the result and why.
+
+- **`01-DILG-13` · copy-before-courage** — Before letting the agent loose on a file that matters, the learner makes a copy first — adopting "a copy makes courage cheap" at the operational level, ahead of the version-control treatment much later.
+  ↳ checks: a duplicate of an important file exists before an edit run — or its absence is caught at that run. (Motor-habit seed of `01-DILG-06`.)  · substrate: claude
+
+- **`01-DILG-10` · read-before-approving** — The learner can read an approval / permission prompt before acting on it, say in plain language what the agent is about to do, and choose approve or decline deliberately rather than clicking through reflexively.
+  ↳ checks: during a live prompt the learner pauses, paraphrases the action ("it wants to delete this file"), and states a reason for their choice; the reflex "always allow" anti-pattern is named and avoided. (Floor under `09-DILG-01`, which owns allowlist/approval-mode depth.)  · substrate: claude
+
+- **`01-DILG-19` · recover-from-a-bad-action** — The learner can respond to an agent doing the wrong thing — undo it, ask the agent to put it back, or restore from the copy they made — rather than freezing or assuming the work is ruined.
+  ↳ checks: after a wrong edit, the learner gets the prior state back and can name their recovery options before approving risky actions. (Pairs with `01-DILG-13` copy-before-courage; `08-DILG-01` undo-for-agents specialises it.)  · substrate: claude
+
+- **`01-DILG-11` · spot-irreversible-actions** — The learner can distinguish a reversible action (editing text they can re-edit) from an irreversible one (deleting or overwriting a file) and treats the irreversible ones with more caution when approving.
+  ↳ checks: when a destructive action (delete/overwrite/move) comes up in the learner's real delegation, they treat it with more caution than an ordinary edit, tying the difference to "I can't easily get it back."  · substrate: claude
+
+- **`01-DILG-17` · pause-before-pasting** — Before pasting or dragging material into the agent on day one, the learner can pause and ask whether it contains other people's private information, confidential business material, or credentials — not blundering in before the full treatment.
+  ↳ checks: when reaching for something sensitive during onboarding, the learner flags it and substitutes a safer stand-in; a pointer to the full treatment is made once. (Thin precursor to `01-DILG-01`/`01-DILG-02`.)  · substrate: claude
+
+- **`01-DILG-16` · invoke-help-deliberately** — The learner knows how to summon their learning guide / a skill on purpose (e.g. "continue my course", "review this") rather than assuming the right help loads invisibly — so they are never stuck not knowing how to get the next step.
+  ↳ checks: the learner re-enters the course or asks for a review using their own words and it triggers; in review the learner can say they know how to call for the next thing rather than waiting for it to appear.  · substrate: claude
