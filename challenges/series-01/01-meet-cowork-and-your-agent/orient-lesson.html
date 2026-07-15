@@ -4,8 +4,8 @@
   Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
   .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
   pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
-  No JS. The "open in browser" takeaway is a GUIDE behaviour (link dropped below the widget), not a widget
-  affordance — see the runsheet's ## Learning-guide notes. Real Cowork labels per cowork-ui-reference.md.
+  No JS. The "open in browser" takeaway is a GUIDE behaviour, not a widget affordance — the runsheet (S1)
+  has the guide link the shipped orient-takeaway.html. Real Cowork labels per cowork-ui-reference.md.
 -->
 <html lang="en">
 <head>
@@ -46,10 +46,10 @@
         <p class="tmc-muted">A two-minute read, then you'll try it yourself on the next slide.</p>
 
         <div class="tmc-lsec">
-          <h2>What this thing actually is</h2>
-          <p>The thing you're talking to isn't a chat box that just replies. It's an <strong>agent</strong> —
+          <h2>What this is</h2>
+          <p>What you're talking to isn't a chat box that just replies. It's an <strong>agent</strong> —
              a coworker that can open, read, create, and change real files for you, and take actions.</p>
-          <p>Three things it's <strong>not</strong>, so you set the right expectations:</p>
+          <p>Three things it's <strong>not</strong>:</p>
           <ul class="tmc-not">
             <li>not a search engine — it can sound completely sure and still be wrong</li>
             <li>not a database of your private facts — it only knows what you show it</li>
@@ -73,6 +73,13 @@
              folder on your computer, not trapped inside the chat.</p>
         </div>
 
+        <div class="tmc-callout">
+          <p><strong>What's <code>.md</code>?</strong> The <code>.md</code> ending is used for a
+             <strong>markdown</strong> file — plain text with a few light formatting marks for headings
+             and lists. It is a simple format that is preferred for its compatibility with any operating system and text-editor, as well as its balance between human and machine readability. That's why agents default to it for working documents — save heavier formats
+             like Word for when you actually need to send one.</p>
+        </div>
+
         <div class="tmc-nav">
           <span class="tmc-page">Slide 1 of 2</span>
           <label class="tmc-navbtn" for="lz-s2">Now try it yourself →</label>
@@ -89,34 +96,29 @@
            agent's word for it.</p>
 
         <ol class="tmc-steps">
-          <li><strong>Start a new task.</strong> In Cowork, click <strong>+ New task</strong> at the top of
-             the left sidebar — that opens a fresh, blank conversation. It won't remember this lesson, which
-             is why your steps are in the box below to take with you.</li>
-          <li><strong>Point it at your project folder.</strong> Under the message box, open
-             <strong>Work in a project or folder</strong> and pick your Teach Me Claude folder
-             (<code>series-01-foundations</code>). Not sure it's set? Just ask the agent:
-             <span class="tmc-say">Which folder are we working in right now?</span></li>
+          <li><strong>Start a new task.</strong> In the <strong>Home</strong> tab, click <strong>+ New</strong>
+             at the top of the left sidebar (check <strong>Cowork</strong> is selected). It starts fresh:
+             the new agent has the folder you point it at, plus any global instructions you've set in
+             Claude — but none of this lesson or your guide. Working with that is part of the task.</li>
+          <li><strong>Point it at your project folder.</strong> Under the message box, click
+             <strong>Project or folder</strong> and pick your Teach Me Claude folder for series 1
+             (<code>series-01-foundations</code>).</li>
           <li><strong>Send your first instruction — exactly this:</strong>
              <span class="tmc-say">Create a file called first-day.md and write today's date and my name at the top.</span></li>
           <li><strong>Go find it yourself.</strong> Don't take its word that it's done — open
-             <code>first-day.md</code> and see it's really there. That gap, between <em>"I made the file"</em>
-             and <em>seeing</em> it, is the whole point.</li>
-          <li><strong>Now ask one small real thing.</strong> Something tiny from your actual work —
-             <span class="tmc-say">Draft three subject lines for the email I have to send about …</span> —
-             and judge the result like the expert you are. Day one shouldn't end before it's helped you
-             once for real.</li>
+             <code>first-day.md</code> and see it's really there.</li>
         </ol>
 
         <div class="tmc-take">
           <h2>Take these with you</h2>
-          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page — keep these
-             beside you (your guide will drop a link below to open them in your browser):</p>
+          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page —
+             <strong>click the link below this lesson</strong> to open these in your browser and keep
+             them beside you:</p>
           <ul class="tmc-check">
-            <li>Click <strong>+ New task</strong> (top-left) — a blank slate</li>
-            <li>Open <strong>Work in a project or folder</strong> → pick <code>series-01-foundations</code></li>
+            <li>Click <strong>+ New</strong> (top-left, Home tab) — a blank slate, with <strong>Cowork</strong> selected</li>
+            <li>Click <strong>Project or folder</strong> → pick <code>series-01-foundations</code></li>
             <li>Send: <em>"Create a file called first-day.md and write today's date and my name at the top."</em></li>
             <li>Open <code>first-day.md</code> yourself and check it's really there</li>
-            <li>Ask one small <em>real</em> thing from your own work — then judge it</li>
             <li>Hit a usage limit? It's a metered pause, not a broken course — your work is saved</li>
           </ul>
         </div>

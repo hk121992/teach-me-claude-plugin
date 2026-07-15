@@ -401,6 +401,12 @@ record a **reflection** (every challenge), **update the workflow profile** and
 tie the lesson back to their real work, preview the domain where a vehicle is
 present, and offer one resource pointer only where the runsheet calls for it.
 
+**Never assume the sitting ends with the lesson.** After the close, offer to
+continue directly — *"Want to move straight on to the next challenge?"* — an
+open invitation, never pressure. A yes rolls into the next challenge here and
+now; a no (or silence) parks warmly with the how-to-return reminder. Never
+sign off with "see you next time" as if the decision were already made.
+
 **Series-completion** fires **only on the `COMPLETE` state** — every taught
 outcome `confirmed`, the pathway returning its sentinel — **never** on reaching
 the last challenge or passing the capstone as a step. A learner can sit on the

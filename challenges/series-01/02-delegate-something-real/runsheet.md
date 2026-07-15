@@ -16,6 +16,7 @@ covers_outcomes:
   - { uid: 01-DILG-19, evidence_kind: live-action,    role: floor, floor_confirmable: true }
   - { uid: 01-DILG-11, evidence_kind: conversational, role: floor, floor_confirmable: true }
   - { uid: 01-DILG-17, evidence_kind: conversational, role: floor, floor_confirmable: true }
+  - { uid: 01-DILG-16, evidence_kind: live-action,    role: floor, floor_confirmable: true }
 reconfirms: []
 share_moment: false
 widgets:
@@ -74,6 +75,9 @@ cards eat your week — let's hand one over today") so the lesson starts inside 
 One criterion per covered outcome (1:1; references the uid; evidence_kind lives only in the
 frontmatter).
 
+- **01-DILG-16** · invoke-help-deliberately — shows at this lesson's opening beat: the learner
+  summoned it in their own words (e.g. *"continue my course"*) and it triggered — they return to
+  the course on purpose. (Evidence arises before the lesson content starts; observed, never staged.)
 - **01-DLGT-01** — Picked a real task and can name why it's a good first delegation (input exists /
   shape known / their own domain so they can judge it); the chosen task actually meets those
   traits.

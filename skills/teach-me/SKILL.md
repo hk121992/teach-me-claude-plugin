@@ -113,8 +113,9 @@ container-root `.teach-me/`). **Initialise the v3 state** there — two files:
 
 Copy `${CLAUDE_PLUGIN_ROOT}/data/progress-template.json` (it is
 `version: 3`). Fill `learner.started` with today's date and the learner fields
-from the conversation below. The template ships with an **empty `outcomes` map**;
-seed it **all-`unmet`**.
+from the onboarding widget handback + the light follow-up below (§3). The template
+ships with an **empty `outcomes` map**; seed it **all-`unmet`** (§3 then flips the
+learner's already-demonstrated capabilities to `provisional`).
 
 **Seeding the `outcomes` map (honest mechanics).** The outcomes *matrix*
 (`curriculum/outcomes.md`) is a **design file that does NOT ship in the plugin**,
@@ -179,31 +180,67 @@ Their permanent kit pieces home later as they appear — built-kit `/`-commands 
 the container `.claude/`, plain artefacts as ordinary files; don't pre-make a
 `kit/` folder now.
 
-## 3. Get to know them — a few turns, not an interview
+## 3. Get to know them — the onboarding questionnaire, then a light follow-up
 
-A short, friendly conversation — **two or three exchanges, not a form**. Open
-with ONE combined ask in your own words: *"Before we start — what should I call
-you, what do you do all day, and what's the one recurring task you'd most love
-to hand over?"* Then at most a follow-up or two where an answer is vague
-(Socratic, curious — never a re-ask). **Never ask for anything the conversation
-has already given you** — if they said their name, their language, or their job
-in passing, record it silently; re-asking answered questions is the fastest way
-to lose them. Record in `learning-guide/.teach-me/progress.json` (`learner.*`)
-and `learning-guide/.teach-me/preferences.json`:
+Lead with the **onboarding widget** — the first questionnaire — not a cold Q&A.
+Instantiate it the way a lesson widget is instantiated (through
+`${CLAUDE_PLUGIN_ROOT}/scripts/widget-fill.mjs`); it lives at
+`${CLAUDE_PLUGIN_ROOT}/challenges/series-01/00-onboarding/onboard-lesson.html`. It is
+**state-free** — its `data-tmc-inputs` manifest is the empty object `{}` (onboarding runs
+*before* any profile exists, so there is nothing to fill and **no nonce to issue**), so
+`widget-fill` just returns it ready to show. Frame it in one warm line ("a handful of quick
+questions so every lesson is tuned to you") and show it.
 
-- **name** — what they'd like to be called (`learner.name`).
-- **profession** — what they do all day (`learner.profession`).
-- **goals** — what made them want this; what they wish took less time
-  (`learner.goals`).
-- **language** — from the language they're already writing in (confirm in one
-  word if ambiguous); **ai_maturity** — **infer it** from how they talk about AI
-  rather than quizzing them, into `preferences.json` (above).
-- **workflow_profile seeds** — the recurring tasks that eat their week,
-  **especially the hand-over task from the opening ask** (the first
-  `learner.workflow_profile` entries). These seeds are load-bearing: lesson 2
-  delegates one of them for real, the delegation map sorts them, and the
-  capstone machine is built for one — capture them concretely ("report cards
-  every term", not "admin").
+**Consume its handback directly.** On submit the widget `sendPrompt`s a `tmc_handback`
+envelope with `kind: "onboarding"`:
+
+```jsonc
+{ "tmc_handback": true, "kind": "onboarding",
+  "answers": { "name", "profession", "handover_task", "work_preferences", "language" },
+  "prior_experience": ["delegated-reviewed", "verified-output", …] }
+```
+
+Do **not** run it through `handback-verify.mjs` — that verifier guards an *in-flight
+challenge's* nonce/widget_id/challenge triple, and at onboarding there is none (this is
+the first interaction, the one that *creates* the profile; there is nothing to replay).
+Read the envelope straight. From `answers`, record into
+`learning-guide/.teach-me/progress.json` (`learner.*`) and
+`learning-guide/.teach-me/preferences.json`:
+
+- **name** → `learner.name`; **profession** → `learner.profession`.
+- **handover_task** (and anything else recurring they mention) → `learner.workflow_profile`
+  seeds — **the hand-over task is the load-bearing one** (lesson 2 delegates it for real,
+  the delegation map sorts them, the capstone machine is built for one). Capture it
+  concretely ("report cards every term", not "admin").
+- **work_preferences** and what made them want this → `learner.goals`.
+- **language** → `preferences.language` (default `en` if blank); **ai_maturity** —
+  **infer it** from the breadth of `prior_experience` (and how they write), never by
+  quizzing, into `preferences.json`.
+
+**Seed provisional outcomes from `prior_experience` — the fast-track.** Each ticked
+capability corresponds to a lesson's taught outcomes; mark those outcomes
+`status: "provisional"` in the `outcomes` map (`evidence_kind: "conversational"`,
+`evidence_ref: "onboarding:self-report"`, `verdict: ""`) so the pathway **skips** what the
+learner already does:
+
+- `delegated-reviewed` → the delegation lesson's outcomes · `wrote-briefs` → the briefing
+  lesson's · `verified-output` → the verification lesson's · `set-up-memory` → the memory
+  lesson's · `built-automation` → the build-your-own-machine lesson's.
+- `used-ai` informs **ai_maturity only** — do **not** provisionally credit the day-one
+  orientation from it; lesson 1 is the felt-win bridge and always runs for a new learner.
+
+Provisional is a **forward credit, not a pass**: self-report is weak evidence, so these stay
+`provisional` (never `confirmed`), and the strict-completion invariant still requires each to
+be **confirmed** — by the capstone's retrieval re-touch or a real-task path — before the
+certificate. Never over-credit; when a tick is ambiguous, leave the outcome `unmet` and let
+the lesson run.
+
+**Then a light follow-up, not an interview.** Fill only the gaps the widget left — at most a
+curious question or two where an answer is vague (Socratic, never a re-ask). **Never ask for
+anything the widget or the conversation already gave you.** If the learner skips or can't use
+the widget, fall back gracefully to a short conversation — one combined ask (*"what should I
+call you, what do you do all day, and the one task you'd most love to hand over?"*) captures
+the same fields. The widget is the front door, not a gate.
 
 ## 4. Launch the first challenge — the tight bridge
 
