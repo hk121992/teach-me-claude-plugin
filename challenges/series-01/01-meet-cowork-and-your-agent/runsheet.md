@@ -71,7 +71,7 @@ their file. Respond to what they share — never turn it into a check.
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DSCN-01` · model-the-agent** — The learner can articulate what an AI agent is and the three things it is not — not a search engine (confidently wrong is possible), not a database (knowledge cutoff; doesn't know their company's facts unless shown), not learning from them in real time — and use that model to set expectations.
   ↳ checks: the learner can state at least two of the "three things it is not" in their own words.
@@ -92,13 +92,13 @@ _Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the 
   ↳ checks: the learner navigates (in Finder/Explorer or via the agent) to the workspace folder and opens a produced file independently of the chat; can state the folder's location in words.  · substrate: claude
 
 - **`01-DLGT-10` · name-workspace-scope** — The learner can identify which folder the agent is currently working in and articulate that the agent acts within that scope — that it is not silently operating over their whole computer.
-  ↳ checks: asked "where is the agent working right now?" the learner names the workspace folder (or asks the agent and reads it back correctly), and can say that files outside it are not in play by default.  · substrate: claude
+  ↳ checks: in the course of real work — pointing a session at a folder, or finding where output landed — the learner names the folder the agent is working in (or asks the agent and reads it back correctly), and can say that files outside it are not in play by default.  · substrate: claude
 
 - **`01-DSCN-12` · know-markdown-default** — The learner can say what a Markdown (`.md`) file is — plain text with light, readable formatting — and why an agent reaches for plain-text/code formats by default (portable, openable anywhere, easy to version), so the files the agent creates aren't a mystery.
   ↳ checks: shown a `.md` file the agent made, the learner can describe what it is, open it, and say in their own words why the agent didn't reach for a heavier format; they treat `.md` as a normal, openable file, not something technical.
 
 - **`01-DLGT-12` · name-surface-limits** — The learner can name at least two things the surface/agent cannot do on its own — e.g. it will not remember this conversation in a brand-new chat unless something was written down, it cannot reach files they never brought into the workspace, and memory and skills load automatically in their workspace but must be pasted into a plain chat.
-  ↳ checks: the learner lists concrete "it can't" items correctly; the memory limit and the file-reach limit are the two that must appear. (Scoped to operational consequences; the fuller "three things it is not" model is `01-DSCN-01`.)  · substrate: claude
+  ↳ checks: as the limits surface in real work — a fresh session starting blank, a file outside the workspace out of reach — the learner names them as expected behaviour rather than breakage; the memory limit and the file-reach limit are the two that must appear. (Scoped to operational consequences; the fuller "three things it is not" model is `01-DSCN-01`.)  · substrate: claude
 
 - **`01-DILG-14` · start-fresh-chat** — The learner can start a brand-new chat / session on purpose and return to it, knowing that a fresh chat starts blank — so they can deliberately separate one piece of work from another instead of piling everything into one runaway conversation.
   ↳ checks: the learner opens a fresh session unaided when asked, and can explain that the new chat won't carry the previous one's context unless it was written down. (Operational floor under `01-DESC-09`.)  · substrate: claude

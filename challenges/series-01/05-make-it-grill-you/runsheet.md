@@ -86,7 +86,7 @@ the frontmatter).
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DESC-04` · build-grill-me-skill** — The learner can build and use a personal skill that inverts the briefing relationship — Claude interrogates *them* one question at a time until it could write the brief itself, challenges weak premises, and shows the brief for sign-off before doing anything — so gaps in their asks are caught by machinery, not memory.
   ↳ checks: an installed `grill-me` skill that fires when invoked; its body (the learner's own words) encodes interview-until-complete, challenge-the-premise, and brief-sign-off-before-work; a proof run surfaced something the learner's lazy ask had omitted.

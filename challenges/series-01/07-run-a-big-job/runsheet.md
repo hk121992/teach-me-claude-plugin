@@ -136,7 +136,7 @@ runs in: series
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DESC-06` · decompose-with-checkpoints** — The learner can break a big job into 3–6 staged pieces with checkpoints placed where *their* judgment should enter (gather → outline → draft one section → review → draft the rest → final pass), instead of handing over a whole project in one breath.
   ↳ checks: a staged plan existed before execution with the learner's own checkpoint criteria (not just stage names); at least one mid-course correction occurred and shows in the final artifact.

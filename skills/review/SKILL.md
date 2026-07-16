@@ -15,8 +15,20 @@ never on the learner's say-so. A review that signs off on self-report alone is
 worthless; the north-star (`confirmed` outcomes) is only meaningful because
 every `confirmed` is backed by real evidence.
 
+**Two runsheet shapes, mid-transition — read whichever the runsheet actually
+carries; never assume one.** A runsheet **with a `## Steps` section** is
+steps-first: route by each step's `*(context · actor)*` marker (`home base` ·
+`series folder` · `fresh session`), and grade each covered uid against its entry
+in the runsheet's generated **`## Outcomes` appendix** — the outcome's own
+statement + `↳ checks` line. **The criterion IS the outcome** — never bespoke
+per-lesson criterion text. Reflection/debrief follow the runsheet's debrief
+step. A runsheet **without `## Steps`** (classic — transitional while the older
+challenges convert) carries the classic `## Rubric` / `## Demo` / `runs in:` /
+`## Learning-guide notes` sections — follow them as written.
+
 **Closing the break-out (cross-folder read on return).** When the challenge ran
-as a break-out — `runs in: series` or `runs in: fresh` — `review` is the
+as a break-out — a step marked `series folder` / `fresh session`, or a classic
+`runs in: series` / `runs in: fresh` — `review` is the
 **return half** of the handoff bracket the `challenge` skill opened. You run here
 in the home base (`learning-guide/`, full context); the doing happened elsewhere
 (the `series-NN/` folder, or a fresh session). So when the learner comes back and
@@ -30,20 +42,23 @@ recounting, below, not a cross-folder read.)
 1. Read `.teach-me/progress.json` and the in-flight runsheet. The runsheet under
    review is `current.runsheet` (respect an explicit request to review a
    different one). **Do not read or write any integer position** — see *Recording*.
-2. Read the runsheet's `covers_outcomes` block and its `## Rubric`. Each covered
-   entry is a `{ uid, evidence_kind, role, floor_confirmable }` tuple, and there
-   is exactly one rubric criterion per uid. You grade **each covered uid**
-   against its own rubric criterion (the criterion derives from that outcome's
-   `checks` line in the matrix).
+2. Read the runsheet's `covers_outcomes` block and its grading bars. Each
+   covered entry is a `{ uid, evidence_kind, role, floor_confirmable }` tuple.
+   **The grading bar for each covered uid is its entry in the runsheet's
+   generated `## Outcomes` appendix** — the outcome's statement + `↳ checks`
+   line (the criterion IS the outcome). On a classic runsheet, additionally
+   follow its `## Rubric` as written (one criterion per uid, mirroring those
+   bars).
 
 # Grade per evidence-kind
 
 For each covered uid, gather evidence of its declared `evidence_kind` and judge
-it against the rubric criterion. The three evidence kinds, and how you confirm each:
+it against the outcome's checks bar (the `## Outcomes` appendix entry — see
+step 2). The three evidence kinds, and how you confirm each:
 
 - **artifact** — open and **inspect the real file** the learner produced and
-  judge it against the rubric criterion (e.g. read their `grill-me` skill, their
-  brief template). No file, no `confirmed`.
+  judge it against the outcome's checks bar (e.g. read their `grill-me` skill,
+  their brief template). No file, no `confirmed`.
 - **conversational** — judge a **dialogue demonstration**: what the learner
   actually said/did in the session shows the move. Read the real turns.
 - **live-action** — confirm an **observed in-session moment** that happened in
@@ -80,7 +95,7 @@ home-base recounting — not the break-out — carries the evidence.)
 
 Each graded outcome gets a verdict of **`pass`** or **`refine`**.
 
-- **pass** — the rubric criterion is met against real evidence (strict but
+- **pass** — the outcome's checks bar is met against real evidence (strict but
   kind). Name the specific thing they did well and the move they've now shown.
 - **refine** — the criterion is not yet met. Give **specific feedback + a named
   next step** (exactly what's missing, why it matters, the one thing to do
@@ -128,19 +143,22 @@ special handling — it recomputes from the map every time, so an outcome set ba
 `unmet` **re-surfaces its earlier lesson automatically**.
 
 **Only a `provisional` outcome is reassessable — never a `confirmed` one.**
-`provisional` is the forward-credit status: it is only ever set by advancing-past
-(or an advisory handback signal), **never** by a real in-place grade — so returning
-it to `unmet` can **never erase a win the learner truly earned**. A `confirmed`
-outcome is **never reassessed**: whether it was confirmed in place or credited
-early, a `confirmed` stands; a later, weaker showing does not undo evidence already
-in hand. (A `confirmed`-early outcome that a later challenge contradicts is resolved
-the way every advance-past is — at the **capstone**, the series' retrieval backstop.)
+`provisional` is **credited, not observed** — one state, whatever the credit's
+source: an outcome **taught at its owning challenge's close** (`role: taught`),
+a **forward credit** (advancing past on softer evidence), a learner's
+**self-report**, or a widget's **advisory signals**. None of those is a real
+evidence-graded pass, so returning one to `unmet` can **never erase a win the
+learner truly earned**. A `confirmed` outcome is **never reassessed**: whether
+it was confirmed in place or credited early, a `confirmed` stands; a later,
+weaker showing does not undo evidence already in hand. (A `confirmed`-early
+outcome that a later challenge contradicts is resolved the way every
+advance-past is — at the **capstone**, the series' retrieval backstop.)
 
 **The bar is strong, specific, same-kind evidence — forward-credit's asymmetry,
 inverted.** Forward-credit leans to completeness (credit on soft evidence; the
 capstone backstops a wrong call). Reassessment leans the other way, to
-**precision**: act only on a **direct contradiction of that outcome's own rubric
-criterion, in the same evidence kind it is graded on** (an `artifact` outcome
+**precision**: act only on a **direct contradiction of that outcome's own checks
+bar, in the same evidence kind it is graded on** (an `artifact` outcome
 contradicted by inspecting an artifact; a `conversational` one by the actual
 dialogue). A hesitation, a clarifying question, a slow start, or a stray remark is
 **not** enough. **When in doubt, do not reassess** — leave the forward-credit
@@ -202,6 +220,12 @@ For **each covered uid** (and each uid you forward-credit or reassess), write it
   the contradicting evidence (a `challenge:ID#turn` on the current challenge). Never
   rewrite the prior forward-credit entry — `history` is append-only.
 
+Also **append this challenge's id to the top-level `attended` list** — every
+challenge run to close is recorded there, not only compulsory ones. `attended`
+is **navigation state only**: it is what releases a `compulsory` challenge's
+hold once genuinely attended; it is **never evidence**, never confirms an
+outcome, and never gates completion or the credential.
+
 When the challenge produces a kit piece, record it in the **generic `kit` map**.
 `kit` is keyed by slot-id, each entry shaped `{ label, ref }` — there is **no
 fixed slot list**, so a later (paid) series adds kit artefacts with no schema
@@ -249,16 +273,18 @@ Update `current.runsheet` / `current.status` for the in-flight pointer only (set
 Every review ends with a short debrief — this is where the curriculum compounds
 (P6/P7):
 
-1. **Reflection (P7).** Ask the challenge's reflection question (from its
-   `## Learning-guide notes`) and append their answer to `reflections`.
+1. **Reflection (P7).** Ask the challenge's reflection question (steps-first:
+   from its debrief step; classic: from its `## Learning-guide notes`) and
+   append their answer to `reflections`.
 2. **Workflow profile (P6).** Add anything new you learned about their real
    recurring work to `learner.workflow_profile`, and **tie the lesson back to
    their real work explicitly** ("this is exactly your Monday status report").
    This profile seeds their delegation map and capstone.
 3. **Domain preview** (challenges with a vehicle): name the domain in one
    sentence — a whole series goes deeper later. Preview, never pressure.
-4. **Resource pointer** (only where the `## Learning-guide notes` call for it): one
-   pointer from `${CLAUDE_PLUGIN_ROOT}/RESOURCES.md`, one sentence, no detour.
+4. **Resource pointer** (only where the runsheet calls for it — a debrief step,
+   or a classic body's `## Learning-guide notes`): one pointer from
+   `${CLAUDE_PLUGIN_ROOT}/RESOURCES.md`, one sentence, no detour.
 
 # Series-completion trigger
 

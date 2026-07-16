@@ -155,7 +155,7 @@ frontmatter).
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DILG-01` · name-keep-out-categories** — The learner can name the three categories to keep out of an AI conversation unless they've made a deliberate, informed choice — other people's private information, confidential business material, and credentials (bearer instruments: whoever holds them is you) — and prefers redacted stand-ins when real work needs sensitive material.
   ↳ checks: as real material goes into the workspace the learner catches a keep-out category when it surfaces — other people's private information, confidential business material, or a credential — and substitutes a redacted stand-in for the real thing, showing "when in doubt, leave it out" in the choice.

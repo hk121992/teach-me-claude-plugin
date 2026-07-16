@@ -1,22 +1,27 @@
 // pathway.mjs — the deterministic next-challenge preamble.
 //
-// CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-//   - "The runtime engine — pathway, handoff, session open/close" → Pathway preamble
-//     (deterministic): the first challenge, in series order, with an outcome that is
-//     neither `confirmed` nor `provisional`; a provisionally-credited outcome lets the
-//     pathway SKIP its challenge; when none remain → a COMPLETE sentinel (distinct from
-//     a parked / in-flight state); position is computed, never agent-chosen.
-//   - "Scoring, tracking & sign-off": outcome states unmet | provisional | confirmed;
-//     provisional = forward credit; "Completion requires every taught outcome
-//     `confirmed`. Provisionals … resolved to `confirmed` at the natural intra-series
-//     retrieval point — the capstone retrieves the whole series."
-//   - "The runsheet": `covers_outcomes` is the source of (uid, role, floor_confirmable);
-//     "`floor_confirmable: false` marks an outcome only a real-task path can evidence
-//     (the capstone)."
+// SPEC (the on-demand reference set is this harness's spec home — the handbook page
+// this header once cited is deprecated; same superseding-spec convention as
+// curriculum/authoring/lib/conformance.mjs):
+//   - .claude/on-demand/session-model/README.md → "Pathway preamble (deterministic)":
+//     the first challenge, in series order, with an outcome that is neither
+//     `confirmed` nor `provisional`; a provisionally-credited outcome lets the
+//     pathway SKIP its challenge; when none remain → a COMPLETE sentinel (distinct
+//     from a parked / in-flight state); position is computed, never agent-chosen.
+//     Plus the two-layer compulsory model: the outcome-skip predicate is unmet-only;
+//     compulsory's teeth are the separate `attended` navigation layer.
+//   - .claude/on-demand/assessment-model/README.md → outcome states unmet |
+//     provisional | confirmed (provisional = credited, not observed); `attended` is
+//     navigation state only — never evidence, never gates completion; "Completion
+//     requires every outcome of the series' taught set `confirmed`" — provisionals
+//     resolve no later than the capstone (the intra-series retrieval point).
+//   - .claude/on-demand/runsheet-contract/README.md → `covers_outcomes` is the source
+//     of (uid, role, floor_confirmable); "`floor_confirmable: false` marks an outcome
+//     only a real-task path can evidence" (the capstone).
 //
 // This is a PURE, DETERMINISTIC function over data the caller supplies — no file I/O,
-// no clock, no randomness. The test and (later) the SessionStart hook provide fixtures;
-// conformant runsheets do not exist yet (series-01 is prose-first reference input).
+// no clock, no randomness. The tests and the SessionStart hook supply the runsheet
+// set (the shipped series' conformant runsheets, read by load-runsheets.mjs).
 //
 // ─────────────────────────────────────────────────────────────────────────────
 // RESOLVER-SELECTION RULE (pinned here; the §3.1↔§4.3 canon seam the plan flagged

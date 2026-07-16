@@ -126,7 +126,7 @@ frontmatter).
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DESC-01` · carry-four-loads** — The learner can brief a task carrying the four loads — context, audience, format, success criteria — and can name what each load does, recognising that generic output is usually a hollow brief rather than a weak model.
   ↳ checks: an improved brief identifiably carries all four loads; the learner can say what each does and which one they personally tend to drop.

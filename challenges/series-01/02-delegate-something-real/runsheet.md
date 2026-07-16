@@ -135,7 +135,7 @@ runs in: series
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DLGT-01` · choose-a-delegation** — The learner can choose a good task to hand to an agent rather than delegating by reflex — selecting work whose input already exists, whose output has a known shape, and which sits in their own domain so they can judge the result at a glance.
   ↳ checks: the learner picks a real task and can name why it's a good first delegation (input exists / shape known / they can judge it); the chosen task meets those traits.

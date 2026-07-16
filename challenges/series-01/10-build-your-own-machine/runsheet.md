@@ -14,7 +14,7 @@ covers_outcomes:
   - { uid: 01-DSCN-09, evidence_kind: conversational, role: floor,     floor_confirmable: true }
   - { uid: 01-DILG-08, evidence_kind: conversational, role: floor,     floor_confirmable: true }
   - { uid: 01-DILG-09, evidence_kind: conversational, role: floor,     floor_confirmable: true }
-  - { uid: 01-DSCN-10, evidence_kind: emergent,       role: floor,     floor_confirmable: true }
+  - { uid: 01-DSCN-10, evidence_kind: live-action,    role: floor,     floor_confirmable: true }
   # — the RE-TOUCH of the other 48 taught uids (the retrieval pass; graded as observed in the build) —
   - { uid: 01-DLGT-01, evidence_kind: conversational, role: reconfirm, floor_confirmable: true }
   - { uid: 01-DLGT-02, evidence_kind: live-action,    role: reconfirm, floor_confirmable: true }
@@ -158,10 +158,10 @@ machine-build work** — a conversation over the build's evidence, never 48 sepa
   learner's; they narrate their loop (why this task, what the grilling surfaced, what they
   verified and why) and draw the honest line between what the machine produces and what they
   judge.
-- **01-DSCN-10** — Emergent — watched for, never staged: at some point in the build the learner
-  spontaneously reaches for a habit they built, unprompted, on material it was never demonstrated
-  on, and can say why it fits. Confirmed on the first genuine instance and celebrated; never
-  gated, never set up as a hoop.
+- **01-DSCN-10** — Watched for, never staged — confirm as live-action when it surfaces: at some
+  point in the build the learner spontaneously reaches for a habit they built, unprompted, on
+  material it was never demonstrated on, and can say why it fits. Confirmed on the first genuine
+  instance and celebrated; never gated, never set up as a hoop.
 
 **Reconfirmed in the build (the retrieval pass)** — the 48 re-touches, graded on the build's
 evidence. *(A bold group label, deliberately not a `###` heading: the runsheet parser starts a new
@@ -244,7 +244,8 @@ runs in: series
   rubric inspects. The conversational half — "pay for judgment once, keep the machine forever" in
   their own words, and when they'll next run it — is graded **within the same criterion's
   dialogue at debrief**, not as a second criterion.
-- **01-DSCN-10 is emergent — watch, don't stage.** The build brims with natural transfer moments;
+- **01-DSCN-10 is watched for, never staged — confirm as live-action when it surfaces.** The
+  build brims with natural transfer moments;
   confirm it on the first genuinely unprompted one (a habit they built, reached for on material
   it was never demonstrated on) and **celebrate it by name** — "that's the checklist move, and
   nobody asked you for it." Never gate the floor on it, never engineer a test for it; if the
@@ -275,7 +276,7 @@ runs in: series
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DLGT-07` · build-the-machine-once** — The learner can commission a reusable *machine* for a recurring task — the lowest rung that does the job (template → checklist → formula → a script Claude writes and runs → a staged workflow) — applying "pay for judgment once, keep the machine forever" instead of redoing the task by hand each time.
   ↳ checks: a working, reusable machine for a real recurring task plus its `how-to-use.md`, runnable again on new inputs; the learner can say when they'll next *run* it.
@@ -317,13 +318,13 @@ _Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the 
   ↳ checks: the learner describes, in their own words, that the agent "did something to a file" (created/edited/moved), corroborated by an actual file the agent created or changed during onboarding.  · substrate: claude
 
 - **`01-DLGT-10` · name-workspace-scope** — The learner can identify which folder the agent is currently working in and articulate that the agent acts within that scope — that it is not silently operating over their whole computer.
-  ↳ checks: asked "where is the agent working right now?" the learner names the workspace folder (or asks the agent and reads it back correctly), and can say that files outside it are not in play by default.  · substrate: claude
+  ↳ checks: in the course of real work — pointing a session at a folder, or finding where output landed — the learner names the folder the agent is working in (or asks the agent and reads it back correctly), and can say that files outside it are not in play by default.  · substrate: claude
 
 - **`01-DLGT-11` · same-engine-many-faces** — The learner can state that Cowork is one face of the agent and that the same engine has other surfaces (e.g. Claude Code) they may meet later — so "the agent" is a capability, not a single screen.
   ↳ checks: the learner can say, unprompted at review, that what they're learning transfers beyond this one window. (Day-one reassurance only; the depth is owned by `09-DLGT-01`.)  · substrate: claude
 
 - **`01-DLGT-12` · name-surface-limits** — The learner can name at least two things the surface/agent cannot do on its own — e.g. it will not remember this conversation in a brand-new chat unless something was written down, it cannot reach files they never brought into the workspace, and memory and skills load automatically in their workspace but must be pasted into a plain chat.
-  ↳ checks: the learner lists concrete "it can't" items correctly; the memory limit and the file-reach limit are the two that must appear. (Scoped to operational consequences; the fuller "three things it is not" model is `01-DSCN-01`.)  · substrate: claude
+  ↳ checks: as the limits surface in real work — a fresh session starting blank, a file outside the workspace out of reach — the learner names them as expected behaviour rather than breakage; the memory limit and the file-reach limit are the two that must appear. (Scoped to operational consequences; the fuller "three things it is not" model is `01-DSCN-01`.)  · substrate: claude
 
 - **`01-DESC-01` · carry-four-loads** — The learner can brief a task carrying the four loads — context, audience, format, success criteria — and can name what each load does, recognising that generic output is usually a hollow brief rather than a weak model.
   ↳ checks: an improved brief identifiably carries all four loads; the learner can say what each does and which one they personally tend to drop.

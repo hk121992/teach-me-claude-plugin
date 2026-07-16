@@ -125,7 +125,7 @@ runs in: learning-guide
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DLGT-03` · sort-judgment-vs-rules** — The learner can sort a piece of work into judgment/language work (where an AI model is the right tool) versus fully-specifiable rules-work (where a deterministic tool — formula, script, filter, template — is better because it's rerunnable, auditable, and right every time), applying "if you can fully write down the rules, don't use the model to guess them."
   ↳ checks: given real tasks, the learner buckets them with a stated reason that shows the sorting rule; "AI because it's hard" is caught and corrected.

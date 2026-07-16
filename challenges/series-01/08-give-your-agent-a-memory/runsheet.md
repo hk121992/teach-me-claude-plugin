@@ -121,7 +121,7 @@ runs in: fresh
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DESC-07` · write-agent-memory** — The learner can write a persistent memory file the agent reads at the start of every session — encoding who they are, how they like output, their conventions, and their always/never rules — so persistent preferences are engineered with a file rather than re-explained each chat.
   ↳ checks: a `CLAUDE.md` exists in the workspace, fits ~one screen, encodes real preferences traceable to their template/checklist/map (not boilerplate), and proved itself in a fresh session that followed preferences it was never told.

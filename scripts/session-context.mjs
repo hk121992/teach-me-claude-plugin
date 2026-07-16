@@ -1,21 +1,22 @@
 // session-context.mjs — composes the SessionStart injection for Teach Me Claude.
 //
-// CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-//   "The runtime engine — pathway, handoff, session open/close" → the SessionStart
-//   hook paragraph:
-//     "SessionStart hook = greeting + position + detect-explain-resume. The hook
-//      injects a warm greeting and the learner's position (from a *capped* progress
-//      summary, not the whole file), and runs a recovery guard that never proceeds
-//      from memory:
-//        - missing / unreadable progress → say so plainly and reconnect.
-//        - present-but-old-shape (version < 3) → run the v2→v3 migration.
-//        - wrong workspace → validate the session is inside the learner's own
-//          `.teach-me/` workspace (a marker check) BEFORE any read/write; ask on
-//          ambiguity."
-//   Data model: progress.json is `version: 3`, carries the sentinel `plugin:
-//   "teach-me-claude"`, an `outcomes` map (the single source of position), and a
-//   `current` pointer. `history` is append-only and CAPPED so this injection stays
-//   bounded.
+// SPEC (the on-demand reference set is this harness's spec home — the handbook page
+// this header once cited is deprecated; same superseding-spec convention as
+// curriculum/authoring/lib/conformance.mjs):
+//   - .claude/on-demand/session-model/README.md → the SessionStart hook: greeting +
+//     position + detect-explain-resume. The hook injects a warm greeting and the
+//     learner's position (from a *capped* progress summary, not the whole file), and
+//     runs a recovery guard that never proceeds from memory:
+//       - missing / unreadable progress → say so plainly and reconnect.
+//       - present-but-old-shape (version < 3) → run the v2→v3 migration.
+//       - wrong workspace → validate the session is inside the learner's own
+//         `.teach-me/` workspace (a marker check) BEFORE any read/write; ask on
+//         ambiguity.
+//   - .claude/on-demand/assessment-model/README.md → the progress record: version 3,
+//     the sentinel `plugin: "teach-me-claude"`, an `outcomes` map (the single source
+//     of position), a `current` pointer, and the per-series `attended` list
+//     (navigation state only — forwarded to pathway() for compulsory routing).
+//     `history` is append-only and CAPPED so this injection stays bounded.
 //
 // This module never runs from memory: it computes the next step from the on-disk
 // state via pathway(), or it explains plainly why it cannot (missing / corrupt /
@@ -262,7 +263,7 @@ export function cappedSummary(progress) {
 //   This code runs inside the learner's INSTALLED plugin, so it reads the runsheets
 //   the build ships, NOT the learner's `.teach-me/` workspace (that holds only their
 //   progress.json / preferences.json — never content). The build projection
-//   (build/build.ts PROJECTION + handbook DevOps) maps
+//   (build/build.ts PROJECTION; spec: the build-projection-contract reference) maps
 //       curriculum/series/NN-<slug>/challenges/  →  <pluginRoot>/challenges/series-NN/
 //   and the runtime scripts
 //       plugin-src/scripts/                      →  <pluginRoot>/scripts/
@@ -619,8 +620,8 @@ export function composeSessionContext({ cwd, runsheets, pluginRoot } = {}) {
   // that resume does not depend on the runsheet set being loadable. Dropping it (the
   // earlier `: null`) would strand a real in-flight learner on the none-yet message.
   // So with no runsheets we fall back to the shared inFlightResume() — resume if one is
-  // genuinely in flight, else null (the none-yet position). (Real conformant runsheets
-  // land with deliverable B; this is the skill↔spine seam.)
+  // genuinely in flight, else null (the none-yet position — reachable only when the
+  // in-flight series ships no runsheets, e.g. a not-yet-released series pointer).
   // `attended` — the per-series LAYER 2 navigation list (two-layer compulsory
   // model; see pathway.mjs). Forwarded from progress.json verbatim, defaulting to
   // [] when absent (an old / not-yet-migrated record — see migrate-progress.mjs).

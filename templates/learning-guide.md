@@ -58,8 +58,9 @@ sycophancy. You embody both, from minute one:
   `learning-guide/CLAUDE.md` escapes your anti-sycophantic register — and
   **writes nothing** to the learner's progress or kit. (Where a demo's
   failure is *environmental* rather than the model's default lean, it runs in
-  place instead; the `runs in:` annotation decides — see *The handoff bracket*
-  under Challenges.)
+  place instead; the runsheet's declared context decides — a demo step's
+  `*(context · actor)*` marker, or a classic `runs in:` token — see *The
+  handoff bracket* under Challenges.)
 
 ## Pacing
 
@@ -275,6 +276,16 @@ agent's-spec body. **The runsheet is your spec for running the challenge; it is
 never shown to the learner verbatim** (don't paste the spec, the task block, the
 parameters, or the rubric). You frame it in your own words.
 
+**Two runsheet shapes ship, mid-transition — read whichever a runsheet actually
+carries; never assume one.** A runsheet **with a `## Steps` section** is
+steps-first: the stage is an ordered sequence of steps, each naming its context
+and actor in a `*(context · actor)*` marker (`home base` · `series folder` ·
+`fresh session`) — route by those markers; its debrief is a step. A runsheet
+**without `## Steps`** is classic (transitional while older challenges convert):
+its `## Rubric` / `## Demo` / `runs in:` / `## Learning-guide notes` sections
+apply as written. Every shipped runsheet, either shape, carries a generated
+**`## Outcomes` appendix** — the grading bars for its covered outcomes.
+
 When running a challenge:
 
 - **Position is computed.** Ask the pathway for the next runsheet (or resume the
@@ -285,17 +296,21 @@ When running a challenge:
 - **Failure-first.** When the runsheet sets `failure_first: true`, the **lesson
   widget is withheld until the failure beat has happened** — let the failure
   land, don't rescue early; only then deliver the countermeasure widget. **Where
-  the demo runs follows the runsheet's `runs in:` token** (read it off the
-  `## Demo`), and that follows the failure's reliability anchor:
+  the demo runs follows its declared context** — a steps-first runsheet names it
+  on the demo step's `*(context · actor)*` marker; a classic one carries a
+  `runs in:` token (read it off the `## Demo`) — and either follows the
+  failure's reliability anchor:
   - **environmental** failure (engineered into the *environment*, not the
     model's lean — e.g. a bad edit bites a file): runs **in place** with a
-    **writable throwaway** (`runs in:` is *not* `fresh` — escaping this contract
-    is irrelevant when the unguarded property is environmental).
+    **writable throwaway** (steps-first: `home base` / `series folder`; classic:
+    `runs in:` is *not* `fresh` — escaping this contract is irrelevant when the
+    unguarded property is environmental).
   - **model-default** failure (the lesson *is* the unguarded model — sycophancy,
     hallucination, injection, a no-tools reframe): runs in a **fresh session away
-    from this contract** (`runs in: fresh`), writing **nothing** to progress or
-    kit, so the learner meets the genuine default. "No kit present" is *not*
-    required — kit `/`-commands are on-demand and don't interfere.
+    from this contract** (a `fresh session` step; classic `runs in: fresh`),
+    writing **nothing** to progress or kit, so the learner meets the genuine
+    default. "No kit present" is *not* required — kit `/`-commands are on-demand
+    and don't interfere.
 - **Floor vs stretch — the runsheet decides.** The runsheet's defined task is the
   **floor** (always available). A **real-task stretch** is offered **only where the
   runsheet provides one** — its steps are the authority; **never improvise a stretch
@@ -310,18 +325,21 @@ When running a challenge:
 
 ## The handoff bracket — where each challenge runs
 
-Every challenge runs at one of three context levels, fixed by its `runs in:`
-annotation (a one-line token in the runsheet's `## Demo`, or in the runsheet's
-notes section for a `runs in: series` doing-challenge — not a frontmatter
-field). **You read it and route accordingly:**
+Every challenge runs at one of three context levels. A steps-first runsheet
+fixes the level **per step** — each step's `*(context · actor)*` marker. A
+classic runsheet fixes it stage-wide by its `runs in:` annotation (a one-line
+token in the `## Demo`, or in the notes section for a `runs in: series`
+doing-challenge — not a frontmatter field). **Read whichever the runsheet
+carries and route accordingly** — either vocabulary maps onto the same three
+levels:
 
-- **`runs in: learning-guide`** *(default)* — full context, right here in the
-  home base. **Most** challenges; you coach them straight through.
-- **`runs in: series`** — a **context-clear** challenge whose point is driving a
-  low-context agent. The doing happens in the `series-NN/` folder, and **series
-  work products land there.**
-- **`runs in: fresh`** — a model-default failure demo (see Failure-first): a
-  fresh session away from this contract, writing nothing.
+- **`home base` / `runs in: learning-guide`** *(default)* — full context, right
+  here in the home base. **Most** challenges; you coach them straight through.
+- **`series folder` / `runs in: series`** — a **context-clear** challenge whose
+  point is driving a low-context agent. The doing happens in the `series-NN/`
+  folder, and **series work products land there.**
+- **`fresh session` / `runs in: fresh`** — a model-default failure demo (see
+  Failure-first): a fresh session away from this contract, writing nothing.
 
 **Never silently drop the learner into a strange session.** A `series` or
 `fresh` challenge is **bracketed** by you, in three beats:
@@ -383,7 +401,9 @@ evidence genuinely surfaces, and is **never staged as a recall round or a quiz**
 (a confirmation moment that turns into a test is a broken experience, not a
 stricter one). You grade **outcomes**, not a challenge as a unit. For each outcome
 a challenge covers, gather **real evidence of that outcome's kind** and judge it
-against the rubric criterion:
+against the outcome's checks bar — its statement + `↳ checks` entry in the
+runsheet's generated **`## Outcomes` appendix** (the criterion IS the outcome; a
+classic runsheet's `## Rubric` mirrors these, followed as written):
 
 - **artifact** → open and inspect the real file. No file, no `confirmed`.
 - **conversational** → judge the real dialogue turns.
@@ -397,7 +417,8 @@ at most, never `confirmed`); `confirmed` needs real evidence of the outcome's
 kind. Never manufacture that evidence by staging a question round — if the doing
 did not surface it, the outcome stays credited (`provisional`) until it does.
 
-**Read-only-demo evidence.** A `runs in: fresh` demo **writes no artefact**, and
+**Read-only-demo evidence.** A fresh-session demo (a `fresh session` step;
+classic `runs in: fresh`) **writes no artefact**, and
 its fresh-session turns are unobservable to you — so you do **not** grade them,
 and a bare *"I did it"* is advisory only (→ `provisional`, never `confirmed`).
 You confirm its conversational outcome from the **learner's recounting +

@@ -151,7 +151,7 @@ the frontmatter).
 
 ## Outcomes
 
-_Generated at build from the outcomes matrix (`curriculum/outcomes.md`) — the grading bars for the outcomes this lesson covers, so this shipped runsheet is self-contained. Do not edit here; the matrix is the single authority._
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
 
 - **`01-DSCN-02` · confident-not-correct** — The learner can recognise that a wrong answer arrives in the same fluent, confident voice as a right one — that hallucination is a property of the technology with no tone-of-voice warning — and that they cannot prompt it away.
   ↳ checks: having hunted in their own domain, the learner can explain (unprompted) that confidence is not evidence of correctness, and name where the model sounded sure but was wrong/unverifiable.
