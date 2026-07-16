@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+  orient-debrief.html — the interactive SD-1 debrief widget for lesson 1 (first impressions).
+  Three fixed questions; the answers hand back to the learning guide, which appends them to the
+  learner's first-day.md (runsheet S4). The handback is advisory — it confirms no outcome
+  (outcome_signals is empty by design). scanWidgetBody clean: ONE data-tmc-inputs manifest, ONE
+  submit script calling sendPrompt, no on* attributes, no network egress, local shared stylesheet.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — first impressions</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<script type="application/json" data-tmc-inputs>
+{
+  "learnerName": "profile.name",
+  "nonce": "progress.current.nonce",
+  "widgetId": "progress.current.widget_id",
+  "challenge": "progress.current.runsheet"
+}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-interactive">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <div class="tmc-lesson-body">
+  <div class="tmc-eyebrow">Lesson 1 · debrief</div>
+  <h1 class="tmc-title">First impressions, <span class="tmc-fill" data-tmc-bind="learnerName">…</span></h1>
+  <p class="tmc-muted">Three quick ones — no wrong answers. They hand straight back to your
+     learning guide, who'll add them to your <code>first-day.md</code>.</p>
+
+  <span hidden data-tmc-bind="nonce"></span>
+  <span hidden data-tmc-bind="widgetId"></span>
+  <span hidden data-tmc-bind="challenge"></span>
+
+  <form id="debrief-form" novalidate>
+    <div class="tmc-field">
+      <label class="tmc-label" for="f-excited">What are you excited about?</label>
+      <textarea class="tmc-input" id="f-excited" name="excited" rows="2"
+                placeholder="e.g. never formatting a status report by hand again"></textarea>
+    </div>
+    <div class="tmc-field">
+      <label class="tmc-label" for="f-sceptical">What are you sceptical about?</label>
+      <textarea class="tmc-input" id="f-sceptical" name="sceptical" rows="2"
+                placeholder="e.g. whether I can trust what it tells me"></textarea>
+    </div>
+    <div class="tmc-field">
+      <label class="tmc-label" for="f-nervous">What makes you nervous?</label>
+      <textarea class="tmc-input" id="f-nervous" name="nervous" rows="2"
+                placeholder="e.g. it touching files I didn't mean it to"></textarea>
+    </div>
+    <div class="tmc-actions">
+      <button class="tmc-btn" type="submit">Hand back to my learning guide</button>
+    </div>
+  </form>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var form = document.getElementById("debrief-form");
+    if (!form) return;
+    function bound(field) {
+      var el = document.querySelector('[data-tmc-bind="' + field + '"]');
+      return el ? el.textContent.trim() : "";
+    }
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var data = new FormData(form);
+      var answers = {
+        excited: (data.get("excited") || "").toString(),
+        sceptical: (data.get("sceptical") || "").toString(),
+        nervous: (data.get("nervous") || "").toString()
+      };
+      var envelope = {
+        tmc_handback: true,
+        nonce: bound("nonce"),
+        widget_id: bound("widgetId"),
+        challenge: bound("challenge"),
+        kind: "interactive",
+        answers: answers,
+        outcome_signals: []
+      };
+      if (typeof sendPrompt === "function") {
+        sendPrompt(JSON.stringify(envelope));
+      }
+    });
+  })();
+</script>
+</body>
+</html>

@@ -10,9 +10,17 @@ throughout.
 A challenge is run **from its runsheet** — a typed `.md` with YAML frontmatter
 plus an agent's-spec body. The runsheet is **your spec for running the
 challenge; it is never shown to the learner verbatim** (do not paste the spec,
-the Task block, the Parameters, or the Rubric text into the chat). You frame it
-in your own words. The lesson is delivered as the challenge's **opening
-widget**, not a pasted block of prose.
+the steps, the Task block, the Parameters, or the Rubric text into the chat).
+You frame it in your own words. The lesson is delivered as the challenge's
+**opening widget**, not a pasted block of prose.
+
+**Two runsheet shapes, mid-transition — read whichever the runsheet actually
+carries; never assume one.** A runsheet **with a `## Steps` section** is
+steps-first: run the stage as its ordered steps, each naming its context and
+actor in a `*(context · actor)*` marker (`home base` · `series folder` ·
+`fresh session`) — route by those markers. A runsheet **without `## Steps`** is
+classic (transitional while older challenges convert): its `## Rubric` /
+`## Demo` / `runs in:` / `## Learning-guide notes` sections apply as written.
 
 # Setup
 
@@ -44,8 +52,9 @@ The frontmatter is machine-readable; read these keys before you run anything:
   `role` is `floor` or `stretch`; `floor_confirmable: false` marks an outcome
   that **only a real-task path can evidence** (see the floor/stretch section).
 - **`widgets`** — the lesson widget(s) to instantiate, each `{ id, kind, when }`
-  (`when` is `pre_lesson` | `lesson` | …). Their HTML lives under
-  `${CLAUDE_PLUGIN_ROOT}/challenges/series-NN/widgets/`.
+  (`when` is `pre_lesson` | `lesson` | …). Each widget's HTML is a **sibling of the
+  runsheet in the challenge folder** — `${CLAUDE_PLUGIN_ROOT}/challenges/series-NN/NN-<slug>/<id>.html`
+  (the `id` names the file; folder-per-challenge layout).
 - **`failure_first`** — when `true`, a demo runs **before** the lesson widget
   (see "Failure-first").
 - **`scaffolding`** — `guided` | `fix` | `independent` | `open`; sets how much
@@ -54,8 +63,11 @@ The frontmatter is machine-readable; read these keys before you run anything:
   time-budget hit mid-challenge, **park** (write progress + a "where you left
   off" note) rather than push past it.
 
-The `## Rubric` body references the `covers_outcomes` uids 1:1 — it is **your**
-grading source for `review`, never pasted to the learner as "hidden tests".
+The grading bars for the covered uids live in the runsheet's generated
+**`## Outcomes` appendix** — each outcome's statement + `↳ checks` line (the
+criterion IS the outcome). A classic runsheet also carries a `## Rubric`
+referencing the uids 1:1, followed as written. Either is **your** grading
+source for `review`, never pasted to the learner as "hidden tests".
 
 # Failure-first ordering
 
@@ -65,22 +77,26 @@ runs first, the learner feels the problem, and only then do you instantiate the
 lesson widget that delivers the countermeasure. Do **not** instantiate or
 reveal the lesson widget before the demo. The failure is the lesson's setup.
 
-**Where the demo runs follows the runsheet's `runs in:` token** — a one-line
-annotation in the `## Demo`. **Read it and route accordingly**; never guess, and
-never send a learner to the wrong kind of session. The token follows the
-failure's reliability anchor, and there are exactly two kinds:
+**Where the demo runs follows its declared context** — on a steps-first
+runsheet, the demo step's `*(context · actor)*` marker; on a classic one, the
+`runs in:` token (a one-line annotation in the `## Demo`). **Read it and route
+accordingly**; never guess, and never send a learner to the wrong kind of
+session. The declared context follows the failure's reliability anchor, and
+there are exactly two kinds:
 
 - **environmental** demo — the failure is engineered into the **environment**,
   not the model's lean (a bad edit bites a file; a stale path; a no-tools
-  reframe of the setup). It runs **in place** (`runs in: learning-guide` or
-  `runs in: series`) with a **writable throwaway** the learner can break and
-  bin. Its `runs in:` is **NOT** `fresh` — escaping the learning-guide contract
+  reframe of the setup). It runs **in place** (steps-first: a `home base` /
+  `series folder` step; classic: `runs in: learning-guide` or `runs in: series`)
+  with a **writable throwaway** the learner can break and
+  bin. Its declared context is **NOT** `fresh` — escaping the learning-guide contract
   is irrelevant when the unguarded property is environmental, and the demo needs
   somewhere it can actually write. **Never route an environmental demo to a
   "fresh, read-only" session.**
 - **model-default** demo — the lesson **is** the unguarded model (sycophancy /
   the "yes-machine", hallucination, prompt-injection). It runs in a **fresh
-  session away from the learning-guide contract** (`runs in: fresh`) — any
+  session away from the learning-guide contract** (a `fresh session` step;
+  classic: `runs in: fresh`) — any
   session not under `learning-guide/CLAUDE.md` escapes your anti-sycophantic
   register, so the learner meets the **genuine default** — and **writes
   nothing** to the learner's progress or kit. (Kit `/`-commands are on-demand,
@@ -177,7 +193,9 @@ nudge, and unblock; you do not produce their artifact. Where the task involves
 delegating work *to you* (most do — that's the skill being learned), play your
 part faithfully: respond to their actual instructions as given, even when
 imperfect. Imperfect first attempts are teaching material for the debrief.
-Follow the runsheet's `## Learning-guide notes` for the per-challenge coaching.
+For the per-challenge coaching, follow the runsheet's steps (each step's
+directives, in its declared context) — or, on a classic runsheet, its
+`## Learning-guide notes`.
 
 Keep `current` current: `runsheet`, `status: in_progress`, and the nonce
 machinery above.

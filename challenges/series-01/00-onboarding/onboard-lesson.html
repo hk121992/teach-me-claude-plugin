@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!--
+  onboard-lesson.html — the interactive lesson-zero widget (onboarding, the first
+  questionnaire). Authored to the widget-craft doctrine. A DETERMINISTIC two-slide widget:
+  Slide 1 = the welcome/frame (value first), Slide 2 = the profiling questionnaire.
+
+  STATE-FREE by design: onboarding runs BEFORE any profile/progress exists, so the manifest
+  is the empty object `{}` — the widget binds NO learner state (there is none to fill) and
+  previews cleanly. It COLLECTS the profile rather than displaying it.
+
+  scanWidgetBody returns ZERO violations: exactly ONE data-tmc-inputs manifest (inert JSON),
+  exactly ONE submit <script> calling sendPrompt via addEventListener (no on* handlers), no
+  network egress, inert SVG (same-document refs only), a LOCAL shared stylesheet (no
+  remote/web font), the brand tokens via tmc.css (no hard-coded colour).
+
+  Handback (design §2.3): on submit the widget maps its own named form inputs into an
+  onboarding envelope — the learner's profile (name / profession / the hand-over task /
+  work preferences / language) plus a plain-language `prior_experience` self-report. The
+  teach-me skill consumes it: it fills learner.* + preferences, infers ai_maturity warmly,
+  and maps prior_experience to PROVISIONAL outcome seeding (self-report is weak evidence —
+  provisional, never confirmed). The widget names no outcome uid: the outcomes matrix does
+  not ship, so the uid mapping is the skill's, not the widget's.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — welcome</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #ob-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #ob-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-interactive">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="ob-pager" id="ob-s1" checked aria-label="Slide 1: welcome">
+  <input class="tmc-pager-radio" type="radio" name="ob-pager" id="ob-s2" aria-label="Slide 2: about you">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the welcome / frame -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson zero · welcome</div>
+        <h1 class="tmc-title">Let's set you up</h1>
+        <p class="tmc-muted">Ninety seconds now, then we go straight into your first lesson — no
+           "come back later." This is learn-by-doing: every lesson pairs a short read with a real
+           task on <strong>your own work</strong>.</p>
+
+        <div class="tmc-lsec">
+          <h2>What you'll walk away with</h2>
+          <ul class="tmc-check">
+            <li>By the end of your next sitting, the agent will have done a <strong>real piece of your work</strong></li>
+            <li>A toolkit you own — a skill that grills your requests, your agent's memory, a verification checklist</li>
+            <li>A <strong>machine you commissioned</strong> for a task you're sick of doing by hand</li>
+          </ul>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>One quick thing first</h2>
+          <p>The next slide asks a handful of questions so every lesson is tuned to your world.
+             Already know your way around AI? Tick what you've done and the course
+             <strong>fast-tracks</strong> — it credits what you can already do and skips it, so
+             you're never marched through the basics.</p>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="ob-s2">Tell me about you →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the profiling questionnaire -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson zero · about you</div>
+        <h1 class="tmc-title">A few quick things</h1>
+        <p class="tmc-muted">Your answers hand straight back to your learning guide — you copy
+           nothing by hand. Only the first two are needed; the rest just make the lessons sharper.</p>
+
+        <form id="onboard-form" novalidate>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-name">What should I call you?</label>
+            <input class="tmc-input" id="f-name" name="name" type="text" placeholder="e.g. Maya" required>
+          </div>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-prof">What do you do all day?</label>
+            <input class="tmc-input" id="f-prof" name="profession" type="text"
+                   placeholder="e.g. secondary-school teacher" required>
+          </div>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-task">The one recurring task you'd most love to hand over</label>
+            <input class="tmc-input" id="f-task" name="handover_task" type="text"
+                   placeholder="e.g. writing report-card comments every term">
+          </div>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-pref">How do you like to work? What does a good result look like to you?</label>
+            <textarea class="tmc-textarea" id="f-pref" name="work_preferences"
+                      placeholder="e.g. short and plain — I'd rather be asked a question than get a wrong guess"></textarea>
+          </div>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-lang">What language do you want to work in?</label>
+            <input class="tmc-input" id="f-lang" name="language" type="text" placeholder="English (leave blank for English)">
+          </div>
+
+          <div class="tmc-field">
+            <span class="tmc-label">Which of these have you done before? Tick any — it just lets me skip what you already know.</span>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="used-ai"> Used an AI assistant (Claude, ChatGPT…) for real work</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="delegated-reviewed"> Handed a whole task to an AI and reviewed its output</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="wrote-briefs"> Written detailed instructions to steer an AI's output</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="verified-output"> Checked an AI's work against sources before trusting it</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="set-up-memory"> Set up memory, custom instructions, or a project for an AI</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="built-automation"> Built a reusable AI skill, command, or automation</label>
+          </div>
+
+          <div class="tmc-actions">
+            <label class="tmc-btn tmc-btn--ghost" for="ob-s1">← Back</label>
+            <button class="tmc-btn" type="submit">Hand back to my guide</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var form = document.getElementById("onboard-form");
+    if (!form) return;
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var data = new FormData(form);
+      function str(k) { return (data.get(k) || "").toString().trim(); }
+      var envelope = {
+        tmc_handback: true,
+        kind: "onboarding",
+        answers: {
+          name: str("name"),
+          profession: str("profession"),
+          handover_task: str("handover_task"),
+          work_preferences: str("work_preferences"),
+          language: str("language")
+        },
+        prior_experience: data.getAll("prior").map(function (v) { return v.toString(); })
+      };
+      if (typeof sendPrompt === "function") {
+        sendPrompt(JSON.stringify(envelope));
+      }
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) { btn.textContent = "Handed back ✓"; btn.disabled = true; }
+    });
+  })();
+</script>
+</body>
+</html>

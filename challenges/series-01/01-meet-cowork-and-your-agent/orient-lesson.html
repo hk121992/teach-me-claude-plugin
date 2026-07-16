@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!--
+  orient-lesson.html — the L1 lesson, a DETERMINISTIC two-slide widget (meet Cowork and your agent).
+  Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
+  .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
+  pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
+  No JS. The "open in browser" takeaway is a GUIDE behaviour, not a widget affordance — the runsheet (S1)
+  has the guide link the shipped orient-takeaway.html. Real Cowork labels per cowork-ui-reference.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — meet Cowork and your agent</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #lz-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #lz-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="lz-pager" id="lz-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="lz-pager" id="lz-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 1 · your first day</div>
+        <h1 class="tmc-title">Meet your AI coworker</h1>
+        <p class="tmc-muted">A two-minute read, then you'll try it yourself on the next slide.</p>
+
+        <div class="tmc-lsec">
+          <h2>What this is</h2>
+          <p>What you're talking to isn't a chat box that just replies. It's an <strong>agent</strong> —
+             a coworker that can open, read, create, and change real files for you, and take actions.</p>
+          <p>Three things it's <strong>not</strong>:</p>
+          <ul class="tmc-not">
+            <li>not a search engine — it can sound completely sure and still be wrong</li>
+            <li>not a database of your private facts — it only knows what you show it</li>
+            <li>not something that learns from you as you chat</li>
+          </ul>
+          <p style="margin-top:var(--tmc-space-4)">And it's <strong>one face</strong> of an engine that shows
+             up elsewhere too (like Claude Code) — you're learning a coworker, not a single app.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>What happens when you ask</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">You say</div><div class="tmc-fbody">"create <code>notes.md</code>"</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">It does it</div><div class="tmc-fbody">writes the real file</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">A real file appears</div><div class="tmc-fbody"><code>notes.md</code>, in your folder</div></div>
+          </div>
+          <p>It doesn't <em>describe</em> making the file — it <em>makes</em> it. And that file is
+             <strong>yours to open</strong> anytime, with or without the agent: your work lives in a real
+             folder on your computer, not trapped inside the chat.</p>
+        </div>
+
+        <div class="tmc-callout">
+          <p><strong>What's <code>.md</code>?</strong> The <code>.md</code> ending is used for a
+             <strong>markdown</strong> file — plain text with a few light formatting marks for headings
+             and lists. It is a simple format that is preferred for its compatibility with any operating system and text-editor, as well as its balance between human and machine readability. That's why agents default to it for working documents — save heavier formats
+             like Word for when you actually need to send one.</p>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="lz-s2">Now try it yourself →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 1 · your activity</div>
+        <h1 class="tmc-title">Catch it in the act</h1>
+        <p class="tmc-muted">Send one instruction, then go check the file is really there — don't take the
+           agent's word for it.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Start a new task.</strong> In the <strong>Home</strong> tab, click <strong>+ New</strong>
+             at the top of the left sidebar (check <strong>Cowork</strong> is selected). It starts fresh:
+             the new agent has the folder you point it at, plus any global instructions you've set in
+             Claude — but none of this lesson or your guide. Working with that is part of the task.</li>
+          <li><strong>Point it at your project folder.</strong> Under the message box, click
+             <strong>Project or folder</strong> and pick your Teach Me Claude folder for series 1
+             (<code>series-01-foundations</code>).</li>
+          <li><strong>Send your first instruction — exactly this:</strong>
+             <span class="tmc-say">Create a file called first-day.md and write today's date and my name at the top.</span></li>
+          <li><strong>Go find it yourself.</strong> Don't take its word that it's done — open
+             <code>first-day.md</code> and see it's really there.</li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page —
+             <strong>click the link below this lesson</strong> to open these in your browser and keep
+             them beside you:</p>
+          <ul class="tmc-check">
+            <li>Click <strong>+ New</strong> (top-left, Home tab) — a blank slate, with <strong>Cowork</strong> selected</li>
+            <li>Click <strong>Project or folder</strong> → pick <code>series-01-foundations</code></li>
+            <li>Send: <em>"Create a file called first-day.md and write today's date and my name at the top."</em></li>
+            <li>Open <code>first-day.md</code> yourself and check it's really there</li>
+            <li>Hit a usage limit? It's a metered pause, not a broken course — your work is saved</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="lz-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

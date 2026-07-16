@@ -1,21 +1,5 @@
 ---
-# 04-make-it-grill-you.md — the AUTHORED grill-me runsheet (the B proving slice).
-#
-# Authored by the challenge-author stage from the spark-enriched, operator-approved
-# lesson plan (the grill-me proving slice — see notes/research/04-make-it-grill-you.md
-# for the spark-approval provenance). It SUPERSEDES the disposable prose reference that
-# previously lived at this path (series-01 is "disposable reference, NOT migration").
-#
-# covers_outcomes is the SINGLE source of the (uid, evidence_kind, role,
-# floor_confirmable) tuples; the ## Rubric is 1:1 and REFERENCES the uids, never
-# re-declaring evidence_kind; the learner-facing body is standalone (no challenge-id
-# back-reference — it names the kit artefact + the outcome, not a sibling challenge).
-#
-# evidence_kind is DERIVED from each outcome's `checks` prose (lesson-design §4):
-#   01-DESC-04  checks → "an installed `grill-me` skill that fires when invoked; its
-#               body … encodes …; a proof run surfaced …"  → a real built FILE → artifact
-#   01-DSCN-04  checks → "across two fresh-session demos … names the difference in
-#               register … explain *why* … warn a colleague"  → a DIALOGUE → conversational
+# Authoring rationale (provenance / design-decisions / derivations / change-log) lives beside this runsheet in authoring-notes.md — it never ships (build excludes it by name).
 id: "01-L-YNFB"
 slug: make-it-grill-you
 concept: "sycophancy, and the guardrail that beats prompting — a skill that interrogates you"
@@ -29,6 +13,8 @@ covers_outcomes:
   - { uid: 01-DSCN-04, evidence_kind: conversational, role: floor, floor_confirmable: true }
 reconfirms: []
 share_moment: false
+compulsory: true
+compulsory_reason: "This builds your first real tool — the grill-me skill you'll keep and reuse — so everyone does it hands-on."
 widgets:
   - { id: grill-lesson, kind: interactive, when: lesson }
 ---
@@ -97,3 +83,13 @@ the frontmatter).
   learner hands *you* a vague ask, let the grill-me skill (or its spirit) interview them.
 - Reflect at close (P7): what changed, and where else does the learner get agreeable
   answers because of how they ask?
+
+## Outcomes
+
+_Generated at build — the grading bars for this lesson's covered outcomes, so this shipped runsheet is self-contained for grading. Do not edit here; this section is regenerated on every build._
+
+- **`01-DESC-04` · build-grill-me-skill** — The learner can build and use a personal skill that inverts the briefing relationship — Claude interrogates *them* one question at a time until it could write the brief itself, challenges weak premises, and shows the brief for sign-off before doing anything — so gaps in their asks are caught by machinery, not memory.
+  ↳ checks: an installed `grill-me` skill that fires when invoked; its body (the learner's own words) encodes interview-until-complete, challenge-the-premise, and brief-sign-off-before-work; a proof run surfaced something the learner's lazy ask had omitted.
+
+- **`01-DSCN-04` · recognise-sycophancy** — The learner can recognise sycophancy — the agent's trained lean toward agreement — and knows that framing assigns the role: "what do you think?" hires a cheerleader, "argue against this / red-team this" hires a critic.
+  ↳ checks: across two fresh-session demos (praise-seeking vs critique-seeking on a half-baked idea of their own) the learner names the difference in register and can explain *why* it happens; can warn a colleague.

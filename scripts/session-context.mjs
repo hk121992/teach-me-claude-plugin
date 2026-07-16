@@ -1,21 +1,22 @@
 // session-context.mjs — composes the SessionStart injection for Teach Me Claude.
 //
-// CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-//   "The runtime engine — pathway, handoff, session open/close" → the SessionStart
-//   hook paragraph:
-//     "SessionStart hook = greeting + position + detect-explain-resume. The hook
-//      injects a warm greeting and the learner's position (from a *capped* progress
-//      summary, not the whole file), and runs a recovery guard that never proceeds
-//      from memory:
-//        - missing / unreadable progress → say so plainly and reconnect.
-//        - present-but-old-shape (version < 3) → run the v2→v3 migration.
-//        - wrong workspace → validate the session is inside the learner's own
-//          `.teach-me/` workspace (a marker check) BEFORE any read/write; ask on
-//          ambiguity."
-//   Data model: progress.json is `version: 3`, carries the sentinel `plugin:
-//   "teach-me-claude"`, an `outcomes` map (the single source of position), and a
-//   `current` pointer. `history` is append-only and CAPPED so this injection stays
-//   bounded.
+// SPEC (the on-demand reference set is this harness's spec home — the handbook page
+// this header once cited is deprecated; same superseding-spec convention as
+// curriculum/authoring/lib/conformance.mjs):
+//   - .claude/on-demand/session-model/README.md → the SessionStart hook: greeting +
+//     position + detect-explain-resume. The hook injects a warm greeting and the
+//     learner's position (from a *capped* progress summary, not the whole file), and
+//     runs a recovery guard that never proceeds from memory:
+//       - missing / unreadable progress → say so plainly and reconnect.
+//       - present-but-old-shape (version < 3) → run the v2→v3 migration.
+//       - wrong workspace → validate the session is inside the learner's own
+//         `.teach-me/` workspace (a marker check) BEFORE any read/write; ask on
+//         ambiguity.
+//   - .claude/on-demand/assessment-model/README.md → the progress record: version 3,
+//     the sentinel `plugin: "teach-me-claude"`, an `outcomes` map (the single source
+//     of position), a `current` pointer, and the per-series `attended` list
+//     (navigation state only — forwarded to pathway() for compulsory routing).
+//     `history` is append-only and CAPPED so this injection stays bounded.
 //
 // This module never runs from memory: it computes the next step from the on-disk
 // state via pathway(), or it explains plainly why it cannot (missing / corrupt /
@@ -262,7 +263,7 @@ export function cappedSummary(progress) {
 //   This code runs inside the learner's INSTALLED plugin, so it reads the runsheets
 //   the build ships, NOT the learner's `.teach-me/` workspace (that holds only their
 //   progress.json / preferences.json — never content). The build projection
-//   (build/build.ts PROJECTION + handbook DevOps) maps
+//   (build/build.ts PROJECTION; spec: the build-projection-contract reference) maps
 //       curriculum/series/NN-<slug>/challenges/  →  <pluginRoot>/challenges/series-NN/
 //   and the runtime scripts
 //       plugin-src/scripts/                      →  <pluginRoot>/scripts/
@@ -270,12 +271,14 @@ export function cappedSummary(progress) {
 //   the plugin root is the parent dir, and the in-flight series' runsheets are at
 //   <pluginRoot>/challenges/series-NN/.
 //
-//   ORDER = the on-disk `NN-slug.md` filename sequence (handbook runsheet contract:
-//   "Series order is a separate axis — the on-disk NN-slug.md filename sequence; the
-//   pathway iterates runsheets in that order"). The runsheet `id` is a STABLE OPAQUE
-//   UID, NOT the position — so we sort by FILENAME (zero-padded NN- prefixes sort
-//   lexically into series order) and never parse order out of the id. The `00-`
-//   overview is not a challenge runsheet and is excluded.
+//   ORDER = the on-disk `NN-<slug>/` FOLDER sequence (folder-per-challenge, SG-1 D12:
+//   "order = the folder's NN- prefix, identity = the frontmatter id; a reorder renames
+//   ONE folder"). The runsheet `id` is a STABLE OPAQUE UID, NOT the position — so we
+//   sort by the FOLDER NAME (zero-padded NN- prefixes sort lexically into series order)
+//   and never parse order out of the id. Each challenge folder holds `runsheet.md`; the
+//   `00-series-overview.md` file is not a challenge runsheet and the `00-onboarding/`
+//   folder is skill-sourced (no runsheet) — both are excluded (any `00-` prefix + any
+//   folder lacking a `runsheet.md`).
 //
 //   In the DEV tree this module sits at plugin-src/scripts/, whose parent has no
 //   challenges/ dir, so loadRunsheets finds nothing and returns [] — the seam is
@@ -283,7 +286,8 @@ export function cappedSummary(progress) {
 // ---------------------------------------------------------------------------
 
 const CHALLENGES_DIR = "challenges";
-const OVERVIEW_PREFIX = "00-"; // the series overview, not a challenge runsheet
+const OVERVIEW_PREFIX = "00-"; // the 00- overview file + 00-onboarding folder, not challenge runsheets
+const RUNSHEET_BASENAME = "runsheet.md"; // the shipped runsheet inside each challenge folder
 
 /**
  * The installed plugin's root, resolved from THIS module's own location: the build
@@ -313,23 +317,28 @@ export function inFlightSeriesDir(pluginRoot, series) {
 /**
  * Load the ordered runsheet metadata for one series from its shipped directory.
  *
- * Scans `<seriesDir>/*.md` in FILENAME order (= series order; see the layout
- * decision above), skips the `00-` overview, parses each one's YAML frontmatter
- * with the runtime parser, and returns the ordered array pathway() consumes. Each
- * element is the runsheet's full parsed frontmatter — so `id`, `compulsory`,
- * `compulsory_reason`, and `covers_outcomes` (with its per-outcome `floor_confirmable`
- * booleans) are ALL forwarded, never a hand-picked subset. (CONTRACT — wi-compulsory:
- * pathway() reads `runsheet.compulsory`; silently dropping it would make a
- * `compulsory: true` challenge skippable in production. Forwarding the whole
- * frontmatter means no field a consumer needs is lost.)
+ * Under folder-per-challenge (SG-1 D12) each challenge is a FOLDER
+ * `<seriesDir>/NN-<slug>/` holding `runsheet.md`. Scans those folders in FOLDER-NAME
+ * order (= series order; see the layout decision above), skips any `00-` folder
+ * (`00-onboarding` is skill-sourced) and the `00-series-overview.md` file, reads each
+ * `NN-<slug>/runsheet.md`, parses its YAML frontmatter with the runtime parser, and
+ * returns the ordered array pathway() consumes. Each element is the runsheet's full
+ * parsed frontmatter — so `id`, `compulsory`, `compulsory_reason`, and
+ * `covers_outcomes` (with its per-outcome `floor_confirmable` booleans) are ALL
+ * forwarded, never a hand-picked subset. (CONTRACT — wi-compulsory: pathway() reads
+ * `runsheet.compulsory`; silently dropping it would make a `compulsory: true`
+ * challenge skippable in production. Forwarding the whole frontmatter means no field
+ * a consumer needs is lost.)
  *
  * GRACEFUL by construction — NEVER throws (it runs in the SessionStart hook):
  *   - the directory is absent / unreadable → `[]` (the none-yet path: a series with
  *     no authored runsheets yet, or the dev tree where there is no challenges/ dir);
- *   - an individual file is unreadable, has no frontmatter fence, or carries no
- *     string `id` → that file is skipped (it is not a usable runsheet).
+ *   - a challenge folder with no `runsheet.md` (e.g. `00-onboarding/`, or a
+ *     not-yet-authored stub folder) → skipped without error;
+ *   - a `runsheet.md` that is unreadable, has no frontmatter fence, or carries no
+ *     string `id` → that folder is skipped (it is not a usable runsheet).
  *
- * @param {string} seriesDir absolute path to the in-flight series' runsheet dir
+ * @param {string} seriesDir absolute path to the in-flight series' challenge dir
  *        (resolved by composeSessionContext from the plugin root + current.series).
  * @returns {Array<object>} ordered runsheet metadata; `[]` when none.
  */
@@ -338,26 +347,32 @@ export function loadRunsheets(seriesDir) {
 
   let entries;
   try {
-    entries = fs.readdirSync(seriesDir);
+    entries = fs.readdirSync(seriesDir, { withFileTypes: true });
   } catch {
     return []; // dir absent / unreadable → graceful none-yet
   }
 
-  const files = entries
-    .filter((name) => name.endsWith(".md") && !name.startsWith(OVERVIEW_PREFIX))
-    .sort(); // filename order == series order (zero-padded NN- prefixes)
+  // The challenge folders, in folder-name order (= series order; zero-padded NN-
+  // prefixes sort lexically). Exclude any `00-` folder (00-onboarding is
+  // skill-sourced, no runsheet). A non-directory entry (e.g. 00-series-overview.md)
+  // is not a challenge folder and is ignored here.
+  const folders = entries
+    .filter((e) => e.isDirectory() && !e.name.startsWith(OVERVIEW_PREFIX))
+    .map((e) => e.name)
+    .sort();
 
   const sheets = [];
-  for (const name of files) {
+  for (const name of folders) {
+    const rsPath = path.join(seriesDir, name, RUNSHEET_BASENAME);
     let raw;
     try {
-      raw = fs.readFileSync(path.join(seriesDir, name), "utf8");
+      raw = fs.readFileSync(rsPath, "utf8");
     } catch {
-      continue; // unreadable file → skip, never throw
+      continue; // folder without a runsheet.md → skip, never throw
     }
     const fm = parseFrontmatter(raw);
-    // A usable runsheet has a string `id` (pathway() returns it as `next`). A file
-    // with no fence / no id (e.g. a stray note, or a not-yet-authored stub) is not a
+    // A usable runsheet has a string `id` (pathway() returns it as `next`). A
+    // runsheet with no fence / no id (a stray or not-yet-authored stub) is not a
     // runsheet — skip it rather than feed pathway() an id-less entry.
     if (!fm || typeof fm.id !== "string" || fm.id === "") continue;
     sheets.push(fm);
@@ -605,14 +620,23 @@ export function composeSessionContext({ cwd, runsheets, pluginRoot } = {}) {
   // that resume does not depend on the runsheet set being loadable. Dropping it (the
   // earlier `: null`) would strand a real in-flight learner on the none-yet message.
   // So with no runsheets we fall back to the shared inFlightResume() — resume if one is
-  // genuinely in flight, else null (the none-yet position). (Real conformant runsheets
-  // land with deliverable B; this is the skill↔spine seam.)
+  // genuinely in flight, else null (the none-yet position — reachable only when the
+  // in-flight series ships no runsheets, e.g. a not-yet-released series pointer).
+  // `attended` — the per-series LAYER 2 navigation list (two-layer compulsory
+  // model; see pathway.mjs). Forwarded from progress.json verbatim, defaulting to
+  // [] when absent (an old / not-yet-migrated record — see migrate-progress.mjs).
+  // (CONTRACT, parity with the `compulsory` forwarding note above: pathway() reads
+  // `attended` to decide whether a compulsory runsheet has been genuinely run;
+  // silently dropping it here would make EVERY compulsory challenge permanently
+  // un-skippable in production, never the intended "skip once attended".)
+  const attended = Array.isArray(progress.attended) ? progress.attended : [];
   const next =
     sheets.length > 0
       ? pathway({
           outcomes: progress.outcomes || {},
           runsheets: sheets,
           current: progress.current,
+          attended,
         })
       : inFlightResume(progress.current);
 

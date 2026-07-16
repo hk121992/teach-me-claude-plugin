@@ -2,8 +2,8 @@
 // deterministic, PII-free, secret-free claim URL from the learner's REAL
 // confirmed outcomes, and verify a minted payload's integrity.
 //
-// CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-//   → "The credential & share loop":
+// SPEC: .claude/on-demand/assessment-model/README.md
+//   → "Credential & share (on COMPLETE)":
 //     - NOW (zero website infra): on the `COMPLETE` state the runtime renders the
 //       certificate viewer inline AND generates a claim-link carrying
 //       `{ name, confirmed outcomes, integrity hash }` as a URL. THIS module is that
@@ -15,7 +15,7 @@
 //       secret, NO HMAC key (an embedded-secret HMAC is a trap [threat-model S4]).
 //     - Trust posture (server-side verifiability) is OWNED BY wi-web-wire-architecture
 //       and DEFERRED — this module makes no unforgeability claim.
-//   → "Data model": the `outcomes` map ({ uid: { status, ... } }); `confirmed` is the
+//   → "The progress record (the state schema)": the `outcomes` map ({ uid: { status, ... } }); `confirmed` is the
 //      sign-off state; "the claim payload" is honour-system local sign-off, "not the
 //      credential's source of truth" (the website is).
 //
@@ -38,7 +38,7 @@ import { createHash } from "node:crypto";
 // wi-web-wire-architecture; this is the documented placeholder the URL is built on.
 // Overridable per-call so the future website work can point it at the live origin
 // without touching this module's logic.
-export const DEFAULT_CLAIM_BASE = "https://teachmeclaude.com/claim";
+export const DEFAULT_CLAIM_BASE = "https://teachmeclaude.ai/claim";
 
 // The payload schema version — lets the future website-side verifier branch on shape
 // without guessing. Bumped only if the canonical payload shape changes.

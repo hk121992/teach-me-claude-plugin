@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!--
+  verify-lesson.html — the L6 lesson, a DETERMINISTIC two-slide widget (trust, but verify).
+  Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
+  .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
+  pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
+  No JS. The "open in browser" takeaway is a GUIDE behaviour (link dropped below the widget), not a widget
+  affordance — see the runsheet's ## Learning-guide notes. Real Cowork labels per cowork-ui-reference.md.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — trust, but verify</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #vl-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #vl-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="vl-pager" id="vl-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="vl-pager" id="vl-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 6 · judging what comes back</div>
+        <h1 class="tmc-title">Trust, but verify</h1>
+        <p class="tmc-muted">A wrong answer arrives in the same confident voice as a right one. Today
+           you learn where to be suspicious — and where you're allowed to relax.</p>
+
+        <div class="tmc-lsec">
+          <h2>Confident is not correct</h2>
+          <p>When the model is wrong, nothing in its voice tells you. The fluent, sure register is
+             identical either way — there's <strong>no tone-of-voice warning</strong>, and no clever
+             phrasing removes it. That's not a defect to fix; it's a property of the technology to
+             work with. You just met it, in your own field.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>The risk is jagged — and that's good news</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Low risk</div><div class="tmc-fbody">working over material you supplied</div></div>
+            <div class="tmc-fstep"><div class="tmc-flabel">High risk</div><div class="tmc-fbody">recalled specifics — citations, statistics, dates, niche facts</div></div>
+          </div>
+          <p>Summarising <em>your</em> document: low. Naming a study from memory: high. Once you can
+             read this map, suspicion stops being a mood and becomes <strong>calibration</strong> —
+             you know exactly which of your tasks deserve the hard look.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Two moves that beat it</h2>
+          <ul class="tmc-check">
+            <li><strong>Open the source.</strong> Cited is not verified — an unopened citation is a
+               claim wearing a costume. Open it and see whether it says what it's said to say.</li>
+            <li><strong>Make it compute.</strong> For numbers: <em>"don't estimate — write the
+               calculation, run it, show your working."</em> Same colleague, two modes; a computed
+               answer can be rerun and audited, a guess can't.</li>
+          </ul>
+          <div class="tmc-callout">A <strong>fluent</strong> estimate is <em>more</em> dangerous than
+             an obviously wrong one — plausible is what invites trust.</div>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Calibrate it to stakes</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Always check</div><div class="tmc-fbody">names, numbers, quotes leaving under your name</div></div>
+            <div class="tmc-fstep"><div class="tmc-flabel">Sometimes</div><div class="tmc-fbody">mid-stakes drafts — spot-check what's load-bearing</div></div>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">Never worry</div><div class="tmc-fbody">brainstorms, throwaways — skip, guilt-free</div></div>
+          </div>
+          <p>"Verify everything" is as unusable as "trust everything." Your checklist earns its keep
+             by naming what you're <strong>allowed to skip</strong> as clearly as what you must
+             check.</p>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="vl-s2">Now catch it yourself →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 6 · your activity</div>
+        <h1 class="tmc-title">Catch it, then build your checklist</h1>
+        <p class="tmc-muted">Two probes on your own ground, two countermeasures back home — and you
+           leave with a checklist calibrated to your work.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Break out fresh.</strong> Click <strong>+ New task</strong> (top-left) — no
+             folder, just a plain conversation, away from your course. (Already ran the probes with
+             your guide? Bring both answers to step 4.)</li>
+          <li><strong>Probe your field.</strong> Ask about what you know best, escalating from basics
+             to the niche — named studies, regulations, statistics, dates — and ask it to name its
+             sources. Hunt until something arrives that you, the expert, can catch — or can't verify.</li>
+          <li><strong>Probe your numbers.</strong> Paste a few real figures (stand-ins for anything
+             private) and ask:
+             <span class="tmc-say">No tools, just reading — roughly what's the total once you add the
+             monthly figures and apply the increase?</span>
+             Pick a multi-step figure you can check. Keep both answers word-for-word.</li>
+          <li><strong>Back home, open one citation.</strong> Return to your course task (under
+             <strong>Recents</strong>). Pick the most load-bearing source it named — and open it.
+             Does it say what it was said to say?</li>
+          <li><strong>Make it compute.</strong> Same question, this time with tools:
+             <span class="tmc-say">Write the calculation, run it, and show me your working.</span>
+             Set the fresh estimate against the computed answer and the value you know.</li>
+          <li><strong>Build your checklist.</strong> Write <code>verification-checklist.md</code>,
+             in your series folder, in your own words: what you'll <strong>always check</strong>,
+             <strong>sometimes check</strong>, and <strong>never worry about</strong> — specific to
+             your real outputs, with skips you can defend.</li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">The probes run away from this page — your guide will
+             drop a link below to keep these beside you:</p>
+          <ul class="tmc-check">
+            <li><strong>+ New task</strong> — no folder; a plain, fresh conversation</li>
+            <li>Your field: escalate to the niche, ask for its sources, hunt for the catch</li>
+            <li>Your numbers: stand-in figures → a no-tools estimate of a multi-step answer you can check</li>
+            <li>Keep both answers word-for-word</li>
+            <li>Come back via <strong>Recents</strong> → your course task</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="vl-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

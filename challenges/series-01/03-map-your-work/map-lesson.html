@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+  map-lesson.html — the L3 lesson, a DETERMINISTIC two-slide widget (map your work).
+  Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
+  .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
+  pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY
+  (run in place with the learning guide — the sort is a coached dialogue; discovery order is the guide's:
+  sort first, rule after). No JS. The "open in browser" takeaway is a GUIDE behaviour (link dropped below
+  the widget), not a widget affordance — see the runsheet's ## Learning-guide notes.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach Me Claude — map your work</title>
+<link rel="stylesheet" href="../../../widgets/shared/tmc.css">
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #ml-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #ml-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+</head>
+<body class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="ml-pager" id="ml-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="ml-pager" id="ml-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    <!-- Slide 1 — the lesson -->
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 3 · what to hand over</div>
+        <h1 class="tmc-title">Map your work</h1>
+        <p class="tmc-muted">Your whole recurring week on one page — what goes to the agent, what
+           goes to a duller tool, and what stays yours on purpose.</p>
+
+        <div class="tmc-lsec">
+          <h2>Why put your week on one page</h2>
+          <p>The skill after <em>doing</em> a task with the agent is <strong>choosing which
+             tasks</strong>. A delegation map is that choice made visible: your real recurring work,
+             sorted, each with one line of why.</p>
+          <p>And here's the freeing part: <strong>you don't have to AI everything.</strong> Some of
+             your work belongs to a more boring tool that's right every single time — and some of it
+             belongs to no one but you. The map steers the rest of this course, and <strong>the
+             machine you'll build at the end of it is chosen from this map</strong>.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Four buckets</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">AI</div><div class="tmc-fbody">work you'd give a sharp colleague</div></div>
+            <div class="tmc-fstep"><div class="tmc-flabel">Deterministic</div><div class="tmc-fbody">work a formula, template, or script could do</div></div>
+            <div class="tmc-fstep"><div class="tmc-flabel">Hybrid</div><div class="tmc-fbody">part one, part the other — split it</div></div>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">Human-only</div><div class="tmc-fbody">yours, on purpose</div></div>
+          </div>
+          <div class="tmc-callout">
+            <strong>Human-only is a bucket to be proud of.</strong> Relationships, accountability,
+            calls you own — choosing <em>not</em> to delegate is a delegation decision in its own
+            right, not a gap in your automation.
+          </div>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>The rule — read this after you've sorted</h2>
+          <p class="tmc-muted">Done the sort on the next slide? It lands harder that way — you'll
+             have already used this rule without its name.</p>
+          <p><strong>Judgment-work vs rules-work.</strong> If you can fully write down the rules,
+             don't use the model to guess them — a formula, template, or script is rerunnable,
+             auditable, and right every time. Keep the model for language, judgment, and mess.</p>
+          <p>When rules-work needs a tool, pick the <strong>simplest rung</strong> that does the job:</p>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">1</div><div class="tmc-fbody">template</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">2</div><div class="tmc-fbody">checklist</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">3</div><div class="tmc-fbody">formula</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">4</div><div class="tmc-fbody">script</div></div>
+            <span class="tmc-farr" aria-hidden="true">→</span>
+            <div class="tmc-fstep"><div class="tmc-flabel">5</div><div class="tmc-fbody">staged workflow</div></div>
+          </div>
+          <p>Two ways to lose: <strong>over-build</strong> (a script where a template would do) and
+             <strong>under-build</strong> (a copy-paste ritual no tool ever absorbed).</p>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="ml-s2">Now sort your week →</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 — the activity -->
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 3 · your activity</div>
+        <h1 class="tmc-title">Sort your real week</h1>
+        <p class="tmc-muted">Right here, in this chat with your guide — nothing to open, no new
+           task. You do the sorting; your guide can hold the pen.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>List what recurs.</strong> Aim for 8 or more — the small chores count (that's
+             where machines hide).
+             <span class="tmc-say">Here are the recurring tasks that eat my week: …</span></li>
+          <li><strong>Sort them.</strong> Bucket each — AI / deterministic / hybrid / human-only —
+             with one line of why. Your human-only entries need a reason you're proud of, not an
+             apology.</li>
+          <li><strong>Say your rule.</strong> Before anyone names one for you:
+             <span class="tmc-say">My rule for what goes to the agent versus a tool was: …</span></li>
+          <li><strong>Re-examine one bucket.</strong> Pick the bucket you're most sure of and walk
+             one task through, start to finish. Does every step really belong there? If it moves,
+             move it — that moment is the lesson.</li>
+          <li><strong>Split one hybrid.</strong> Name its AI part and its deterministic part, then
+             pick the simplest rung for the deterministic part (template → checklist → formula →
+             script → staged workflow) — and say why not a rung higher.</li>
+          <li><strong>Mark your capstone candidates.</strong> Star 1–2 recurring tasks worth a
+             machine — the build at the end of this course is chosen from this map.</li>
+          <li><strong>Keep the map.</strong>
+             <span class="tmc-say">Save my delegation map as delegation-map.md in
+             series-01-foundations — my buckets, my reasons, my words.</span></li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">The sort happens here in chat, but if you'd like the
+             buckets beside you, your guide will drop a link below to open these in your browser:</p>
+          <ul class="tmc-check">
+            <li>8+ real recurring tasks, one line of why each</li>
+            <li>Buckets: <strong>AI · deterministic · hybrid · human-only</strong> (pride, not apology)</li>
+            <li>State your own rule before it's named for you</li>
+            <li>Re-examine one bucket — let one task move</li>
+            <li>Split one hybrid; simplest rung: template → checklist → formula → script → workflow</li>
+            <li>Star 1–2 capstone candidates → save as <code>delegation-map.md</code></li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="ml-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
