@@ -1,23 +1,30 @@
 // handback-verify.mjs — the nonce-provenanced, envelope-only handback verifier.
 //
-// CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-//   → "Widget delivery + handback" → "The handback contract":
-//     - PROVENANCE. "The runtime issues a per-instantiation `nonce` … and REJECTS any
-//       handback whose `nonce` / `widget_id` / `challenge` does not match the one
-//       challenge in flight — closing the forged/pasted-envelope channel."
-//     - PARSE BOUNDARY. "The `challenge` skill parses ONLY the envelope (`tmc_handback`,
-//       `nonce`, `widget_id`, `challenge`, `kind`) plus `outcome_signals`. `answers` is
-//       an OPAQUE per-widget payload it stores and echoes but never interprets — so a
-//       new widget adds fields without changing this contract."
+// SPEC (the on-demand reference set is this harness's spec home — the handbook page
+// this header once cited is deprecated; same superseding-spec convention as
+// curriculum/authoring/lib/conformance.mjs):
+//   - .claude/on-demand/widget-handback-contract/README.md → "The handback envelope
+//     (the schema)":
+//     - PROVENANCE. "The runtime issues a per-instantiation `nonce` (templated into
+//       the widget) and rejects any handback whose `nonce` / `widget_id` / `challenge`
+//       does not match the one challenge in flight — closing the forged/pasted-envelope
+//       channel."
+//     - PARSE BOUNDARY. "The runtime parses only the envelope keys plus
+//       `outcome_signals`. `answers` is opaque — stored and echoed, never interpreted —
+//       so a new widget adds fields without changing this contract."
 //     - SIGNALS ARE ADVISORY. "`outcome_signals` may move an outcome to `provisional`;
-//       they may NEVER reach `confirmed` without an independent evidence check."
+//       they may never reach `confirmed` without an independent evidence check."
+//   - .claude/on-demand/assessment-model/README.md → `provisional` is "credited, not
+//     observed" (a widget signal / self-report is one of its credit sources);
+//     `confirmed` is reached "only on real evidence, never on self-report alone".
 //
 // This module closes FM-FORGED-HANDBACK (a forged / pasted / stale `tmc_handback`
 // cannot drive state — it cannot match the one nonce in flight) and FM-SAY-SO-PASS (a
 // self-reported signal claiming "confirmed" is capped to advisory `provisional`; only
 // an independent evidence check — a DIFFERENT IU — can confirm).
 //
-// SCOPE / THREAT MODEL (canon §5 honour-system): this verifier defends against a
+// SCOPE / THREAT MODEL (the assessment-model reference's honour-system posture:
+// "local sign-off is honour-system"): this verifier defends against a
 // FORGED, REPLAYED, or STALE envelope — one whose provenance does not match the single
 // challenge in flight. It does NOT defend against a learner editing their OWN stored
 // `current.nonce` in their own progress.json; that is an accepted limit under the
@@ -76,8 +83,9 @@ export const ENVELOPE_KEYS = Object.freeze([
   "outcome_signals",
 ]);
 
-// The cap a signal can reach through THIS verifier. Canon: a signal may move an outcome
-// to `provisional` but NEVER to `confirmed`. So every surfaced signal is advisory and
+// The cap a signal can reach through THIS verifier. Spec (widget-handback-contract):
+// a signal may move an outcome to `provisional` but NEVER to `confirmed`. So every
+// surfaced signal is advisory and
 // pinned to this credit level regardless of what the signal text asserts.
 const ADVISORY_CREDIT = "provisional";
 
@@ -97,7 +105,8 @@ function reject(reason, message) {
 /**
  * Normalize `outcome_signals` into ADVISORY-ONLY signals.
  *
- * Canon FM-SAY-SO-PASS: a signal may push an outcome to `provisional`, never to
+ * The FM-SAY-SO-PASS cap (spec: signals are advisory): a signal may push an outcome
+ * to `provisional`, never to
  * `confirmed`. We therefore surface each signal with a fixed `credit: "provisional"`
  * and an explicit `advisory: true`, CAPPED here no matter what the signal text claims
  * (even self_report: "confirmed, graded pass" stays provisional). Confirmation requires
@@ -125,7 +134,7 @@ function toAdvisorySignals(outcomeSignals) {
  * Verify an interactive widget's handback against the single challenge in flight.
  *
  * @param {unknown} envelope  The JSON object the widget `sendPrompt`'d back. The envelope
- *   shape (canon): { tmc_handback:true, nonce, widget_id, challenge, kind, answers,
+ *   shape (the widget-handback-contract schema): { tmc_handback:true, nonce, widget_id, challenge, kind, answers,
  *   outcome_signals }. ONLY the envelope fields are read; `answers` is opaque.
  * @param {{nonce?:string, widget_id?:string, challenge?:string}} inFlight  The stored
  *   in-flight provenance. The CALLER maps it from progress.json `current`:

@@ -6,30 +6,37 @@
   state — every taught outcome confirmed — NEVER on merely reaching the last
   challenge.
 
-  CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-    - "The credential & share loop" → NOW (zero website infra): on COMPLETE the runtime
-      renders this certificate viewer inline AND generates a claim-link
-      (plugin-src/scripts/claim-link.mjs) carrying { name, confirmed outcomes,
-      integrity hash }. The NAME renders in THIS cert BODY (from real local state); it
-      is deliberately NOT in the claim-link URL. The local sign-off is HONOUR-SYSTEM —
-      "not the credential's source of truth"; the website is the future authority.
-      So this cert makes NO server-side-verifiability claim (trust posture is owned by
-      wi-web-wire-architecture and deferred).
-    - "Widget delivery + handback" → "Instantiation — one convention": the runtime fills
-      every widget from a `data-tmc-inputs` JSON manifest over {profile, preferences,
-      progress}; widgets render REAL STATE ONLY (P5), NEVER fabricated. A missing field
-      is an ERROR, not a blank/invented value.
-    - "Data model": outcome states are `unmet | provisional | confirmed`; the `outcomes`
-      map is the single source of standing. An outcome carries `substrate: claude` iff
-      it is bound to a Claude primitive/surface; otherwise it is agnostic-by-default
-      (the default is left unstated — absence === agnostic, NOT a fabrication).
-    - "The credential & share loop": on COMPLETE the credential flow stamps a
-      `credential` record — `{ id, completed }` — onto progress.json (the opaque
+  SPEC (the on-demand reference set is this harness's spec home — the handbook page
+  this header once cited is deprecated; same superseding-spec convention as
+  curriculum/authoring/lib/conformance.mjs):
+    - .claude/on-demand/assessment-model/README.md → "Credential & share (on
+      COMPLETE)": NOW (zero website infra): on COMPLETE the runtime renders this
+      certificate viewer inline AND generates a claim-link
+      (plugin-src/scripts/claim-link.mjs) for the confirmed-outcomes claim. The NAME
+      renders in THIS cert BODY (from real local state); it is deliberately NOT in the
+      claim-link URL (no PII in the URL — claim-link.mjs's threat model; the
+      fast-follow website supplies the name at mint time). The local sign-off is
+      HONOUR-SYSTEM — "not the credential's source of truth"; the website "mints the
+      authoritative credential". So this cert makes NO server-side-verifiability claim
+      ("the v1 trust posture is specified separately (the web/wire architecture), not
+      here").
+    - .claude/on-demand/widget-handback-contract/README.md → "Instantiation — one
+      convention": the runtime fills every widget from a `data-tmc-inputs` JSON
+      manifest over {profile, preferences, progress}; widgets "render real state only,
+      never fabricated" (P5). A missing field is an ERROR, not a blank/invented value.
+    - .claude/on-demand/assessment-model/README.md → "The progress record (the state
+      schema)": outcome states are `unmet | provisional | confirmed`; the `outcomes`
+      map is the single source of standing. `substrate` is "stamped `claude` only when
+      an outcome is genuinely Claude-bound; absence means agnostic" (the default is
+      left unstated — absence === agnostic, NOT a fabrication). And on COMPLETE the
+      credential flow stamps the `credential` record — "the local series-completion
+      handle `{ id, completed }`", `null` until then — onto progress.json (the opaque
       claim-link id + the completion date). This cert's completion date binds to
       `progress.credential.completed`; the date is therefore a REAL stamped field, not
       an invented value. (The cert renders only AFTER that record exists.)
-    - "The build contract": completion is challenge-based and a series' outcome/challenge
-      count VARIES (and a series may split) — so this cert is COUNT-AGNOSTIC. It renders
+    - .claude/on-demand/session-model/README.md → "The unit model": completion is
+      challenge-based and a series' outcome/challenge count VARIES ("the count, any
+      split" is an authoring-time call) — so this cert is COUNT-AGNOSTIC. It renders
       whatever confirmed outcomes the map holds; it does NOT say "completed all ten
       challenges" or any fixed count.
 

@@ -14,11 +14,11 @@ bootstrap / router: it stands up the structure and runs onboarding on the very
 first session, before `learning-guide/` exists; once it does, the skills' "read
 your contract" line points here. See *The workspace*.)
 
-The skills (`teach-me`, `challenge`, `review`, `progress`) and the runtime
-scripts under `${CLAUDE_PLUGIN_ROOT}/scripts/` implement the mechanics this
-contract describes; they never read this file. Where a skill and this contract
-disagree, the canonical spec (the session-mechanics page) is right and one of
-them is a bug.
+The skills (`teach-me`, `challenge`, `review`, `progress`, `credential`) and
+the runtime scripts under `${CLAUDE_PLUGIN_ROOT}/scripts/` implement the
+mechanics this contract describes; they never read this file. Where a skill and
+this contract disagree, the product's session-mechanics spec (the maintainers'
+reference set) is right and one of them is a bug.
 
 ## Who you are
 

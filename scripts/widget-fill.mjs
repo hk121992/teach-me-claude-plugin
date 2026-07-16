@@ -1,13 +1,15 @@
 // widget-fill.mjs — the ONE runtime-owned widget filler.
 //
-// CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-//   - "Widget delivery + handback" → "Instantiation — one convention": Every widget
-//     declares a `data-tmc-inputs` JSON manifest (field name → source path within
-//     `{profile, preferences, progress}`). The runtime parses the manifest and fills
-//     the widget deterministically; the agent NEVER hand-substitutes ad-hoc named
-//     placeholders. One parser, owned by the runtime — not N bespoke fills.
-//   - Pedagogical invariant P5 (and the "real state only, never fabricated" rule):
-//     widgets render REAL STATE ONLY. An unknown / unresolvable source path is an
+// SPEC (the on-demand reference set is this harness's spec home — the handbook page
+// this header once cited is deprecated; same superseding-spec convention as
+// curriculum/authoring/lib/conformance.mjs):
+//   - .claude/on-demand/widget-handback-contract/README.md → "Instantiation — one
+//     convention": Every widget declares a `data-tmc-inputs` manifest (field name →
+//     source path within `{profile, preferences, progress}`). The runtime parses the
+//     manifest and fills the widget deterministically; the agent NEVER hand-substitutes
+//     ad-hoc placeholders — "one parser, owned by the runtime", not N bespoke fills.
+//   - Same section, the real-state rule (pedagogical invariant P5): widgets "render
+//     real state only, never fabricated". An unknown / unresolvable source path is an
 //     EXPLICIT ERROR — never a fabricated or blank value.
 //
 // THE ONE CONVENTION (single manifest → source-path → value → site flow):
@@ -183,7 +185,7 @@ export function parseManifest(widgetHtml) {
 /**
  * Resolve one dotted source path (e.g. "profile.name") against the state object.
  * An unknown root, a missing intermediate, or a missing leaf THROWS — never a
- * blank/undefined (real-state-only, canon P5). A leaf that resolves to `null`
+ * blank/undefined (real-state-only, P5). A leaf that resolves to `null`
  * also throws: a null is the absence of real state, not a value to render.
  *
  * @throws {WidgetFillError}
@@ -389,7 +391,7 @@ export function injectState(html, state) {
  *   `<script id="tmc-state">` block injected with the script-safe JSON of `state`.
  * @throws {WidgetFillError} on a missing/duplicate/malformed manifest, an
  *   unresolvable source path, or a bind site naming an undeclared field. NEVER
- *   returns a fabricated or blank value for missing state (canon P5).
+ *   returns a fabricated or blank value for missing state (P5).
  */
 export function fillWidget(widgetHtml, state) {
   if (typeof widgetHtml !== "string") {

@@ -1,9 +1,10 @@
 /* tmc.css — the shared Teach Me Claude widget stylesheet.
  *
- * CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md →
- *   "Widget delivery + handback": "All widgets share the TMC stylesheet (CSS
- *   variables)." Every lesson widget (static / templated / interactive) loads this
- *   one file.
+ * SPEC (the on-demand reference set is this harness's spec home — the handbook
+ *   page this header once cited is deprecated):
+ *   .claude/on-demand/widget-handback-contract/README.md → "Instantiation — one
+ *   convention": widgets "share the one stylesheet". Every lesson widget
+ *   (static / templated / interactive) loads this one file.
  *
  * ⚠ FONT CONSTRAINT (locked brand decision: widget-fonts-system-only). This runs
  *   inside Cowork's show_widget, which CANNOT load external / Google / brand font
