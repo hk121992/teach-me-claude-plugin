@@ -13,7 +13,7 @@ covers_outcomes:
   - { uid: 01-DLGT-02, evidence_kind: artifact,       role: floor, floor_confirmable: true }
   - { uid: 01-DILG-13, evidence_kind: artifact,       role: floor, floor_confirmable: true }
   - { uid: 01-DILG-10, evidence_kind: live-action,    role: floor, floor_confirmable: true }
-  - { uid: 01-DILG-19, evidence_kind: live-action,    role: floor, floor_confirmable: true }
+  - { uid: 01-DILG-19, evidence_kind: artifact,       role: floor, floor_confirmable: true }
   - { uid: 01-DILG-11, evidence_kind: conversational, role: floor, floor_confirmable: true }
   - { uid: 01-DILG-17, evidence_kind: conversational, role: floor, floor_confirmable: true }
   - { uid: 01-DILG-16, evidence_kind: live-action,    role: floor, floor_confirmable: true }
@@ -72,19 +72,27 @@ action is proposed in chat), read it, say it back in plain words, then decide �
 predicting when or how often, resisting the *"always allow"* reflex while learning; receive the
 draft as a file — that's **v1**. Then the owner loop, versioning as the habit: **before the big
 rewrite, have the agent start a v2 and keep v1 untouched** — v1 in hand is what makes the bold
-ask affordable, never disaster insurance; ask for one **bold** revision in their own words;
-compare the two and keep the best of both — **pulling anything the rewrite lost back from v1** is
-the recovery move, run live, not described. Recovery has three routes — undo, ask the agent to
-put it back, go back to v1 — and v1 is the one that always works.
-- confirms: 01-DILG-10 · 01-DILG-19
+ask affordable, never disaster insurance; ask for one **bold** revision in their own words; then
+compare the two **line by line** and keep the best of both — pulling back anything v2 lost that
+they still want (if v2 is simply better everywhere, say so plainly — never manufacture a loss).
+Recovery has three routes — undo, ask the agent to put it back, go back to v1 — and v1 is the
+one that always works. The evidence of the whole loop rides the files home.
+- confirms: —
 
 ### S5 · Return — check the real files  *(home base · guide)*
-On the learner's return, read the series-folder artifacts **before any talk**: **v1 and the
-final**. v1 sitting on disk beside the final IS the habit done, not described — the duplicate
-existed before the bold rewrite by construction — and the final must reflect the revision the
-learner asked for in their own words. Where the rewrite lost something they liked, the two files
-show what came back from v1 side by side; claim only what the files actually show.
-- confirms: 01-DILG-13 · 01-DLGT-02
+On the learner's return, **ask before you read** — *"may I open the series folder and read v1
+and the final?"* — and have them say back what they're agreeing to before they grant it: that
+read-back of a live ask, at home base, is `01-DILG-10`'s observed moment (if the session
+surfaces a permission prompt for the read, the same move applies to it; if no ask-moment
+genuinely arises, leave the outcome provisional — the capstone reconfirms it live). Then read
+the artifacts **before any talk**: **v1 and the final**. v1 sitting on disk beside the final IS
+the habit done, not described — the duplicate existed before the bold rewrite by construction —
+and the final must reflect the revision the learner asked for in their own words. v1 beside the
+final also lets the learner **point at what they pulled back** — the files display, the
+recounting attributes; where nothing came back (v2 was simply better), say so and let
+`01-DILG-19` wait for a later genuine surfacing rather than manufacturing a loss (the capstone
+re-touches it).
+- confirms: 01-DILG-13 · 01-DLGT-02 · 01-DILG-19 · 01-DILG-10
 
 ### S6 · Debrief — defend the calls  *(home base · guide)*
 Talk over the actual outputs on the table (v1 vs the final, what the bold ask changed, what came
@@ -93,7 +101,11 @@ round. Let the double AHA land: ask what they noticed about their own hesitation
 v1 existed (*"it actually wrote my email"* · *"v1 is what made me brave"*). As they recount the
 run, the careful-look distinction surfaces — they flag the delete / overwrite / move moments over
 the ordinary edits, tied to *"I can't easily get it back"*: that recounting, arising in the story
-of their own delegation, is the evidence — never ask it as a quiz question. Close as the owner:
+of their own delegation, is the evidence — never ask it as a quiz question. Fish the break-out's
+approval story the same way — *"what did it ask before touching your files, and what did you
+make of the ask?"* — corroborating read-before-approve from their own telling; and if no
+destructive moment surfaced in their run at all, let `01-DILG-11` wait for a later genuine
+surfacing — never stage the distinction. Close as the owner:
 would they actually send it, and why — the send is theirs, from their own mail, after the lesson;
 and what would they hand over next? Update the workflow profile with what you learned about their
 work; a `refine` names specific feedback and the next step, never "fail".
