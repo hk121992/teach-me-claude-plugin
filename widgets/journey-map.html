@@ -7,16 +7,20 @@
   challenge-based; a series' outcome count varies (and a series may split), so the
   view is driven entirely by whatever the outcomes map contains.
 
-  CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-    - "Widget delivery + handback" → "Instantiation — one convention": the runtime
-      fills every widget from a `data-tmc-inputs` JSON manifest over
-      `{profile, preferences, progress}`; widgets render REAL STATE ONLY (P5),
-      never fabricated. (journey-map / certificate are runtime UI widgets, distinct
-      from the per-series lesson widgets homed in each challenge folder,
-      curriculum/series/NN-<slug>/challenges/NN-<slug>/<id>.html.)
-    - Data model: outcome states are `unmet | provisional | confirmed`; the
-      `outcomes` map is the single source of position — the integer
-      `current.challenge` is RETIRED. An outcome ABSENT from the map is `unmet`.
+  SPEC (the on-demand reference set is this harness's spec home — the handbook page
+  this header once cited is deprecated; same superseding-spec convention as
+  curriculum/authoring/lib/conformance.mjs):
+    - .claude/on-demand/widget-handback-contract/README.md → "Instantiation — one
+      convention": the runtime fills every widget from a `data-tmc-inputs` JSON
+      manifest over `{profile, preferences, progress}`; widgets "render real state
+      only, never fabricated" (P5). (journey-map / certificate are the runtime UI
+      components, distinct from the per-series lesson widgets homed in each
+      challenge folder, curriculum/series/NN-<slug>/challenges/NN-<slug>/<id>.html.)
+    - .claude/on-demand/assessment-model/README.md → "The progress record (the state
+      schema)": outcome states are `unmet | provisional | confirmed`; the `outcomes`
+      map is "the single source of pathway position (there is no integer position
+      pointer)" — the integer `current.challenge` is RETIRED. An outcome ABSENT from
+      the map is `unmet`.
 
   HOW THE RUNTIME FILLS THIS (the one convention):
     1. The `data-tmc-inputs` manifest below maps the scalar header fields

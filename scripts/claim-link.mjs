@@ -67,9 +67,9 @@ const CONFIRMED = "confirmed";
 /**
  * Reduce a v3 `outcomes` map to the sorted list of confirmed competencies.
  * Each item is `{ uid, substrate }` where `substrate` is `"claude"` iff the outcome
- * entry explicitly carries `substrate: "claude"`, else `"agnostic"` (the canon
- * default — "agnostic by default, left unstated"; absence is NOT fabricated, it IS
- * the documented agnostic default). Sorted by uid for a STABLE, deterministic order.
+ * entry explicitly carries `substrate: "claude"`, else `"agnostic"` (the spec
+ * default — "absence means agnostic"; absence is NOT fabricated, it IS the
+ * documented agnostic default). Sorted by uid for a STABLE, deterministic order.
  *
  * @param {Object} outcomes  the v3 `progress.outcomes` map { uid: { status, substrate? } }.
  * @returns {Array<{uid:string, substrate:("claude"|"agnostic")}>}

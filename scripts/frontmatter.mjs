@@ -1,11 +1,13 @@
 // frontmatter.mjs — the RUNTIME runsheet-frontmatter parser.
 //
-// CANON: tmc-workspace/handbook/content/05-session-mechanics/README.md
-//   "The runsheet — the challenge contract": a runsheet is a typed `.md` —
-//   machine-readable YAML frontmatter (`--- … ---`) + the agent's-spec body. The
-//   runtime's pathway() reads each runsheet's frontmatter metadata (`id`,
-//   `compulsory`, `covers_outcomes`, …); this module turns the fenced frontmatter
-//   into that object.
+// SPEC (the on-demand reference set is this harness's spec home — the handbook page
+// this header once cited is deprecated; same superseding-spec convention as
+// curriculum/authoring/lib/conformance.mjs):
+//   - .claude/on-demand/runsheet-contract/README.md → "a runsheet is a typed markdown
+//     file: machine-readable YAML frontmatter plus the agent's-spec body", and
+//     "Frontmatter (the schema)" is the field set. The runtime's pathway() reads each
+//     runsheet's frontmatter metadata (`id`, `compulsory`, `covers_outcomes`, …); this
+//     module turns the fenced frontmatter into that object.
 //
 // WHY A RUNTIME PARSER (NOT the dev conformance lib):
 //   curriculum/authoring/lib/conformance.mjs has a `parseRunsheet` over the SAME

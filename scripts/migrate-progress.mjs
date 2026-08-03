@@ -6,14 +6,27 @@
 // into a separate `preferences.json`. This module turns a v2 file into v3 on
 // first open (the SessionStart guard), losslessly carrying every preserved field.
 //
-// Canon contract: handbook/content/05-session-mechanics/README.md, "Data model".
+// SPEC (the on-demand reference set is this harness's spec home — the handbook page
+// this header once cited is deprecated; same superseding-spec convention as
+// curriculum/authoring/lib/conformance.mjs):
+//   - .claude/on-demand/assessment-model/README.md → "The progress record (the state
+//     schema)": the versioned record this migration produces. The `outcomes` map is
+//     "the single source of pathway position (there is no integer position pointer)";
+//     preferences are "a separate record (`language`, `ai_maturity`), split out of the
+//     old comfort field"; and its Migration bullet is this module's contract: "opening
+//     an old-shape record runs a forward migration (backfill the outcomes map, split
+//     preferences out, drop the retired integer position pointer, carry the kit map,
+//     seed an empty credential) and never fabricates outcome history".
+//   - .claude/on-demand/session-model/README.md → the SessionStart hook's recovery
+//     guard is the caller: "old-shape state → run the migration".
 // Dependency-free ESM; node: built-ins only.
 
 import fs from "node:fs";
 import path from "node:path";
 
 // ---------------------------------------------------------------------------
-// Constants — the v3 shape, mirrored from the canon page. Kept as factories so
+// Constants — the v3 shape, mirrored from the assessment-model reference (the
+// progress record). Kept as factories so
 // every produced object is a fresh, unshared instance (no aliasing of defaults).
 // ---------------------------------------------------------------------------
 
