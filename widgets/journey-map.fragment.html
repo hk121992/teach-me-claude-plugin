@@ -1,0 +1,537 @@
+<style>
+
+
+:root {
+  
+  --tmc-pine: hsl(174 64% 30%);          
+  --tmc-pine-strong: hsl(174 68% 21%);   
+  --tmc-pine-tint: hsl(174 32% 92%);     
+  --tmc-on-pine: #FFFFFF;                
+
+  
+  --tmc-gold: hsl(40 72% 42%);           
+  --tmc-gold-tint: hsl(40 64% 90%);
+
+  
+  --tmc-paper: #FBF8F2;
+  --tmc-surface: #FFFFFF;
+  --tmc-surface-2: #F3EDE2;
+  --tmc-ink: #241F1A;
+  --tmc-ink-2: #6E665B;
+  --tmc-ink-3: #9A9184;
+  --tmc-hairline: #E2D9C9;
+
+  
+  --tmc-done: #2E7D4F;  --tmc-done-tint: #E7F1E9;
+  --tmc-doing: #B26C2A; --tmc-doing-tint: #F6ECDD;
+
+  
+  --tmc-font-display: ui-rounded, "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-text: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  
+  --tmc-r-sm: 6px;  --tmc-r-md: 10px;  --tmc-r-lg: 14px;  --tmc-r-pill: 999px;
+
+  
+  --tmc-space-1: 4px; --tmc-space-2: 8px; --tmc-space-3: 12px;
+  --tmc-space-4: 16px; --tmc-space-5: 24px; --tmc-space-6: 32px;
+
+  
+  --tmc-shadow: 0 10px 30px rgba(36, 31, 26, 0.10);
+}
+
+:root[data-theme="dark"], .tmc-dark {
+  --tmc-pine: hsl(174 58% 48%);          
+  --tmc-pine-strong: hsl(174 52% 56%);   
+  --tmc-pine-tint: hsl(174 32% 18%);     
+  --tmc-on-pine: #0F2A26;
+  --tmc-gold: hsl(40 78% 58%);           
+  --tmc-gold-tint: hsl(40 40% 18%);
+  --tmc-paper: #18140F;
+  --tmc-surface: #221C16;
+  --tmc-surface-2: #2C251D;
+  --tmc-ink: #F2ECDF;
+  --tmc-ink-2: #B3A998;
+  --tmc-ink-3: #837A6B;
+  --tmc-hairline: #3A3026;
+  --tmc-done: #5FB07E;  --tmc-done-tint: #1E3328;
+  --tmc-doing: #E0A35C; --tmc-doing-tint: #382816;
+  --tmc-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.tmc {
+  font-family: var(--tmc-font-text);
+  color: var(--tmc-ink);
+  background: var(--tmc-paper);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tmc-card {
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-lg);
+  box-shadow: var(--tmc-shadow);
+  padding: var(--tmc-space-6);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.tmc-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  margin-bottom: var(--tmc-space-4);
+}
+.tmc-brand .tmc-mark { width: 28px; height: 28px; display: block; }
+.tmc-wordmark {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+.tmc-wordmark b { color: var(--tmc-pine-strong); font-weight: 600; }
+
+.tmc-eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--tmc-pine-strong);
+}
+.tmc h1, .tmc-title {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  margin: var(--tmc-space-2) 0 var(--tmc-space-3);
+  color: var(--tmc-ink);
+}
+.tmc h2 {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: var(--tmc-space-5) 0 var(--tmc-space-2);
+}
+.tmc p { margin: 0 0 var(--tmc-space-3); color: var(--tmc-ink); }
+.tmc .tmc-muted { color: var(--tmc-ink-2); }
+.tmc code, .tmc kbd, .tmc pre {
+  font-family: var(--tmc-font-mono);
+  font-size: 0.9em;
+  background: var(--tmc-surface-2);
+  border-radius: var(--tmc-r-sm);
+  padding: 0.1em 0.35em;
+}
+.tmc pre { padding: var(--tmc-space-3); overflow: auto; line-height: 1.45; }
+.tmc pre code { background: none; padding: 0; }
+
+.tmc-fill { color: var(--tmc-pine-strong); font-weight: 600; }
+
+.tmc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tmc-space-1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2em 0.7em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine-tint);
+  color: var(--tmc-pine-strong);
+}
+.tmc-chip--doing { background: var(--tmc-doing-tint); color: var(--tmc-doing); }
+.tmc-chip--done { background: var(--tmc-done-tint); color: var(--tmc-done); }
+
+.tmc-field { margin: 0 0 var(--tmc-space-4); }
+.tmc-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: var(--tmc-space-2);
+  color: var(--tmc-ink);
+}
+.tmc-help { font-size: 0.85rem; color: var(--tmc-ink-2); margin-top: var(--tmc-space-1); }
+
+.tmc-input, .tmc-textarea, .tmc-select {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  font-family: var(--tmc-font-text);
+  font-size: 0.95rem;
+  color: var(--tmc-ink);
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-md);
+  padding: 0.6em 0.75em;
+}
+.tmc-textarea { min-height: 6.5em; line-height: 1.5; resize: vertical; }
+.tmc-input:focus-visible,
+.tmc-textarea:focus-visible,
+.tmc-select:focus-visible {
+  border-color: var(--tmc-pine);
+  box-shadow: 0 0 0 3px var(--tmc-pine-tint);
+}
+
+.tmc-radio-row, .tmc-check-row {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  padding: var(--tmc-space-2) 0;
+}
+.tmc-radio-row input, .tmc-check-row input { accent-color: var(--tmc-pine); }
+
+.tmc-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tmc-space-2);
+  cursor: pointer;
+  font-family: var(--tmc-font-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.65em 1.2em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine);
+  color: var(--tmc-on-pine);
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+.tmc-btn:hover { background: var(--tmc-pine-strong); }
+.tmc-btn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-btn--ghost {
+  background: transparent;
+  color: var(--tmc-pine-strong);
+  border-color: var(--tmc-hairline);
+}
+.tmc-btn--ghost:hover { background: var(--tmc-pine-tint); }
+.tmc-actions {
+  display: flex;
+  gap: var(--tmc-space-3);
+  margin-top: var(--tmc-space-5);
+}
+
+.tmc-callout {
+  border-left: 3px solid var(--tmc-pine);
+  background: var(--tmc-pine-tint);
+  border-radius: var(--tmc-r-md);
+  padding: var(--tmc-space-3) var(--tmc-space-4);
+  margin: var(--tmc-space-4) 0;
+  color: var(--tmc-ink);
+}
+.tmc-callout--gold { border-left-color: var(--tmc-gold); background: var(--tmc-gold-tint); }
+
+@keyframes tmc-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tmc-anim { animation: tmc-fade-up 0.5s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tmc-anim { animation: none; }
+  .tmc-btn { transition: none; }
+}
+
+@media (max-width: 560px) {
+  .tmc-card { padding: var(--tmc-space-5) var(--tmc-space-4); }
+  .tmc h1, .tmc-title { font-size: 1.4rem; }
+  .tmc-actions { flex-direction: column; }
+  .tmc-btn { width: 100%; }
+}
+
+.tmc-card.tmc-lesson { padding: 0; overflow: hidden; }
+
+.tmc-banner { background: var(--tmc-pine); color: var(--tmc-on-pine); padding: var(--tmc-space-4) var(--tmc-space-6); }
+.tmc-lock { display: inline-flex; align-items: center; gap: 10px; }
+.tmc-lock svg { width: 24px; height: 24px; flex: 0 0 24px; }
+.tmc-lock .tmc-word { font-family: var(--tmc-font-display); font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+
+.tmc-lesson-body { padding: var(--tmc-space-6); }
+
+.tmc-pager-radio { position: absolute; opacity: 0; width: 0; height: 0; }
+.tmc-slide { display: none; }
+.tmc-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--tmc-space-3); margin-top: var(--tmc-space-6); border-top: 1px solid var(--tmc-hairline); padding-top: var(--tmc-space-4); }
+.tmc-page { font-size: 0.8rem; color: var(--tmc-ink-2); font-weight: 600; }
+.tmc-navbtn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: var(--tmc-font-text); font-weight: 600; font-size: 0.95rem; padding: 0.6em 1.1em; border-radius: var(--tmc-r-pill); background: var(--tmc-pine); color: var(--tmc-on-pine); }
+.tmc-navbtn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-navbtn--ghost { background: transparent; color: var(--tmc-pine-strong); border: 1px solid var(--tmc-hairline); }
+
+.tmc-lsec { margin-top: var(--tmc-space-6); }
+.tmc-lsec:first-of-type { margin-top: var(--tmc-space-2); }
+.tmc-lsec > h2 { font-family: var(--tmc-font-display); font-size: 1.15rem; margin: 0 0 var(--tmc-space-3); }
+.tmc-not { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-not li { padding: 0.3em 0 0.3em 1.6em; position: relative; line-height: 1.6; }
+.tmc-not li::before { content: "\2715"; position: absolute; left: 0; color: var(--tmc-ink-3); }
+.tmc-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--tmc-space-2); margin: var(--tmc-space-4) 0; }
+.tmc-fstep { flex: 1 1 8em; min-width: 8em; background: var(--tmc-surface-2); border: 1px solid var(--tmc-hairline); border-radius: var(--tmc-r-md); padding: var(--tmc-space-3); }
+.tmc-fstep--out { background: var(--tmc-pine-tint); border-color: var(--tmc-pine); }
+.tmc-flabel { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tmc-pine-strong); }
+.tmc-fbody { margin-top: 0.2em; font-weight: 600; font-size: 0.95rem; }
+.tmc-farr { align-self: center; color: var(--tmc-ink-3); font-weight: 700; }
+.tmc-steps { counter-reset: s; list-style: none; padding: 0; margin: var(--tmc-space-4) 0 0; }
+.tmc-steps > li { counter-increment: s; position: relative; padding: 0 0 var(--tmc-space-5) 2.6em; line-height: 1.7; }
+.tmc-steps > li:last-child { padding-bottom: 0; }
+.tmc-steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 1.7em; height: 1.7em; background: var(--tmc-pine); color: var(--tmc-on-pine); border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 600; }
+.tmc-say { display: block; margin-top: var(--tmc-space-2); padding: 0.6em 0.8em; background: var(--tmc-surface-2); border-left: 3px solid var(--tmc-pine); border-radius: var(--tmc-r-sm); font-family: var(--tmc-font-mono); font-size: 0.85rem; line-height: 1.5; }
+.tmc-take { border: 2px solid var(--tmc-pine); border-radius: var(--tmc-r-md); padding: var(--tmc-space-5); margin-top: var(--tmc-space-5); background: var(--tmc-pine-tint); }
+.tmc-take > h2 { margin-top: 0; }
+.tmc-check { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-check li { padding: 0.4em 0 0.4em 1.8em; position: relative; line-height: 1.6; }
+.tmc-check li::before { content: "\2610"; position: absolute; left: 0; font-size: 1.15em; line-height: 1; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{
+  "learner_name": "profile.name",
+  "started": "profile.started"
+}
+</script>
+<style>
+  body {
+    margin: 0;
+    padding: var(--tmc-space-6) var(--tmc-space-4);
+    background: var(--tmc-paper);
+    color: var(--tmc-ink);
+    font-family: var(--tmc-font-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 680px; margin: 0 auto; }
+  .mark { width: 30px; height: 30px; display: block; margin-bottom: var(--tmc-space-3); }
+  h1 {
+    font-family: var(--tmc-font-display); font-size: 1.7rem; font-weight: 600;
+    letter-spacing: -0.01em; margin: 0 0 0.3rem;
+  }
+  .sub { color: var(--tmc-ink-2); font-size: 0.95rem; margin-bottom: var(--tmc-space-5); }
+
+  /* Standing summary — the three outcome states, count-agnostic. */
+  .standing {
+    display: flex; flex-wrap: wrap; gap: var(--tmc-space-3);
+    margin: 0 0 var(--tmc-space-5);
+  }
+  .standing .stat {
+    flex: 1 1 0; min-width: 8rem;
+    background: var(--tmc-surface); border: 1px solid var(--tmc-hairline);
+    border-radius: var(--tmc-r-md); padding: var(--tmc-space-3) var(--tmc-space-4);
+  }
+  .standing .stat .n {
+    font-family: var(--tmc-font-display); font-size: 1.6rem; font-weight: 600;
+    line-height: 1.1; font-variant-numeric: tabular-nums;
+  }
+  .standing .stat .l {
+    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--tmc-ink-2); margin-top: 0.15rem;
+  }
+  .stat.confirmed .n { color: var(--tmc-done); }
+  .stat.provisional .n { color: var(--tmc-doing); }
+  .stat.unmet .n { color: var(--tmc-ink-3); }
+
+  .bar { height: 10px; background: var(--tmc-surface-2); border-radius: var(--tmc-r-pill); overflow: hidden; margin-bottom: var(--tmc-space-5); display: flex; }
+  .bar > .seg { height: 100%; transition: width 0.6s ease; }
+  .bar > .seg.confirmed { background: var(--tmc-done); }
+  .bar > .seg.provisional { background: var(--tmc-doing); }
+
+  /* Outcomes list — one row per outcome in the map (count-agnostic). */
+  ol.map { list-style: none; padding: 0; margin: 0 0 var(--tmc-space-5); }
+  ol.map li {
+    background: var(--tmc-surface); border: 1px solid var(--tmc-hairline);
+    border-radius: var(--tmc-r-md); padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+    display: flex; align-items: baseline; gap: var(--tmc-space-3);
+  }
+  .dot { font-size: 1.05rem; width: 1.4rem; text-align: center; flex: none; color: var(--tmc-ink-3); }
+  li.confirmed .dot { color: var(--tmc-done); }
+  li.provisional .dot { color: var(--tmc-doing); }
+  li.provisional { border-color: var(--tmc-doing); }
+  li.unmet { opacity: 0.6; }
+  .uid { color: var(--tmc-ink-3); font-size: 0.8rem; flex: none; font-family: var(--tmc-font-mono); }
+  .title { flex: 1; }
+  .ev { display: block; font-size: 0.85rem; color: var(--tmc-ink-2); font-style: italic; }
+  .state { font-size: 0.78rem; color: var(--tmc-ink-3); flex: none; }
+  .empty { color: var(--tmc-ink-2); font-style: italic; padding: 0.5rem 0 var(--tmc-space-5); }
+
+  h2 {
+    font-family: var(--tmc-font-text); font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--tmc-pine-strong);
+    margin: 0 0 0.75rem;
+  }
+  ul.kit { list-style: none; padding: 0; margin: 0 0 var(--tmc-space-5); columns: 2; column-gap: 1.5rem; }
+  ul.kit li { padding: 0.25rem 0; font-size: 0.95rem; break-inside: avoid; color: var(--tmc-ink-2); }
+  ul.kit li::before { content: "\25A1  "; color: var(--tmc-ink-3); }
+  ul.kit li.have { color: var(--tmc-ink); }
+  ul.kit li.have::before { content: "\25A0  "; color: var(--tmc-done); }
+  footer { color: var(--tmc-ink-3); font-size: 0.85rem; border-top: 1px solid var(--tmc-hairline); padding-top: 1rem; }
+  @media (max-width: 540px) { ul.kit { columns: 1; } }
+</style>
+<div class="tmc">
+<main>
+  <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-pine)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+  </svg>
+  <h1 id="headline">My Teach Me Claude journey</h1>
+  <div class="sub" id="subline"><span data-tmc-bind="learner_name">Learner</span> · Series 1 — Foundations · started <span data-tmc-bind="started">—</span></div>
+
+  <div class="standing" id="standing"></div>
+  <div class="bar" id="bar"></div>
+
+  <ol class="map" id="map"></ol>
+
+  <h2>The kit</h2>
+  <ul class="kit" id="kit"></ul>
+
+  <footer id="foot"></footer>
+</main>
+
+
+<script id="tmc-state" type="application/json">null</script>
+
+<script>
+  // Read the injected state (real progress only). If it is absent (e.g. opened as
+  // an un-filled template), render an honest empty view rather than fabricating.
+  let STATE = null;
+  try {
+    const raw = document.getElementById("tmc-state").textContent.trim();
+    STATE = JSON.parse(raw);
+  } catch (_) { STATE = null; }
+
+  const progress = (STATE && STATE.progress) || {};
+  const profile = (STATE && STATE.profile) || progress.learner || {};
+  // The outcomes map is the SINGLE source of standing. An outcome absent from the
+  // map is `unmet` (the pathway's rule) — so the map is populated as outcomes are
+  // encountered, and we render exactly what it contains. No fixed challenge count.
+  const outcomes = (progress && progress.outcomes) || {};
+  const kit = (progress && progress.kit) || {};
+
+  // A friendly label per outcome. The shipped runtime does NOT carry the outcomes
+  // matrix (curriculum/outcomes.md is a design file that does not ship), so we
+  // label from the outcome entry's own fields (a `title`/`label` if the runtime
+  // wrote one, else its uid) — never from a hardcoded series list.
+  function labelFor(uid, entry) {
+    return (entry && (entry.title || entry.label)) || uid;
+  }
+  function evidenceLine(entry) {
+    if (!entry) return "";
+    if (entry.evidence_ref) return entry.evidence_ref;
+    if (entry.evidence_kind) return entry.evidence_kind;
+    return "";
+  }
+
+  // Tally the three states across the whole map (count-agnostic).
+  const STATES = ["confirmed", "provisional", "unmet"];
+  const counts = { confirmed: 0, provisional: 0, unmet: 0 };
+  const entries = Object.entries(outcomes);
+  for (const [, entry] of entries) {
+    const s = (entry && entry.status) || "unmet";
+    if (counts[s] === undefined) counts.unmet++; else counts[s]++;
+  }
+  const total = entries.length;
+
+  // Header: the learner's name (filled by the manifest bind above) is already in
+  // place; nothing here re-substitutes it. We only set the dynamic, map-derived
+  // subline copy.
+  const sub = document.getElementById("subline");
+  if (sub && total === 0) {
+    sub.textContent = "Series 1 — Foundations · your journey starts here";
+  }
+
+  // Standing summary — the three outcome states.
+  const STAND_LABEL = { confirmed: "confirmed", provisional: "provisional", unmet: "still ahead" };
+  const standing = document.getElementById("standing");
+  STATES.forEach((s) => {
+    const div = document.createElement("div");
+    div.className = "stat " + s;
+    div.innerHTML = '<div class="n"></div><div class="l"></div>';
+    div.querySelector(".n").textContent = String(counts[s]);
+    div.querySelector(".l").textContent = STAND_LABEL[s];
+    standing.appendChild(div);
+  });
+
+  // Progress bar — confirmed + provisional segments, proportion of the map.
+  const bar = document.getElementById("bar");
+  if (total > 0) {
+    ["confirmed", "provisional"].forEach((s) => {
+      const seg = document.createElement("div");
+      seg.className = "seg " + s;
+      seg.style.width = ((counts[s] / total) * 100) + "%";
+      bar.appendChild(seg);
+    });
+  }
+
+  // The outcomes list — one row per outcome the map contains, in map order.
+  const DOT = { confirmed: "✓", provisional: "◐", unmet: "·" };
+  const map = document.getElementById("map");
+  if (total === 0) {
+    const li = document.createElement("li");
+    li.className = "empty-row";
+    li.innerHTML = '<span class="empty">No outcomes recorded yet — they’ll appear here as you meet them.</span>';
+    map.appendChild(li);
+  } else {
+    for (const [uid, entry] of entries) {
+      const s = (entry && entry.status) || "unmet";
+      const li = document.createElement("li");
+      li.className = STATES.includes(s) ? s : "unmet";
+      const ev = evidenceLine(entry);
+      li.innerHTML =
+        '<span class="dot">' + (DOT[s] || "·") + "</span>" +
+        '<span class="uid"></span>' +
+        '<span class="title"></span>' +
+        '<span class="state">' + (s === "unmet" ? "ahead" : s) + "</span>";
+      li.querySelector(".uid").textContent = uid;
+      const titleEl = li.querySelector(".title");
+      titleEl.textContent = labelFor(uid, entry);
+      if (ev) {
+        const e = document.createElement("span");
+        e.className = "ev";
+        e.textContent = ev;
+        titleEl.appendChild(e);
+      }
+      map.appendChild(li);
+    }
+  }
+
+  // The kit — a GENERIC map keyed by slot-id, each entry `{label, ref}`. The label
+  // is authored per challenge (the runsheet's kit_contribution) and the ref is the
+  // produced artefact's path. We render whatever progress.kit contains — series- and
+  // count-agnostic, with NO hardcoded slot list. An entry is "have" once it has a
+  // ref. (A legacy string-form entry — an un-upgraded old kit — is tolerated: the
+  // string is the ref and the slot-id stands in as the label.)
+  function kitLabel(slot, entry) {
+    if (entry && typeof entry === "object") return entry.label || slot;
+    return slot; // legacy string form (or empty): fall back to the slot-id
+  }
+  function kitHave(entry) {
+    if (entry && typeof entry === "object") return !!entry.ref;
+    return !!entry; // legacy non-empty string ⇒ present
+  }
+  const kitEl = document.getElementById("kit");
+  const kitEntries = Object.entries(kit);
+  if (kitEntries.length === 0) {
+    const li = document.createElement("li");
+    li.className = "empty-kit";
+    // SECURITY: static copy, but use textContent for consistency with the rule below.
+    li.textContent = "Your kit grows as you go — pieces appear here.";
+    kitEl.appendChild(li);
+  } else {
+    for (const [slot, entry] of kitEntries) {
+      const li = document.createElement("li");
+      if (kitHave(entry)) li.className = "have";
+      // SECURITY (critical): the label is AUTHOR-CONTROLLED (it comes from the
+      // runsheet's kit_contribution, carried through progress.kit). It MUST render as
+      // inert text — NEVER innerHTML — so a markup-bearing label (e.g.
+      // `<img src=x onerror=...>`) cannot execute. journey-map is not scanned by the
+      // conformance linter, so this is the only thing keeping such a label inert.
+      li.textContent = kitLabel(slot, entry);
+      kitEl.appendChild(li);
+    }
+  }
+
+  // Footer — a count of reflections, and the honesty note (real local state only).
+  const refl = (progress && progress.reflections || []).length;
+  document.getElementById("foot").textContent =
+    (refl ? refl + " reflection" + (refl === 1 ? "" : "s") + " recorded · " : "") +
+    "This map renders your local progress file — it’s yours.";
+</script>
+</div>
