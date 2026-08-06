@@ -4,8 +4,9 @@
   Authored by challenge-author. Composes from the SHARED lesson-shell classes in tmc.css (.tmc-banner,
   .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
   pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
-  No JS. The "open in browser" takeaway is a GUIDE behaviour (link dropped below the widget), not a widget
-  affordance — see the runsheet's ## Learning-guide notes. Real Cowork labels per cowork-ui-reference.md.
+  No JS. The "open in browser" takeaway SHIPS as the sibling delegate-takeaway.html — the runsheet (S2)
+  has the guide link it in place below the widget (a widget can't open a window itself). Real Cowork
+  labels per cowork-ui-reference.md (2026-07-14 re-verification).
 -->
 <html lang="en">
 <head>
@@ -43,19 +44,22 @@
       <div class="tmc-lesson-body">
         <div class="tmc-eyebrow">Lesson 2 · your first real delegation</div>
         <h1 class="tmc-title">Delegate something real</h1>
-        <p class="tmc-muted">Today the agent does an actual piece of your work — and you learn the
+        <p class="tmc-muted">Today the agent drafts a real email from your work — and you learn the
            three habits that make handing work over feel safe.</p>
 
         <div class="tmc-lsec">
-          <h2>Pick the right first job</h2>
-          <p>Not every task is a good <em>first</em> delegation. The best ones share three traits:</p>
+          <h2>Today's job: draft a real email</h2>
+          <p>Not every task is a good <em>first</em> delegation — so today's is defined: <strong>an
+             email you actually need to send</strong>, drafted with the agent. It has the three
+             traits a good first delegation shares:</p>
           <ul class="tmc-check">
-            <li>the <strong>input already exists</strong> — notes, a document, a messy draft</li>
-            <li>the <strong>output has a known shape</strong> — you could describe what "done" looks like</li>
-            <li>it's <strong>your own domain</strong> — you can judge the result at a glance</li>
+            <li>the <strong>input already exists</strong> — the thread you're answering, your notes,
+               what it must say</li>
+            <li>the <strong>output has a known shape</strong> — an email; you know what "done" looks like</li>
+            <li>it's <strong>your own domain</strong> — you'll judge the result at a glance</li>
           </ul>
-          <p>Choosing what to hand over — and what not to — is itself the skill. Delegation is a
-             decision, not a reflex.</p>
+          <p>You pick <em>which</em> email. Choosing what to hand over — and what not to — is
+             itself the skill. Delegation is a decision, not a reflex.</p>
         </div>
 
         <div class="tmc-lsec">
@@ -73,21 +77,28 @@
              brief. Sending it back — <em>"closer, but warmer"</em> — is the normal move, not a
              failure. The work isn't done when the agent stops typing; it's done when <strong>you'd
              put your name on it</strong>.</p>
+          <p>One honest expectation: <strong>it won't sound like you yet</strong>. Later in the
+             course you'll learn how to get first drafts closer to your voice and style — for now,
+             plan to iterate and review more. Editing it into your voice is part of the loop, not a
+             failure of it.</p>
         </div>
 
         <div class="tmc-lsec">
           <h2>Three habits make it safe</h2>
           <ul class="tmc-check">
-            <li><strong>Copy before courage.</strong> Duplicate anything you can't afford to lose
-               <em>before</em> the agent touches it. A copy makes every bold ask cheap — you can say
-               yes to anything.</li>
-            <li><strong>Read before you approve.</strong> When it's about to change or delete
-               something, it says so and waits. Read that, say it back in plain words, then decide.
-               Deleting, overwriting, moving — the actions you can't easily undo — get the most
-               awake look. Resist "always allow" while you're learning.</li>
+            <li><strong>Version before the big change.</strong> Before a bold rewrite, keep the
+               current version — v1 stays untouched while v2 takes the risk. Going back is just
+               pointing at v1. A kept version makes every bold ask cheap — you can say yes to
+               anything.</li>
+            <li><strong>Read before you approve.</strong> You may get a permission request when it
+               acts on files. Whenever one comes — or it proposes an action in chat — read it, say
+               it back in plain words, then decide. Deleting, overwriting, moving — the actions you
+               can't easily undo — get the most awake look. Resist "always allow" while you're
+               learning.</li>
             <li><strong>Pause before you paste.</strong> Other people's private details,
                confidential material, passwords — check for them before real material goes in, and
-               swap in a stand-in. (The full treatment comes later in the course.)</li>
+               swap in a stand-in. For now we take a conservative risk posture; later in the course
+               you'll learn how to decide what's safe to share in your own context.</li>
           </ul>
         </div>
 
@@ -102,40 +113,43 @@
     <div class="tmc-slide tmc-slide--2">
       <div class="tmc-lesson-body">
         <div class="tmc-eyebrow">Lesson 2 · your activity</div>
-        <h1 class="tmc-title">Hand over one real task</h1>
-        <p class="tmc-muted">A real task from your week — you'll leave this lesson with it actually
-           done.</p>
+        <h1 class="tmc-title">Hand over one real email</h1>
+        <p class="tmc-muted">A real email from your week — you'll leave this lesson with it drafted
+           and ready to send.</p>
 
         <ol class="tmc-steps">
-          <li><strong>Start a new task</strong> (<strong>+ New task</strong>, top-left) and point it
-             at your series folder via <strong>Work in a project or folder</strong> →
-             <code>series-01-foundations</code>.</li>
-          <li><strong>Bring your material in — pause first.</strong> Anything private, confidential,
-             or not yours to share? Swap it for a stand-in. Then copy the document into the folder.</li>
-          <li><strong>Copy before courage.</strong> Duplicate anything you can't afford to lose —
-             e.g. <span class="tmc-say">Make a copy of report-notes.md called report-notes-backup.md
-             before we start.</span></li>
-          <li><strong>Brief the job in your own words</strong> — what it is, who it's for, what good
-             looks like. Like briefing a capable new colleague on day one.</li>
-          <li><strong>Read what it asks before you say yes.</strong> When it's about to act on a
-             file, say the action back to yourself in plain words — <em>then</em> decide.</li>
-          <li><strong>Own the draft.</strong> Save a copy of version one, then ask for a
-             <strong>bold</strong> revision in your own words — the copy makes it free. Compare,
-             keep the best of both, and <strong>restore once from your copy</strong> so you know the
-             way back.</li>
+          <li><strong>Pick the email — pause first.</strong> With your guide, before you go: a
+             real email you need to send. Anything in the material that's private, confidential,
+             or not yours to share? Swap it for a stand-in — conservative for now; your own
+             sharing policy comes later in the course.</li>
+          <li><strong>Start a new task.</strong> In the <strong>Home</strong> tab, click <strong>+ New</strong>
+             (check <strong>Cowork</strong> is selected), then point it at your series folder via
+             <strong>Project or folder</strong> → <code>series-01-foundations</code>.</li>
+          <li><strong>Paste the context in.</strong> The thread you're answering, your notes, what
+             it must say — the agent drafts from what you give it. No email access needed.</li>
+          <li><strong>Brief the job in your own words</strong> — who it's for, what it must
+             accomplish, tone and length. Like briefing a capable new colleague on day one.</li>
+          <li><strong>Read before you approve.</strong> You may get a permission request when it
+             acts on files — read it, say it back to yourself in plain words, <em>then</em> decide.</li>
+          <li><strong>Own the draft — version it.</strong> e.g. <span class="tmc-say">Save this as
+             draft-v1 and start a draft-v2 — keep v1 untouched.</span> Then ask for one
+             <strong>bold</strong> revision in your own words — v1 makes it free. Compare, keep the
+             best of both — pull back anything you liked from v1. You send the final yourself.</li>
         </ol>
 
         <div class="tmc-take">
           <h2>Take these with you</h2>
-          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page — your
-             guide will drop a link below to keep these beside you:</p>
+          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page —
+             <strong>click the link below this lesson</strong> to open these in your browser and keep
+             them beside you:</p>
           <ul class="tmc-check">
-            <li><strong>+ New task</strong> → <strong>Work in a project or folder</strong> → <code>series-01-foundations</code></li>
-            <li>Pause before pasting: private / confidential / credentials → stand-ins</li>
-            <li>Copy anything you can't afford to lose — <em>then</em> be bold</li>
-            <li>Read what it's about to do; say it back; then approve</li>
-            <li>Brief → receive → review → <strong>revise in your own words</strong></li>
-            <li>Try one restore from your copy — know the way back</li>
+            <li><strong>Home</strong> tab → <strong>+ New</strong> (<strong>Cowork</strong> selected) → <strong>Project or folder</strong> → <code>series-01-foundations</code></li>
+            <li>Pause before pasting: private / confidential / credentials → stand-ins (conservative for now)</li>
+            <li>Brief like a new colleague: who it's for, what it must accomplish, tone</li>
+            <li>You may get a permission request — read it, say it back, then decide</li>
+            <li>Version before the bold rewrite — v1 untouched, v2 takes the risk</li>
+            <li>Brief → receive → review → <strong>revise in your own words</strong> — you send it</li>
+            <li>The first draft won't sound like you yet — iterating it into your voice is the loop working</li>
           </ul>
         </div>
 

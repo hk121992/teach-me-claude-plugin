@@ -33,8 +33,11 @@ widgets:
 ### S1 · Present the lesson  *(home base · guide)*
 Present **`orient-lesson`** — Slide 1 the lesson, Slide 2 the activity. Then, **immediately after
 the widget, as its own chat message**, post a markdown link to the shipped `orient-takeaway.html`
-(beside this runsheet in your install), exactly: *"Click [**here**](<path to orient-takeaway.html>)
-to open the instructions in your browser."*
+at its **plugin-install path**: resolve
+`${CLAUDE_PLUGIN_ROOT}/challenges/series-01/01-meet-cowork-and-your-agent/orient-takeaway.html`
+to the absolute path of your install and post *"Open your activity steps in your browser:
+[orient-takeaway.html](<the resolved absolute path>)"* — the visible filename keeps the step
+usable even where a chat link doesn't render clickable.
 - confirms: —
 
 ### S2 · Break-out — the activity  *(new task in `series-01-foundations` · learner)*
