@@ -295,11 +295,17 @@ last challenge or passing the capstone as a step — a learner can sit on the la
 challenge with provisionals still open and is **not** complete. (This closes
 FM-CERT-EARLY — no early certificate.)
 
-**Completion-trigger boundary.** When the outcomes map reaches `COMPLETE`, this
-skill's only job is a **thin terminal write**: **`review` WRITES the `COMPLETE`
-state** into the outcomes map (the terminal marker) and **hands off**. **Do NOT
-generate the certificate here.** The separate **`credential` skill READS the
-`COMPLETE` state** (`${CLAUDE_PLUGIN_ROOT}/skills/credential/SKILL.md`) and owns the
-credential record, certificate generation, and the claim-link. Write the terminal
-state, tell the learner they've completed the series, and **invoke the `credential`
-skill** — never mint the credential in this skill.
+**Completion-trigger boundary.** `COMPLETE` is a **derived** state, never a stored
+one: `scripts/pathway.mjs` returns its `COMPLETE` sentinel the moment its recompute
+finds **no** outcome left `unmet` or `provisional`. There is **no `COMPLETE` entry
+to write** — **never invent an `outcomes["COMPLETE"]` key** (a phantom entry has no
+`confirmed` status, so the `credential` skill's completion re-check reads it as still
+open and **deadlocks** the credential). Your terminal job is only the **normal
+outcome write** that tips the map into completion: grade and record the **final
+covered outcome(s)** as `confirmed` the usual way, confirm the pathway now returns
+`COMPLETE`, and **hand off**. **Do NOT generate the certificate here.** The separate
+**`credential` skill READS the `COMPLETE` state**
+(`${CLAUDE_PLUGIN_ROOT}/skills/credential/SKILL.md`) and owns the credential record,
+certificate generation, and the claim-link. Record the final verdict, tell the
+learner they've completed the series, and **invoke the `credential` skill** — never
+mint the credential in this skill.

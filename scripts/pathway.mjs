@@ -118,8 +118,21 @@ export function pathway({ outcomes = {}, runsheets = [], current, attended = [] 
   // (4) In-flight resume — an in-flight pointer resumes; it is NOT re-derived.
   // (Shared with the SessionStart composer via the exported helper, so a genuine
   // resume is honoured even on the no-content path.)
+  //
+  // F6 (dangling-id guard): a resumed pointer must still name a runsheet that
+  // exists in the loaded set. A plugin update can RETIRE a runsheet id (e.g. the
+  // authored L1 declares its id provisional and "retires 01-L-WEGG"); a parked
+  // `in_progress` pointer left at that retired id would otherwise strand the
+  // learner forever on a challenge that no longer ships. Only honour the resume
+  // when the id is still present in `runsheets` — OR when there is no loaded set
+  // to validate against (runsheets.length === 0: the SessionStart none-yet path,
+  // where the resume is the only signal and must survive). Otherwise fall through
+  // to re-derivation from the outcomes map, routing the learner to where they
+  // actually are.
   const resume = inFlightResume(current);
-  if (resume) return resume;
+  if (resume && (runsheets.length === 0 || runsheets.some((r) => r && r.id === resume.next))) {
+    return resume;
+  }
 
   // (1)+(2) Single ordered pass. For each runsheet in series order, decide whether
   // it is the one to run:

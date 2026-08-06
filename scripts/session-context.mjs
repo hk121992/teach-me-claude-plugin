@@ -221,22 +221,41 @@ export function classify(readResult) {
  * History, kit contents, reflections, evidence refs, and the full outcomes map are
  * deliberately NOT included — the injection must stay small. Pure; no I/O.
  *
+ * The counts are taken over the union of (the outcomes-map's own uids) and the
+ * TAUGHT set (`taughtUids` — the loaded runsheets' `covers_outcomes` union). This
+ * closes the "absent ≠ present-and-unmet" leak (F8): without the taught set a
+ * never-touched taught outcome is simply ABSENT from the map and vanishes from the
+ * counts, so mid-series the summary reads "N confirmed, 0 unmet (of N tracked)"
+ * while dozens of taught outcomes are still open — a false everything-done
+ * narrative. With it, an absent taught uid is correctly counted `unmet`. When
+ * `taughtUids` is omitted/empty (the none-yet path, or a direct call) the behaviour
+ * is unchanged: the counts range over the map's own entries.
+ *
  * @param {any} progress a v3 progress object
+ * @param {Iterable<string>} [taughtUids] the taught outcome uids for the in-flight
+ *        series (see taughtUidUnion); absent-taught uids count as `unmet`.
  * @returns {{ name: string|null, outcomes: {confirmed:number, provisional:number, unmet:number, total:number}, current: {runsheet:(string|null), status:(string|null)} }}
  */
-export function cappedSummary(progress) {
+export function cappedSummary(progress, taughtUids) {
   const learner = (progress && progress.learner) || {};
   const name = typeof learner.name === "string" && learner.name !== "" ? learner.name : null;
 
   const outcomesMap = (progress && progress.outcomes) || {};
+
+  // Account for every uid already in the map UNION every taught uid — so a taught
+  // outcome the learner has not reached yet is counted `unmet`, not invisible.
+  const uids = new Set(Object.keys(outcomesMap));
+  if (taughtUids) for (const uid of taughtUids) uids.add(uid);
+
   let confirmed = 0;
   let provisional = 0;
   let unmet = 0;
-  for (const entry of Object.values(outcomesMap)) {
+  for (const uid of uids) {
+    const entry = outcomesMap[uid];
     const status = entry && entry.status;
     if (status === CONFIRMED) confirmed += 1;
     else if (status === PROVISIONAL) provisional += 1;
-    else unmet += 1; // unmet OR any unexpected/absent status → counted as not-yet-met
+    else unmet += 1; // unmet OR absent-taught OR any unexpected status → not-yet-met
   }
 
   const cur = (progress && progress.current) || {};
@@ -380,6 +399,25 @@ export function loadRunsheets(seriesDir) {
   return sheets;
 }
 
+/**
+ * The union of every TAUGHT outcome uid across a loaded runsheet set — the
+ * `covers_outcomes[].uid` of every runsheet. This is the taught set for the
+ * in-flight series; cappedSummary uses it so an untouched taught outcome counts
+ * `unmet` on the position surface rather than vanishing (F8). Pure; no I/O.
+ * @param {Array<object>} runsheets loaded runsheet metadata
+ * @returns {Set<string>} the set of taught outcome uids (empty when none loaded)
+ */
+export function taughtUidUnion(runsheets) {
+  const uids = new Set();
+  for (const rs of runsheets || []) {
+    const covers = (rs && rs.covers_outcomes) || [];
+    for (const c of covers) {
+      if (c && typeof c.uid === "string" && c.uid !== "") uids.add(c.uid);
+    }
+  }
+  return uids;
+}
+
 // ---------------------------------------------------------------------------
 // Render — the final injection string. Pure (given the computed parts).
 // ---------------------------------------------------------------------------
@@ -483,9 +521,9 @@ export function renderReconnect(reason, progressPath) {
   );
   if (reason === REASON.CORRUPT) {
     lines.push(
-      `Their progress file (${progressPath}) is present but CORRUPT (the file exists ` +
-        "but is not readable as valid JSON). Say so plainly — it is a corrupt save, " +
-        "not an absent one — and offer to help them recover or restart it. Never " +
+      `Their saved learning state (${progressPath}) is present but CORRUPT (the file ` +
+        "exists but is not readable as valid JSON). Say so plainly — it is a corrupt " +
+        "save, not an absent one — and offer to help them recover or restart it. Never " +
         "overwrite it without telling them.",
     );
   } else {
@@ -595,13 +633,32 @@ export function composeSessionContext({ cwd, runsheets, pluginRoot } = {}) {
   if (decision.migrate) {
     // The ONLY write path, and only AFTER the guard passed. migrateFile writes
     // progress.json + preferences.json atomically and returns the v3 result.
-    const res = migrateFile(progressPath, preferencesPath);
+    //
+    // F3: migrateFile can THROW — a corrupt preferences.json throws EBADPREFSJSON,
+    // a re-read/parse of progress.json throws EBADPROGRESSJSON, or an fs error
+    // surfaces. Left unguarded the throw propagates to the CLI catch-all, which
+    // exits 0 with NO output: the entire SessionStart injection silently vanishes
+    // and the learner is dropped with no greeting and no explanation. Catch it and
+    // degrade to an explicit RECONNECT/corrupt that NAMES the offending file (the
+    // corrupt preferences.json is the live case) — never a silent disappearance,
+    // and NO further write is attempted.
+    let res;
+    try {
+      res = migrateFile(progressPath, preferencesPath);
+    } catch (err) {
+      const badPath =
+        err && err.code === "EBADPROGRESSJSON" ? progressPath : preferencesPath;
+      return {
+        action: ACTION.RECONNECT,
+        reason: REASON.CORRUPT,
+        output: renderReconnect(REASON.CORRUPT, badPath),
+        progressPath,
+      };
+    }
     progress = res.progress;
     migrated = res.migrated;
   }
 
-  // Capped position summary + the deterministic next step.
-  const summary = cappedSummary(progress);
   // Runsheets: the explicit override wins (tests inject fixtures); otherwise load
   // the in-flight series' runsheets from the SHIPPED plugin (NOT workspaceDir — the
   // learner's workspace holds only progress, never content). The series dir is
@@ -611,6 +668,13 @@ export function composeSessionContext({ cwd, runsheets, pluginRoot } = {}) {
   const sheets = Array.isArray(runsheets)
     ? runsheets
     : loadRunsheets(inFlightSeriesDir(base, progress.current && progress.current.series));
+
+  // Capped position summary — counted over the TAUGHT set (the loaded runsheets'
+  // covered-outcome union) so an as-yet-untouched taught outcome counts `unmet`
+  // instead of vanishing into a false everything-done narrative (F8). With no
+  // runsheets loaded the taught set is empty and the summary falls back to the
+  // map's own entries (unchanged none-yet behaviour).
+  const summary = cappedSummary(progress, taughtUidUnion(sheets));
   // pathway() over an EMPTY runsheet set is vacuously COMPLETE — but "no content yet"
   // is NOT "every taught outcome confirmed". Only ask pathway when content exists; with
   // no runsheets, do NOT claim completion against unmet outcomes.

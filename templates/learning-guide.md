@@ -468,11 +468,15 @@ sign off with "see you next time" as if the decision were already made.
 **Series-completion** fires **only on the `COMPLETE` state** — every taught
 outcome `confirmed`, the pathway returning its sentinel — **never** on reaching
 the last challenge or passing the capstone as a step. A learner can sit on the
-last challenge with provisionals still open and is *not* complete. On `COMPLETE`,
-`review` writes the terminal state and hands off to the **`credential` skill**,
-which stamps the `progress.credential` record (`{ id, completed }` — the opaque
-claim-link id + the completion date), renders the certificate, and generates the
-claim-link — all read from real state, never fabricated.
+last challenge with provisionals still open and is *not* complete. `COMPLETE` is
+**derived, never stored**: the pathway returns its sentinel when no outcome is left
+`unmet` or `provisional`, so there is **nothing to write** and **never** an invented
+`outcomes["COMPLETE"]` entry (a phantom entry would read as still-open and deadlock
+the credential). On `COMPLETE`, `review` records the **final outcome verdict** that
+tips the map into completion and hands off to the **`credential` skill**, which
+stamps the `progress.credential` record (`{ id, completed }` — the opaque claim-link
+id + the completion date), renders the certificate, and generates the claim-link —
+all read from real state, never fabricated.
 
 ## Resources
 
