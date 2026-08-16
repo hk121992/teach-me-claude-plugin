@@ -5,9 +5,10 @@
   .tmc-slide/.tmc-nav pager, .tmc-lsec/.tmc-steps/.tmc-take/…) — the only per-widget CSS is the pure-CSS
   pager reveal rules (they key on this widget's radio ids). Slide 1 = the LESSON, Slide 2 = the ACTIVITY.
   No JS. The take-with-you page is a GUIDE behaviour, not a widget affordance — the runsheet (S1) has the
-  guide send the built self-contained export (orient-takeaway.export.html) via the host's file-send. The
-  takeaway is the ONE sanctioned portable duplicate of Slide 2's steps (single-owner rule); this widget
-  only points at it, never restates. Real Cowork labels per cowork-ui-reference.md.
+  guide post a chat link to the built self-contained export (orient-takeaway.export.html) at its
+  plugin-install path. The takeaway is the ONE sanctioned portable duplicate of Slide 2's steps
+  (single-owner rule); this widget only points at it, never restates. Real Cowork labels per
+  cowork-ui-reference.md.
 -->
 <html lang="en">
 <head>
@@ -113,9 +114,9 @@
 
         <div class="tmc-take">
           <h2>Take these with you</h2>
-          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page — your
-             guide is sending you these steps as a small file just below this lesson.
-             <strong>Open it now</strong> and keep it beside you for the road.</p>
+          <p class="tmc-muted" style="margin:0">You'll be in a new task, away from this page —
+             <strong>click the link below this lesson</strong> to open these steps in your browser,
+             and keep them beside you for the road.</p>
         </div>
 
         <div class="tmc-nav">

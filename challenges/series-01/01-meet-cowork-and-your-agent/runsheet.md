@@ -32,10 +32,12 @@ widgets:
 
 ### S1 · Present the lesson  *(home base · guide)*
 Present **`orient-lesson`** — Slide 1 the lesson, Slide 2 the activity. Then, **immediately after
-the widget**, send the learner the shipped take-with-you page **as a file** via the host's
-file-send: `orient-takeaway.export.html`, the self-contained copy beside this widget in the
-shipped challenge folder. Send those exact bytes — never a filesystem-path link (the learner's
-browser can't reach your filesystem), never a re-authored substitute. Close with **one** send-off
+the widget, as its own chat message**, post a markdown link to the shipped self-contained
+take-with-you page: resolve
+`${CLAUDE_PLUGIN_ROOT}/challenges/series-01/01-meet-cowork-and-your-agent/orient-takeaway.export.html`
+to the absolute path of your install and post *"Open your activity steps in your browser:
+[orient-takeaway.export.html](<the resolved absolute path>)"*. Link those exact shipped bytes —
+never a re-authored substitute. Close with **one** send-off
 beat — action, why it benefits them, come-back cue (*"Off you go — doing it in a fresh task is
 the real lesson. Come back here when you've seen the file with your own eyes."*) — and no step
 restatement: the widget and the take-with-you file own the steps.
