@@ -55,9 +55,12 @@ import { parseFrontmatter } from "./frontmatter.mjs";
 // ---------------------------------------------------------------------------
 
 // The learner's own workspace is a `.teach-me/` dir holding progress.json.
-const WORKSPACE_DIR = ".teach-me";
-const PROGRESS_BASENAME = "progress.json";
-const PREFERENCES_BASENAME = "preferences.json";
+// EXPORTED (wi-onboarding IU-1 touch-up): tmc.mjs — the runtime CLI whose
+// `setup` command materializes the workspace tree — imports these so the
+// bookkeeping layout has ONE owner (this module). No third layout truth.
+export const WORKSPACE_DIR = ".teach-me";
+export const PROGRESS_BASENAME = "progress.json";
+export const PREFERENCES_BASENAME = "preferences.json";
 
 // The CONCRETE sentinel (`PLUGIN_SENTINEL`) and the current state-shape version
 // (`CURRENT_VERSION`) are IMPORTED from migrate-progress.mjs — the module that
@@ -304,9 +307,13 @@ export function cappedSummary(progress, taughtUids) {
 //   exercised in tests via an explicit dir / the `runsheets`/`pluginRoot` overrides.
 // ---------------------------------------------------------------------------
 
-const CHALLENGES_DIR = "challenges";
-const OVERVIEW_PREFIX = "00-"; // the 00- overview file + 00-onboarding folder, not challenge runsheets
-const RUNSHEET_BASENAME = "runsheet.md"; // the shipped runsheet inside each challenge folder
+// EXPORTED (wi-onboarding IU-1 touch-up): tmc.mjs — the runtime CLI whose
+// `next` command owns id→path over the shipped tree — imports these so the
+// shipped-tree layout has ONE owner (this module, the loader that already
+// encodes it). No third layout truth.
+export const CHALLENGES_DIR = "challenges";
+export const OVERVIEW_PREFIX = "00-"; // the 00- overview file + 00-onboarding folder, not challenge runsheets
+export const RUNSHEET_BASENAME = "runsheet.md"; // the shipped runsheet inside each challenge folder
 
 /**
  * The installed plugin's root, resolved from THIS module's own location: the build
