@@ -47,6 +47,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 import { fillWidget } from "./widget-fill.mjs";
 import { verifyHandback } from "./handback-verify.mjs";
@@ -167,8 +168,9 @@ commands:
 //                            (no-clobber — the guide asks before replacing)
 //   REFUSED_SYMLINK <rel>    a symlink at the target path — never written
 //                            through (no-dereference)
-//   OBSTRUCTED <rel>         a plain file stands where a directory must go —
-//                            refused honestly, never clobbered
+//   OBSTRUCTED <rel>         the wrong node type stands at the target path (a
+//                            file where a dir must go, or a dir where a template
+//                            file must go) — refused honestly, never clobbered
 //   BLOCKED <rel>            skipped because an ancestor dir was refused
 //   TARGET_UNREACHABLE <root> the root (or its parent) is not reachable/writable
 // Exit 0 = tree complete (CREATED/EXISTS only). Exit 1 = any refusal. A re-run
@@ -222,6 +224,15 @@ function cmdSetup(rest) {
   const pluginRoot = flags["--plugin-root"] || installedPluginRoot();
   const root = path.resolve(rootArg);
   const out = (line) => process.stdout.write(line + "\n");
+
+  // setup's stdout sentinel report IS its payload (the guide parses it), and
+  // the root is echoed into it — so a control char (esp. a newline) in the
+  // target root could FORGE a sentinel line. Refuse such a root before echoing
+  // it anywhere.
+  if (/[\x00-\x1f]/.test(root)) {
+    out(`TARGET_UNREACHABLE ${JSON.stringify(rootArg)}`);
+    return EXIT.REFUSED;
+  }
 
   // --- REACHABILITY — the loud refusal, before any write -------------------
   const rootStat = lstatOrNull(root);
@@ -295,8 +306,15 @@ function cmdSetup(rest) {
     }
 
     // kind === "copy"
-    if (stat) {
+    if (stat && stat.isFile()) {
       out(`EXISTS ${rel}`); // seed-if-absent / no-clobber — the guide asks before replacing
+      continue;
+    }
+    if (stat) {
+      // A directory (or other non-file) stands where the template file must go
+      // — the tree is NOT complete; refuse honestly, never treat it as EXISTS.
+      out(`OBSTRUCTED ${rel}`);
+      refused += 1;
       continue;
     }
     // Realpath confinement (belt-and-braces beside the lstat walk): the
@@ -352,16 +370,30 @@ const ACTIVE_SCHEME_RE = /(?:javascript|vbscript|data|blob)\s*:/i;
 // CSS url() carrying an active scheme (style attr / <style> block).
 const CSS_ACTIVE_URL_RE = /url\s*\(\s*['"]?\s*(?:javascript|vbscript|data|blob)\s*:/i;
 
+// A codepoint → char that NEVER throws: an out-of-range numeric entity (a
+// learner-typed `&#x110000;` that fill escapes and this un-escapes) yields the
+// replacement char U+FFFD, never a RangeError. A scanner that crashes on its
+// input is worse than one that refuses or passes — it must always reach a
+// verdict.
+function safeFromCodePoint(n) {
+  return Number.isInteger(n) && n >= 0 && n <= 0x10ffff ? String.fromCodePoint(n) : "�";
+}
+
 // Decode numeric + the common named HTML entities, repeatedly (bounded — a
 // double-encoded &amp;#106; must not survive one pass), so an entity-obfuscated
-// scheme cannot slip past. Compact mirror of the dev scanner's approach.
+// scheme cannot slip past. This is a BOUNDED tripwire, NOT the dev scanner: the
+// full hand-tokenising scanner (curriculum/authoring/lib/conformance.mjs,
+// dev-only) never ships; per widget-scanner-architecture §4 (B3) the runtime
+// assertion's job is the fill-borne active-URL class, and authored-content
+// parser-divergence residuals are ACCEPTED on the non-adversarial authoring
+// threat model. Do not mistake this for scanner parity.
 function decodeEntitiesForScan(s) {
   const NAMED = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", colon: ":", sol: "/", NewLine: "\n", Tab: "\t" };
   let out = String(s);
   for (let i = 0; i < 5; i++) {
     const next = out
-      .replace(/&#x([0-9a-f]+);?/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
-      .replace(/&#(\d+);?/g, (_, d) => String.fromCodePoint(parseInt(d, 10)))
+      .replace(/&#x([0-9a-f]+);?/gi, (_, h) => safeFromCodePoint(parseInt(h, 16)))
+      .replace(/&#(\d+);?/g, (_, d) => safeFromCodePoint(parseInt(d, 10)))
       .replace(/&([a-z]+);/gi, (m, name) =>
         Object.prototype.hasOwnProperty.call(NAMED, name) ? NAMED[name] : m,
       );
@@ -386,7 +418,8 @@ function normaliseAttrValue(v) {
  * The export-mode structural assertion. Returns a violation list (empty =
  * safe): [{ kind: "script"|"handler"|"active-url", detail }]. Comments are
  * stripped first (commented markup is inert; a payload must not hide in one
- * either way). Exported for direct unit exercise; the CLI refusal path is the
+ * either way). Exported so tests/runtime/tmc-cli-export-assert.test.mjs
+ * exercises the normalisation edges directly; the CLI refusal path is the
  * contract surface.
  */
 export function assertExportSafe(filledHtml) {
@@ -401,8 +434,12 @@ export function assertExportSafe(filledHtml) {
   }
 
   // 2. Per-tag attribute scan: on* handlers + active schemes in URL-bearing
-  // attributes + active url() in style attributes.
-  const tagRe = /<[a-zA-Z][^>]*>/g;
+  // attributes + active url() in style attributes. The tag matcher is
+  // QUOTE-AWARE — a literal `>` inside a quoted attribute value does not end
+  // the tag (a naive `[^>]*` would truncate there, letting a later attribute
+  // escape the scan). Fill-borne values cannot reach this (escapeHtml escapes
+  // `>`); it hardens the authored-template case.
+  const tagRe = /<[a-zA-Z](?:"[^"]*"|'[^']*'|[^>"'])*>/g;
   const attrRe = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*("([^"]*)"|'([^']*)'|[^\s>]+)/g;
   let tag;
   while ((tag = tagRe.exec(html)) !== null) {
@@ -605,6 +642,12 @@ function scanSeriesDir(seriesDir) {
   } catch (err) {
     throw new Error(`cannot read shipped series dir ${seriesDir}: ${err.message}`);
   }
+  // Symlinked folders are DELIBERATELY included here (loadRunsheets in
+  // session-context.mjs EXCLUDES them): `next` must SURFACE a smuggled
+  // symlinked challenge folder so the realpath confinement below can refuse it
+  // loudly as OUTSIDE_TREE, rather than let it dissolve into UNKNOWN_ID. Do not
+  // "harmonise" this filter with loadRunsheets' — the divergence is the point,
+  // and the OUTSIDE_TREE test (tmc-cli-next) depends on it.
   const folders = entries
     .filter((e) => (e.isDirectory() || e.isSymbolicLink()) && !e.name.startsWith(OVERVIEW_PREFIX))
     .map((e) => e.name)
@@ -704,6 +747,18 @@ function cmdNext(rest) {
   const current = currentOf(progress);
   const seriesDir = inFlightSeriesDir(pluginRoot, current.series);
   const challenges = scanSeriesDir(seriesDir);
+  // A series dir with ZERO usable challenges must NOT read as COMPLETE:
+  // pathway() over an empty set is vacuously {complete:true}, but "no content
+  // shipped" is not "every taught outcome confirmed" (the honest-completion
+  // invariant; session-context.mjs guards the same vacuity). Fail LOUD — this
+  // command's contract — so a broken install or a frontmatter regression is an
+  // operational error, never a false certification signal.
+  if (challenges.length === 0) {
+    throw new Error(
+      `shipped series dir ${seriesDir} carries no usable runsheets — cannot route ` +
+        "(a not-yet-released series or a broken install; never a COMPLETE)",
+    );
+  }
   const next = pathway({
     outcomes: progress.outcomes || {},
     runsheets: challenges.map((c) => c.fm),
@@ -768,9 +823,16 @@ async function main(argv) {
   }
 }
 
+// Is this module the process entry point? Compare URL-to-URL via
+// pathToFileURL — NOT `file://${argv[1]}`, which fails to match whenever the
+// install path needs URL-encoding (a space, non-ASCII) or is a symlink, making
+// EVERY command a silent exit-0 no-op (and, for verify, "exit 0 IS the consume"
+// firing with nothing consumed). Cowork install paths can contain spaces, so
+// this is a live latent break, not a theoretical one.
 const isMain = (() => {
   try {
-    return import.meta.url === `file://${process.argv[1]}`;
+    if (!process.argv[1]) return false;
+    return import.meta.url === pathToFileURL(process.argv[1]).href;
   } catch {
     return false;
   }
