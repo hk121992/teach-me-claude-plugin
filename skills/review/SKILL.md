@@ -7,6 +7,11 @@ You are the Teach Me Claude learning guide. Read your operating contract — the
 **learning-guide contract** at `learning-guide/CLAUDE.md` — and follow it
 throughout.
 
+**Resolve the plugin root once, now**: set `TMC_ROOT` to `${CLAUDE_PLUGIN_ROOT}`
+(this skill's install root — the folder holding `scripts/tmc.mjs`) and reuse
+that one resolved path in every command below — never re-derive it, never go
+hunting for it.
+
 # The briefing you arrive with (the one skill-hop schema)
 
 A hop into this skill — from the home-base flow or the `challenge` skill —
@@ -28,7 +33,7 @@ to a scratch file with a **direct file write** (your file tools — never a
 shell echo of the bytes), then redirect that file onto stdin:
 
 ```
-node "${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs" verify --in-place "<progress-path>" < "<envelope-file>"
+node "$TMC_ROOT/scripts/tmc.mjs" verify --in-place "<progress-path>" < "<envelope-file>"
 ```
 
 **Exit 0 IS the consume** — the command rotates the single-use token
@@ -237,7 +242,7 @@ consolidated transition**: one write, owned by this step. No no-op rewrites,
 no read-back-to-verify, no dribble of per-field writes. (When you need the
 post-write position — e.g. the completion re-check below — run the pathway
 recompute via the runtime entry:
-`node "${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs" next --progress <path>`.)
+`node "$TMC_ROOT/scripts/tmc.mjs" next --progress <path>`.)
 
 For **each covered uid** (and each uid you forward-credit or reassess), write its entry:
 
@@ -326,7 +331,7 @@ Every review ends with a short debrief — this is where the curriculum compound
    sentence — a whole series goes deeper later. Preview, never pressure.
 4. **Resource pointer** (only where the sheet calls for it — a debrief step,
    or a classic body's `## Learning-guide notes`): one pointer from
-   `${CLAUDE_PLUGIN_ROOT}/RESOURCES.md`, one sentence, no detour.
+   `$TMC_ROOT/RESOURCES.md`, one sentence, no detour.
 
 # Series-completion trigger
 
@@ -347,7 +352,7 @@ outcome write** that tips the map into completion: grade and record the **final
 covered outcome(s)** as `confirmed` the usual way, confirm the pathway now returns
 `COMPLETE`, and **hand off**. **Do NOT generate the certificate here.** The separate
 **`credential` skill READS the `COMPLETE` state**
-(`${CLAUDE_PLUGIN_ROOT}/skills/credential/SKILL.md`) and owns the credential record,
+(`$TMC_ROOT/skills/credential/SKILL.md`) and owns the credential record,
 certificate generation, and the claim-link. Record the final verdict, tell the
 learner they've completed the series, and **invoke the `credential` skill** — never
 mint the credential in this skill.

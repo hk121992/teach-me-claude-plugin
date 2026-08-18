@@ -33,17 +33,19 @@ updated progress summary, the profile line — same schema, same plain language.
 
 # The runtime commands
 
-Every mandated runtime action is one local command — the one entry point
-`${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs`:
+**Resolve the plugin root once, now**: set `TMC_ROOT` to `${CLAUDE_PLUGIN_ROOT}`
+(this skill's install root — the folder holding `scripts/tmc.mjs`) and reuse
+that one resolved path in every command below — never re-derive it, never go
+hunting for it. Every mandated runtime action is one local command — the one
+entry point `$TMC_ROOT/scripts/tmc.mjs`:
 
 ```
-TMC="${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs"
-node "$TMC" next --id <NN-L-XXXX>     # challenge id → shipped folder + sheet path
-node "$TMC" next --progress <path>    # compute what comes next (or COMPLETE)
-node "$TMC" nonce                     # mint the single-use completion token
-node "$TMC" fill <fragment-path> --progress <path> --preferences <path>
-                                      # stdout IS the widget body
-node "$TMC" verify --in-place <path>  # envelope on stdin; exit 0 consumes
+node "$TMC_ROOT/scripts/tmc.mjs" next --id <NN-L-XXXX>    # challenge id → shipped folder + sheet path
+node "$TMC_ROOT/scripts/tmc.mjs" next --progress <path>   # compute what comes next (or COMPLETE)
+node "$TMC_ROOT/scripts/tmc.mjs" nonce                    # mint the single-use completion token
+node "$TMC_ROOT/scripts/tmc.mjs" fill <fragment-path> --progress <path> --preferences <path>
+                                                          # stdout IS the widget body
+node "$TMC_ROOT/scripts/tmc.mjs" verify --in-place <path> # envelope on stdin; exit 0 consumes
 ```
 
 Sentinels and refusals arrive on stderr; a non-zero exit is an answer, not a
@@ -58,7 +60,8 @@ formality — never work around one by hand.
 2. **Position is computed, never chosen by you.** Do not read or write an
    integer challenge counter — there is no `current.challenge`, and you never
    frame position as an ordinal count out of a fixed total (no "n-th of
-   so-many" phrasing). The pathway decides: `node "$TMC" next --progress <path>`
+   so-many" phrasing). The pathway decides:
+   `node "$TMC_ROOT/scripts/tmc.mjs" next --progress <path>`
    reads the outcome states and returns the first challenge (in series order)
    with an outcome that is neither `confirmed` nor `provisional`, or the
    `COMPLETE` sentinel (the `next` command runs the pathway recompute for
@@ -68,12 +71,12 @@ formality — never work around one by hand.
    confirm the skip and record it honestly. A `COMPLETE` result routes to
    series-completion (handled in `review`), never to a challenge.
 3. Resolve the challenge id to its shipped folder:
-   `node "$TMC" next --id <NN-L-XXXX>` returns the challenge folder and the
+   `node "$TMC_ROOT/scripts/tmc.mjs" next --id <NN-L-XXXX>` returns the challenge folder and the
    sheet path as JSON. It refuses a malformed id (`INVALID_ID`), an unshipped
    one (`UNKNOWN_ID`), and anything resolving outside the shipped tree
    (`OUTSIDE_TREE`) — honour a refusal; never derive the path yourself. Series
    beyond what's shipped are not available — show the roadmap
-   (`${CLAUDE_PLUGIN_ROOT}/roadmap/ROADMAP.md`) instead.
+   (`$TMC_ROOT/roadmap/ROADMAP.md`) instead.
 
 # Read the challenge sheet
 
@@ -196,7 +199,8 @@ challenge and the stretch is genuinely optional.
 Deliver the lesson as its declared widget, in three runtime steps — no hand
 transforms anywhere:
 
-1. **Mint the single-use completion token**: `node "$TMC" nonce`. The token is
+1. **Mint the single-use completion token**:
+   `node "$TMC_ROOT/scripts/tmc.mjs" nonce`. The token is
    minted by the runtime command (crypto-random) — **never model-composed**:
    you never invent, guess, or re-use one.
 2. **Arm the in-flight state in ONE consolidated write** to
@@ -212,7 +216,7 @@ transforms anywhere:
    stylesheet inlined, manifest preserved). Fill it through the one parser:
 
    ```
-   node "$TMC" fill "<dir>/<widget-id>.fragment.html" \
+   node "$TMC_ROOT/scripts/tmc.mjs" fill "<dir>/<widget-id>.fragment.html" \
      --progress "<progress-path>" --preferences "<preferences-path>"
    ```
 
@@ -257,7 +261,7 @@ command. Write the envelope to a scratch file with a **direct file write**
 onto stdin:
 
 ```
-node "$TMC" verify --in-place "<progress-path>" < "<envelope-file>"
+node "$TMC_ROOT/scripts/tmc.mjs" verify --in-place "<progress-path>" < "<envelope-file>"
 ```
 
 The verifier checks the anti-forgery triple (the envelope's own `nonce` /

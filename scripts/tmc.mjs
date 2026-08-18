@@ -63,6 +63,7 @@ import {
   WORKSPACE_DIR,
   PROGRESS_BASENAME,
   PREFERENCES_BASENAME,
+  HOME_BASE_DIR,
 } from "./session-context.mjs";
 
 export const EXIT = Object.freeze({ OK: 0, REFUSED: 1, ERROR: 2 });
@@ -177,7 +178,8 @@ commands:
 // after a partial failure completes only the missing pieces (idempotent).
 // ---------------------------------------------------------------------------
 
-const HOME_BASE_DIR = "learning-guide";
+// HOME_BASE_DIR is imported from session-context.mjs (the layout's one owner)
+// alongside the workspace trio — no independent definition here.
 const SERIES_01_DIR = "series-01-foundations";
 const KIT_DIR = ".claude";
 const CONTRACT_BASENAME = "CLAUDE.md";

@@ -39,8 +39,8 @@ There is no `learning-guide/` home base. This is the learner's first contact.
   creates `learning-guide/` and materializes the full contract at
   **`learning-guide/CLAUDE.md`** (copied byte-for-byte from the plugin
   template, never written from memory), creates the empty container `.claude/`
-  for the kit the learner will build, and interviews the learner to seed their
-  profile.
+  for the kit the learner will build, and seeds their profile from the
+  onboarding widget's questionnaire form-fill.
 - Onboarding ends on the handoff: *"this is your home base — always open
   `learning-guide/` to start."* From then on the learner works from there.
 
@@ -83,8 +83,9 @@ re-listing the words).
 
 ## Note on the skills
 
-The plugin ships the skills (`teach-me`, `challenge`, `review`, `progress`) and
-the runtime scripts; they run from both the home base and the per-series folders.
+The plugin ships the skills (`teach-me`, `challenge`, `review`, `progress`,
+`credential`) and the runtime scripts; they run from both the home base and the
+per-series folders.
 Their "read your contract" line resolves to **`learning-guide/CLAUDE.md`** once
 the workspace exists — never to this router. This file only bootstraps the very
 first session before that contract is on disk.

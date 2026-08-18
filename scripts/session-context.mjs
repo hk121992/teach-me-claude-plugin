@@ -44,7 +44,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { pathway, COMPLETE, inFlightResume, CONFIRMED, PROVISIONAL } from "./pathway.mjs";
 import { migrateFile, CURRENT_VERSION, PLUGIN as PLUGIN_SENTINEL } from "./migrate-progress.mjs";
@@ -61,6 +61,10 @@ import { parseFrontmatter } from "./frontmatter.mjs";
 export const WORKSPACE_DIR = ".teach-me";
 export const PROGRESS_BASENAME = "progress.json";
 export const PREFERENCES_BASENAME = "preferences.json";
+// The home-base folder name (the container member holding the workspace +
+// contract). Same one-owner rule as the trio above: tmc.mjs `setup` materializes
+// it and classifyDisposition below probes for it — both through THIS constant.
+export const HOME_BASE_DIR = "learning-guide";
 
 // The CONCRETE sentinel (`PLUGIN_SENTINEL`) and the current state-shape version
 // (`CURRENT_VERSION`) are IMPORTED from migrate-progress.mjs — the module that
@@ -474,11 +478,11 @@ const CLOSE = "</teach-me-claude>";
  */
 export function classifyDisposition(cwd) {
   if (fs.existsSync(path.join(cwd, WORKSPACE_DIR))) return { kind: "workspace" };
-  if (fs.existsSync(path.join(cwd, "learning-guide", WORKSPACE_DIR))) {
-    return { kind: "member", homeBaseRel: "learning-guide/" };
+  if (fs.existsSync(path.join(cwd, HOME_BASE_DIR, WORKSPACE_DIR))) {
+    return { kind: "member", homeBaseRel: `${HOME_BASE_DIR}/` };
   }
-  if (fs.existsSync(path.join(path.dirname(cwd), "learning-guide", WORKSPACE_DIR))) {
-    return { kind: "member", homeBaseRel: "../learning-guide/" };
+  if (fs.existsSync(path.join(path.dirname(cwd), HOME_BASE_DIR, WORKSPACE_DIR))) {
+    return { kind: "member", homeBaseRel: `../${HOME_BASE_DIR}/` };
   }
   return { kind: "first-run" };
 }
@@ -828,9 +832,18 @@ export default composeSessionContext;
 // safe; a crash is not).
 // ---------------------------------------------------------------------------
 
+// Is this module the process entry point? Compare URL-to-URL via
+// pathToFileURL — NOT `file://${argv[1]}`, which fails to match whenever the
+// install path needs URL-encoding (a space, non-ASCII) or is a symlink, making
+// the CLI a silent exit-0 no-op (the hook prints nothing, so EVERY session
+// loses its one disposition line and the agent is back to the probe-1
+// discovery dance). Cowork install paths can contain spaces, so this is a live
+// latent break, not a theoretical one. Same idiom as tmc.mjs — keep them in
+// step.
 const isMain = (() => {
   try {
-    return import.meta.url === `file://${process.argv[1]}`;
+    if (!process.argv[1]) return false;
+    return import.meta.url === pathToFileURL(process.argv[1]).href;
   } catch {
     return false;
   }

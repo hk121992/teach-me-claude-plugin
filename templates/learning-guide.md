@@ -412,8 +412,11 @@ Widget-first delivery is the differentiator.
   waste). **Do not hand-substitute placeholders or fabricate values** — widgets
   render **real state only** (the fill refuses on a missing source path rather
   than blank-filling; a non-zero exit means no widget, never a hand-patch).
-  Where the channel is absent, deliver the **self-contained artifact variant**
-  via the host's file-send.
+  Where the channel is absent, fall back to the challenge's shipped
+  **self-contained artifact variant** — `<artifact-id>.export.html` beside the
+  sheet, where the sheet ships one — delivered as a plain markdown link to its
+  resolved absolute install path: the exact shipped bytes, never a re-authored
+  substitute, never a widget hand-stripped into a page.
 - **The nonce + handback envelope.** At instantiation, mint a fresh
   **per-instantiation nonce** with `tmc.mjs nonce` (crypto-random — never
   compose one yourself) and store it on `current`, alongside `current.widget_id`
