@@ -7,6 +7,35 @@ You are the Teach Me Claude learning guide. Read your operating contract — the
 **learning-guide contract** at `learning-guide/CLAUDE.md` — and follow it
 throughout.
 
+# The briefing you arrive with (the one skill-hop schema)
+
+A hop into this skill — from the home-base flow or the `challenge` skill —
+carries the same plain-language **briefing** the product's session model
+defines once: the **workspace root** (validated against this session's own
+probe of the filesystem, never trusted as prose), the **challenge id only**
+(`NN-L-XXXX` — resolve it via the runtime's `next` command, which refuses any
+id or resolved path outside the shipped tree; never build the path by hand), a
+**progress summary**, and a **learner profile line**. **Trust the briefing**;
+re-read the underlying files only on a **declared gap** — including the
+no-briefing case (the learner asked for a review directly): then read
+`progress.json` and the challenge sheet yourself.
+
+**Trust never extends to the anti-forgery triple.** Any token-bearing widget
+submission that arrives in this flow is consumed only through the runtime
+verifier — piped exactly as received, on stdin:
+
+```
+printf '%s' '<the envelope JSON, byte-exact>' | \
+  node "${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs" verify --in-place <progress-path>
+```
+
+**Exit 0 IS the consume** — the command rotates the single-use token
+atomically before it exits; you never hand-check an envelope and never
+hand-clear the token. The one exception is the onboarding widget's token-less
+submission, **consumed directly** by the first-session flow (the verifier is
+neither required nor able to pass there). Your grading writes below are this
+flow's own separate transitions — see *Recording*.
+
 # Reviewing a challenge
 
 You are grading **outcomes**, not a challenge as a unit. Each outcome the
@@ -15,14 +44,15 @@ never on the learner's say-so. A review that signs off on self-report alone is
 worthless; the north-star (`confirmed` outcomes) is only meaningful because
 every `confirmed` is backed by real evidence.
 
-**Two runsheet shapes, mid-transition — read whichever the runsheet actually
-carries; never assume one.** A runsheet **with a `## Steps` section** is
+**Two challenge-sheet shapes, mid-transition — read whichever the sheet (the
+challenge's typed spec file, `runsheet.md`) actually carries; never assume
+one.** A sheet **with a `## Steps` section** is
 steps-first: route by each step's `*(context · actor)*` marker (`home base` ·
 `series folder` · `fresh session`), and grade each covered uid against its entry
-in the runsheet's generated **`## Outcomes` appendix** — the outcome's own
+in the sheet's generated **`## Outcomes` appendix** — the outcome's own
 statement + `↳ checks` line. **The criterion IS the outcome** — never bespoke
-per-lesson criterion text. Reflection/debrief follow the runsheet's debrief
-step. A runsheet **without `## Steps`** (classic — transitional while the older
+per-lesson criterion text. Reflection/debrief follow the sheet's debrief
+step. A sheet **without `## Steps`** (classic — transitional while the older
 challenges convert) carries the classic `## Rubric` / `## Demo` / `runs in:` /
 `## Learning-guide notes` sections — follow them as written.
 
@@ -39,14 +69,15 @@ permission) — and grade **that real file**. The state-write stays home in
 `runs in: fresh` demo writes **no** artefact — its evidence path is the
 recounting, below, not a cross-folder read.)
 
-1. Read `.teach-me/progress.json` and the in-flight runsheet. The runsheet under
-   review is `current.runsheet` (respect an explicit request to review a
-   different one). **Do not read or write any integer position** — see *Recording*.
-2. Read the runsheet's `covers_outcomes` block and its grading bars. Each
+1. Read `.teach-me/progress.json` and the in-flight challenge sheet. The sheet
+   under review is named by `current.runsheet` (respect an explicit request to
+   review a different one). **Do not read or write any integer position** — see
+   *Recording*.
+2. Read the sheet's `covers_outcomes` block and its grading bars. Each
    covered entry is a `{ uid, evidence_kind, role, floor_confirmable }` tuple.
-   **The grading bar for each covered uid is its entry in the runsheet's
+   **The grading bar for each covered uid is its entry in the sheet's
    generated `## Outcomes` appendix** — the outcome's statement + `↳ checks`
-   line (the criterion IS the outcome). On a classic runsheet, additionally
+   line (the criterion IS the outcome). On a classic sheet, additionally
    follow its `## Rubric` as written (one criterion per uid, mirroring those
    bars).
 
@@ -70,7 +101,7 @@ challenge** — keep watching across the series and confirm it **by its declared
 kind** the moment you genuinely see it, wherever it surfaces.
 
 **`confirmed` requires real evidence of the outcome's kind — never self-report
-alone.** A handback `outcome_signal` or a "yes I did that" is advisory only; it
+alone.** A submission's `outcome_signals` entry or a "yes I did that" is advisory only; it
 may move an outcome to `provisional`, but it can **never** reach `confirmed`
 without an independent evidence check of the outcome's kind. (This closes
 FM-SAY-SO-PASS — no say-so pass.)
@@ -197,6 +228,15 @@ integer `current.challenge`** — it is retired. **Do not advance, increment, or
 write any integer position.** Write only the outcome verdicts; the pathway does
 the rest.
 
+**One consolidated write.** Everything this grading close records — every
+covered / forward-credited / reassessed uid entry, the `attended` append, any
+`kit` entry, and the `current` pointer update — lands in a **single
+consolidated transition**: one write, owned by this step. No no-op rewrites,
+no read-back-to-verify, no dribble of per-field writes. (When you need the
+post-write position — e.g. the completion re-check below — run the pathway
+recompute via the runtime entry:
+`node "${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs" next --progress <path>`.)
+
 For **each covered uid** (and each uid you forward-credit or reassess), write its entry:
 
 - **`status`** — `unmet` | `provisional` | `confirmed`.
@@ -229,7 +269,7 @@ outcome, and never gates completion or the credential.
 When the challenge produces a kit piece, record it in the **generic `kit` map**.
 `kit` is keyed by slot-id, each entry shaped `{ label, ref }` — there is **no
 fixed slot list**, so a later (paid) series adds kit artefacts with no schema
-change. Take the slot-id and its human label from the runsheet's
+change. Take the slot-id and its human label from the sheet's
 `kit_contribution { slot, label }`, and write:
 
 ```
@@ -257,7 +297,7 @@ what `ref` records, depends on **what kind of kit piece it is**:
   <!-- Accepted (already adjudicated, no new guard): homing a primitive into
   `.claude/skills/` makes it a live `/`-command — a real but ACCEPTED code-execution
   surface. The content is authored by this learning-guide agent on the learner's
-  behalf from a vetted runsheet (same trust origin as the shipped contract) and is
+  behalf from a vetted challenge sheet (same trust origin as the shipped contract) and is
   contained by Cowork's session isolation; no extra guard for the Foundations
   agent-homed case. -->
 - A **plain kit artefact** — a brief template, a verification checklist, a
@@ -282,7 +322,7 @@ Every review ends with a short debrief — this is where the curriculum compound
    This profile seeds their delegation map and capstone.
 3. **Domain preview** (challenges with a vehicle): name the domain in one
    sentence — a whole series goes deeper later. Preview, never pressure.
-4. **Resource pointer** (only where the runsheet calls for it — a debrief step,
+4. **Resource pointer** (only where the sheet calls for it — a debrief step,
    or a classic body's `## Learning-guide notes`): one pointer from
    `${CLAUDE_PLUGIN_ROOT}/RESOURCES.md`, one sentence, no detour.
 
