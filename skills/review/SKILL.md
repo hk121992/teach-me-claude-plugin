@@ -22,11 +22,13 @@ no-briefing case (the learner asked for a review directly): then read
 
 **Trust never extends to the anti-forgery triple.** Any token-bearing widget
 submission that arrives in this flow is consumed only through the runtime
-verifier — piped exactly as received, on stdin:
+verifier — handed over exactly as received, on stdin, never through a command
+line (learner-typed text lives inside the envelope): write the envelope bytes
+to a scratch file with a **direct file write** (your file tools — never a
+shell echo of the bytes), then redirect that file onto stdin:
 
 ```
-printf '%s' '<the envelope JSON, byte-exact>' | \
-  node "${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs" verify --in-place <progress-path>
+node "${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs" verify --in-place "<progress-path>" < "<envelope-file>"
 ```
 
 **Exit 0 IS the consume** — the command rotates the single-use token

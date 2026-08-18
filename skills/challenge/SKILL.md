@@ -61,8 +61,8 @@ formality — never work around one by hand.
    so-many" phrasing). The pathway decides: `node "$TMC" next --progress <path>`
    reads the outcome states and returns the first challenge (in series order)
    with an outcome that is neither `confirmed` nor `provisional`, or the
-   `COMPLETE` sentinel (the pathway logic lives in `scripts/pathway.mjs`; the
-   `next` command runs it). An in-flight `current.runsheet` with
+   `COMPLETE` sentinel (the `next` command runs the pathway recompute for
+   you). An in-flight `current.runsheet` with
    `status: in_progress` resumes that challenge. If the user names a specific
    challenge, honour it — but if it's ahead of the computed position, gently
    confirm the skip and record it honestly. A `COMPLETE` result routes to
@@ -202,7 +202,8 @@ transforms anywhere:
 2. **Arm the in-flight state in ONE consolidated write** to
    `.teach-me/progress.json`: set `current.nonce` (the minted value),
    `current.widget_id` (from `widgets[].id`), `current.runsheet` (the challenge
-   id), and `current.status` (`in_progress`) together — one write, no
+   id), and `current.status` (`in_progress`) together — one write updating
+   those fields in place (preserve anything else `current` carries), no
    read-back-to-verify, no second pass. This is the provenance the verifier
    later matches; the fill below binds it into the widget.
 3. **Fill the shipped fragment and render its bytes verbatim.** The
@@ -211,8 +212,8 @@ transforms anywhere:
    stylesheet inlined, manifest preserved). Fill it through the one parser:
 
    ```
-   node "$TMC" fill <dir>/<widget-id>.fragment.html \
-     --progress <progress-path> --preferences <preferences-path>
+   node "$TMC" fill "<dir>/<widget-id>.fragment.html" \
+     --progress "<progress-path>" --preferences "<preferences-path>"
    ```
 
    stdout IS the widget body: the fill reads the widget's `data-tmc-inputs`
@@ -227,11 +228,16 @@ transforms anywhere:
    (`mcp__visualize__read_me`): shipped widgets are already fully branded, so
    loading guidance first is pure waste.
 
-**Where the inline-widget channel is absent**, deliver the challenge's
-self-contained page instead — the shipped `<widget-id>.export.html` beside the
-sheet — as a plain markdown link to its resolved absolute install path, for the
-learner to open in their browser. Link the exact shipped bytes; never a
-re-authored substitute.
+**Where the inline-widget channel is absent**, there is no widget to show —
+fall back to the challenge's shipped **take-with-you artifact export** where
+the sheet ships one: `<artifact-id>.export.html` beside the sheet (the
+self-contained, browser-ready **artifact** variant — the only export class the
+build emits; lesson widgets ship fragments, not exports). Deliver it as a
+plain markdown link to its resolved absolute install path — the exact shipped
+bytes, never a re-authored substitute, never a widget hand-stripped into a
+page. A challenge that ships no artifact export has no page fallback: say so
+plainly and teach the beat conversationally from the sheet — your own words,
+never pasted.
 
 **Take-with-you pages.** Where the sheet's steps call for the portable
 take-with-you page, follow the sheet's own delivery step: post a markdown link
@@ -243,13 +249,15 @@ steps).
 # Consume the submission (the verifier owns it — exit 0 IS the consume)
 
 When an interactive widget posts back, it `sendPrompt`s a `tmc_handback`
-envelope — the submission. **Pipe it to the runtime verifier exactly as it
-arrived**, on stdin — never retyped, never reconstructed, and never
-interpolated into the command line:
+envelope — the submission. **Hand it to the runtime verifier exactly as it
+arrived, on stdin — and never through a command line**: learner-typed text
+lives inside that envelope, so its bytes are never quoted into a shell
+command. Write the envelope to a scratch file with a **direct file write**
+(your file tools — never a shell echo of the bytes), then redirect that file
+onto stdin:
 
 ```
-printf '%s' '<the envelope JSON, byte-exact>' | \
-  node "$TMC" verify --in-place <progress-path>
+node "$TMC" verify --in-place "<progress-path>" < "<envelope-file>"
 ```
 
 The verifier checks the anti-forgery triple (the envelope's own `nonce` /
@@ -271,9 +279,10 @@ verifier's exit 0 is a contract violation.**
   stale, or replayed envelope; a replay after the consume rejects as
   `no_inflight_nonce`. Do not advance state; explain plainly and, if the
   challenge is still in flight, re-offer the widget.
-- **Exit 2 (operational)** — the consume could not land (the verifier fails
-  closed). Surface it and repair; never "work around" it by consuming anything
-  by hand.
+- **Exit 2 (operational)** — an operational failure: the consume write could
+  not land (the verifier fails closed), a malformed envelope, or an unreadable
+  progress file. Surface it and repair; never "work around" it by consuming
+  anything by hand.
 
 You parse **only** the envelope (`tmc_handback`, `nonce`, `widget_id`,
 `challenge`, `kind`) plus `outcome_signals`; `answers` is opaque per-widget
