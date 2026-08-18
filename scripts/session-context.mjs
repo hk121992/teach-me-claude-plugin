@@ -447,9 +447,46 @@ const OPEN = "<teach-me-claude>";
 const CLOSE = "</teach-me-claude>";
 
 /**
+ * Classify a session cwd into the three disposition shapes (review CORR-A —
+ * the hook must never label a folder of an EXISTING workspace FIRST_RUN):
+ *
+ *   { kind: "workspace" }                — `<cwd>/.teach-me` exists: the home
+ *       base (or any folder carrying its own bookkeeping) → the full
+ *       compose/inject path.
+ *   { kind: "member", homeBaseRel }      — the cwd belongs to an existing
+ *       workspace without carrying the bookkeeping itself: the CONTAINER ROOT
+ *       (`<cwd>/learning-guide/.teach-me` exists → rel "learning-guide/") or a
+ *       CONTAINER-MEMBER folder such as `series-NN/` (a sibling of the home
+ *       base: `<cwd>/../learning-guide/.teach-me` exists → rel
+ *       "../learning-guide/"). `homeBaseRel` is one of those two FIXED
+ *       relative strings — never derived from input, so nothing external can
+ *       steer what the hook injects.
+ *   { kind: "first-run" }                — none of the above. A genuinely new
+ *       user, any unrelated folder, or a fresh break-out outside the container
+ *       (undetectable by construction — the returning-check question remains
+ *       the authority; session-model's three context levels).
+ *
+ * Deliberately bounded to these three probes: no tree-walk, no upward scan
+ * beyond one level — the same session shapes the learning-guide contract
+ * names.
+ * @param {string} cwd
+ * @returns {{kind:"workspace"}|{kind:"member", homeBaseRel:string}|{kind:"first-run"}}
+ */
+export function classifyDisposition(cwd) {
+  if (fs.existsSync(path.join(cwd, WORKSPACE_DIR))) return { kind: "workspace" };
+  if (fs.existsSync(path.join(cwd, "learning-guide", WORKSPACE_DIR))) {
+    return { kind: "member", homeBaseRel: "learning-guide/" };
+  }
+  if (fs.existsSync(path.join(path.dirname(cwd), "learning-guide", WORKSPACE_DIR))) {
+    return { kind: "member", homeBaseRel: "../learning-guide/" };
+  }
+  return { kind: "first-run" };
+}
+
+/**
  * Render the FIRST_RUN disposition — the whole injection for a session whose
- * cwd carries no `.teach-me/` workspace dir. ONE line, wrapper included: it
- * fires in every non-workspace session, so it must stay a single cheap line —
+ * cwd belongs to no workspace at all. ONE line, wrapper included: it fires in
+ * every non-workspace session, so it must stay a single cheap line —
  * informational, actionable only when the user actually asks to learn. Pure.
  * @returns {string}
  */
@@ -463,8 +500,29 @@ export function renderFirstRun() {
 }
 
 // The resume-side disposition line, shared by every workspace-present renderer
-// (proceed / reconnect / ask) so the exactly-once contract has one home.
+// (proceed / reconnect / ask / the member pointer) so the exactly-once
+// contract has one home.
 const RESUME_LINE = `disposition: ${DISPOSITION.RESUME}`;
+
+/**
+ * Render the workspace-MEMBER disposition — a session at the container root or
+ * in a container-member folder (series-NN/, any sibling of the home base) of
+ * an EXISTING workspace. ONE resume-side line pointing at the home base: no
+ * greeting, no state read, no guard run — the guard and the bookkeeping stay
+ * home-base-only, so a break-out keeps its clean context and still never gets
+ * mislabelled FIRST_RUN (review CORR-A). `homeBaseRel` is one of
+ * classifyDisposition's two fixed relative strings. Pure.
+ * @param {string} homeBaseRel "learning-guide/" | "../learning-guide/"
+ * @returns {string}
+ */
+export function renderResumeElsewhere(homeBaseRel) {
+  return (
+    `${OPEN}${RESUME_LINE} — this folder belongs to an existing Teach Me Claude ` +
+    `workspace; the home base is at ${homeBaseRel} (every session opens there — ` +
+    "that is where the course, the learner's progress, and the greeting live). " +
+    `If the user wants their course from here, the teach-me skill routes them home.${CLOSE}`
+  );
+}
 
 /**
  * Render the PROCEED injection: a warm greeting + the capped position summary +
@@ -781,13 +839,21 @@ const isMain = (() => {
 if (isMain) {
   try {
     const cwd = process.argv[2] || process.cwd();
-    // No `.teach-me/` here → the FIRST_RUN disposition: ONE line, exit 0
-    // (wi-onboarding IU-3 — the old print-nothing behaviour left the agent with
-    // zero signal and forced the probe-1 discovery dance; the line IS the speed
-    // lever, and it is deliberately a single cheap line because it fires in
-    // every non-workspace session).
-    const { workspaceDir } = resolveWorkspacePath(cwd);
-    if (!fs.existsSync(workspaceDir)) {
+    // The ONE disposition line per session (wi-onboarding IU-3 + review
+    // CORR-A). Three shapes: a WORKSPACE cwd falls through to the full
+    // compose/inject below; a MEMBER cwd (the container root or a series
+    // folder of an existing workspace) gets the one resume-side pointer at
+    // the home base — never a FIRST_RUN mislabel; anywhere else gets the one
+    // FIRST_RUN line. (The old print-nothing behaviour left the agent with
+    // zero signal and forced the probe-1 discovery dance — the line IS the
+    // speed lever, kept to a single cheap line because it fires in every
+    // session.)
+    const disposition = classifyDisposition(cwd);
+    if (disposition.kind === "member") {
+      process.stdout.write(renderResumeElsewhere(disposition.homeBaseRel) + "\n");
+      process.exit(0);
+    }
+    if (disposition.kind === "first-run") {
       process.stdout.write(renderFirstRun() + "\n");
       process.exit(0);
     }

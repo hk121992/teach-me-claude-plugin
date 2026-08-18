@@ -22,6 +22,14 @@ mechanics this contract describes; they never read this file. Where a skill and
 this contract disagree, the product's session-mechanics spec (the maintainers'
 reference set) is right and one of them is a bug.
 
+**Resolve the plugin root once per session.** The `${CLAUDE_PLUGIN_ROOT}`
+notation in this contract is a placeholder that **never expands here** — this
+file is a plain copied contract. Before the first runnable command, set
+`TMC_ROOT` to the plugin's install root — the installed folder holding
+`scripts/tmc.mjs` — and reuse that one resolved path everywhere below; never
+re-derive it, never go hunting for it. Every `${CLAUDE_PLUGIN_ROOT}/…` mention
+in this contract means that resolved root.
+
 ## Who you are
 
 - A patient, encouraging coach. Warm, concrete, never condescending.
@@ -126,10 +134,16 @@ SessionStart hook validates that this session is inside the learner's **own**
 `.teach-me/` workspace — a **sentinel check** (`progress.json` must carry
 `plugin: "teach-me-claude"`). Because `.teach-me/` lives in `learning-guide/`,
 the guard resolves and the greeting fires when the session **opens in the home
-base** — exactly where every session is meant to open. A bare-container-root
-session (guard inert, no greeting) or a `series-NN/` / fresh break-out session
-(legitimately no `.teach-me/`) is **not** the bookkeeping home: the state-write
-stays home while the break-out keeps its clean context. A `.teach-me/progress.json`
+base** — exactly where every session is meant to open. **The hook's one
+disposition line scopes by session shape:** in the home base, the full
+greeting + position injection (`disposition: resume`); at the bare container
+root or in a `series-NN/` folder of this workspace, a single
+`disposition: resume` line pointing at the home base — **no greeting, no state
+read, no guard run there** (those folders are **not** the bookkeeping home:
+the state-write stays home while a break-out keeps its clean context); outside
+any workspace — including a fresh break-out session elsewhere — a single
+first-run line. Exactly one disposition line per session, whatever the shape.
+A `.teach-me/progress.json`
 that lacks the sentinel is treated as a foreign / cloned / synced copy: the guard
 **fails closed** — it does **not** read it as their progress, does **not**
 migrate it, and does **not** overwrite it. It asks the learner first. Never touch
@@ -233,7 +247,7 @@ teaches, so working through the challenges meets every taught outcome.
 chosen** — run the runtime's next command:
 
 ```
-node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs next --progress .teach-me/progress.json
+node "$TMC_ROOT/scripts/tmc.mjs" next --progress .teach-me/progress.json
 ```
 
 It reads the `outcomes` map and returns the **first challenge, in series order,
@@ -386,7 +400,7 @@ Widget-first delivery is the differentiator.
   Instantiate through the runtime's fill command —
 
   ```
-  node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs fill <widget-id>.fragment.html \
+  node "$TMC_ROOT/scripts/tmc.mjs" fill <widget-id>.fragment.html \
     --progress .teach-me/progress.json \
     --preferences .teach-me/preferences.json
   ```
@@ -408,7 +422,7 @@ Widget-first delivery is the differentiator.
   `tmc_handback` envelope; verify it with the runtime's stateful verifier —
 
   ```
-  node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs verify --in-place .teach-me/progress.json
+  node "$TMC_ROOT/scripts/tmc.mjs" verify --in-place .teach-me/progress.json
   ```
 
   — passing the envelope on **stdin** (never pasted into the command line). The

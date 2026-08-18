@@ -29,15 +29,20 @@ this probe**):
 ls learning-guide/.teach-me/progress.json .teach-me/progress.json 2>/dev/null
 ```
 
-- **Found** → a returning learner. The hook has already greeted them and
-  injected their position, computed from the `outcomes` map — never an integer
-  (there is no `current.challenge` counter; the standing is always the evidence
-  in the map). **Delegate position to that injection** — recompute it only via
-  `node "$TMC_ROOT/scripts/tmc.mjs" next --progress <path-to-progress.json>` —
-  and offer, in one warm line, to continue (the `challenge` skill flow), review
-  a finished attempt (the `review` flow), or look at the map (the `progress`
-  flow). The home-base contract (`learning-guide/CLAUDE.md`) is ambient when
-  the session opens in `learning-guide/`; follow it.
+- **Found** → a returning learner. In the home base the hook has already
+  greeted them and injected their position, computed from the `outcomes` map —
+  **delegate position to that injection**. When the probe found the workspace
+  from outside the home base (the session opened at the container root — the
+  hook's one `disposition: resume` line points home instead of greeting),
+  recompute position via
+  `node "$TMC_ROOT/scripts/tmc.mjs" next --progress <the progress.json the probe found>`
+  and remind them, in passing, that `learning-guide/` is where sessions open.
+  Position is never an integer (there is no `current.challenge` counter; the
+  standing is always the evidence in the map). Offer, in one warm line, to
+  continue (the `challenge` skill flow), review a finished attempt (the
+  `review` flow), or look at the map (the `progress` flow). The home-base
+  contract (`learning-guide/CLAUDE.md`) is ambient when the session opens in
+  `learning-guide/`; follow it.
 - **Not found** → ask the one **returning-check** question — *"have you used
   Teach Me Claude before?"*. **Used before** → help them locate or switch to
   their existing workspace folder rather than creating a duplicate. **First
