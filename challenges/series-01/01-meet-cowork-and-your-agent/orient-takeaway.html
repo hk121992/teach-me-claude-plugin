@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <!--
   orient-takeaway.html — the SHIPPED take-with-you page for lesson 1 (deterministic; the guide never
-  authors this fresh — it drops a link to this file where it ships, below the widget). Composes from
-  the SHARED lesson-shell classes in tmc.css, same as orient-lesson (the guide links it in place, so
-  the relative stylesheet always resolves). Content mirrors the orient-lesson widget's Slide-2 steps
-  + take-with-you box — keep them in sync.
+  authors this fresh — the build emits the self-contained orient-takeaway.export.html beside this
+  source, and the runsheet (S1) has the guide post a chat link to THAT file at its plugin-install
+  path). Composes from the SHARED lesson-shell classes in tmc.css, same as orient-lesson
+  (authoring/review surface only — the export variant inlines the stylesheet, so it renders branded
+  wherever it opens). This page is the ONE sanctioned portable duplicate of the widget's Slide-2
+  steps — keep the .tmc-say text and step count in sync (checkTakeawaySync enforces it).
 -->
 <html lang="en">
 <head>
@@ -39,7 +41,7 @@
          <strong>Project or folder</strong> and pick your Teach Me Claude folder for series 1
          (<code>series-01-foundations</code>).</li>
       <li><strong>Send your first instruction — exactly this:</strong>
-         <span class="tmc-say">Create a file called first-day.md and write today's date and my name at the top.</span></li>
+         <span class="tmc-say">Create a file called first-day.md in the series-01-foundations folder on my computer, and write today's date and my name at the top.</span></li>
       <li><strong>Go find it yourself.</strong> Don't take its word that it's done — open
          <code>first-day.md</code> and see it's really there.</li>
     </ol>
