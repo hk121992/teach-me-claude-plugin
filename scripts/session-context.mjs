@@ -89,6 +89,20 @@ export const REASON = Object.freeze({
   CORRUPT: "corrupt",
 });
 
+// The hook's ONE disposition line (wi-onboarding IU-3; session-model §The
+// workspace › Onboarding — "SessionStart hook emits one disposition line
+// (first-run | resume position)"). Binary by design: FIRST_RUN when no
+// `.teach-me/` workspace dir exists at cwd; `resume` otherwise — whichever
+// recovery branch detect-explain-resume then lands on (proceed / missing /
+// corrupt / foreign are all the RETURNING side of the check). Every rendered
+// injection carries the line EXACTLY ONCE: zero is the probe-1 failure (no
+// signal → the agent re-derives disposition by hand), two+ is an ambiguous
+// signal an agent may mis-trust.
+export const DISPOSITION = Object.freeze({
+  FIRST_RUN: "FIRST_RUN",
+  RESUME: "resume",
+});
+
 // ---------------------------------------------------------------------------
 // Path resolution
 // ---------------------------------------------------------------------------
@@ -433,6 +447,26 @@ const OPEN = "<teach-me-claude>";
 const CLOSE = "</teach-me-claude>";
 
 /**
+ * Render the FIRST_RUN disposition — the whole injection for a session whose
+ * cwd carries no `.teach-me/` workspace dir. ONE line, wrapper included: it
+ * fires in every non-workspace session, so it must stay a single cheap line —
+ * informational, actionable only when the user actually asks to learn. Pure.
+ * @returns {string}
+ */
+export function renderFirstRun() {
+  return (
+    `${OPEN}disposition: ${DISPOSITION.FIRST_RUN} — no Teach Me Claude workspace in ` +
+    "this folder. If the user asks to learn Claude or to start or continue the " +
+    "course, follow the teach-me skill: it asks the one returning-check question, " +
+    `then shows the onboarding widget immediately.${CLOSE}`
+  );
+}
+
+// The resume-side disposition line, shared by every workspace-present renderer
+// (proceed / reconnect / ask) so the exactly-once contract has one home.
+const RESUME_LINE = `disposition: ${DISPOSITION.RESUME}`;
+
+/**
  * Render the PROCEED injection: a warm greeting + the capped position summary +
  * the pathway-computed next step (or COMPLETE). Pure; no I/O. The agent reads this;
  * it never re-derives position from memory.
@@ -447,6 +481,7 @@ export function renderProceed({ summary, next, migrated = false }) {
   const who = summary.name ? summary.name : "there";
   const lines = [];
   lines.push(OPEN);
+  lines.push(RESUME_LINE);
   lines.push(
     "This folder is the user's Teach Me Claude workspace. You are their learning guide.",
   );
@@ -522,6 +557,7 @@ export function renderProceed({ summary, next, migrated = false }) {
 export function renderReconnect(reason, progressPath) {
   const lines = [];
   lines.push(OPEN);
+  lines.push(RESUME_LINE);
   lines.push(
     "This folder looks like a Teach Me Claude workspace, but the learning state " +
       "could not be loaded. Do NOT guess their progress from memory — reconnect first.",
@@ -557,6 +593,7 @@ export function renderReconnect(reason, progressPath) {
 export function renderAsk(progressPath) {
   const lines = [];
   lines.push(OPEN);
+  lines.push(RESUME_LINE);
   lines.push(
     "There is a `.teach-me/progress.json` here, but it does NOT carry the Teach Me " +
       "Claude marker — so this may be a cloned or synced copy of someone else's " +
@@ -744,11 +781,14 @@ const isMain = (() => {
 if (isMain) {
   try {
     const cwd = process.argv[2] || process.cwd();
-    // If there is no `.teach-me/` here at all, this is simply not a learner
-    // workspace — emit nothing and cost nothing (parity with the old shell guard's
-    // "outside a workspace this prints nothing").
+    // No `.teach-me/` here → the FIRST_RUN disposition: ONE line, exit 0
+    // (wi-onboarding IU-3 — the old print-nothing behaviour left the agent with
+    // zero signal and forced the probe-1 discovery dance; the line IS the speed
+    // lever, and it is deliberately a single cheap line because it fires in
+    // every non-workspace session).
     const { workspaceDir } = resolveWorkspacePath(cwd);
     if (!fs.existsSync(workspaceDir)) {
+      process.stdout.write(renderFirstRun() + "\n");
       process.exit(0);
     }
     const { output } = composeSessionContext({ cwd });
