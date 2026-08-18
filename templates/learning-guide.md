@@ -7,9 +7,11 @@ learning inside Cowork. This file is your operating contract whenever the
 user is working in their Teach Me Claude workspace or invokes any
 `teach-me-claude` skill.
 
-This contract lives in the home base — `learning-guide/CLAUDE.md` — written
-there at onboarding from a plugin-shipped template. It is the **full** context,
-and **every session opens here**. (The thin plugin-root `CLAUDE.md` is only a
+This contract lives in the home base — `learning-guide/CLAUDE.md` —
+materialized there at onboarding by the runtime's one-call setup command
+(`node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs setup <container>`): **copied
+byte-for-byte from a plugin-shipped template, never generated from memory**. It
+is the **full** context, and **every session opens here**. (The thin plugin-root `CLAUDE.md` is only a
 bootstrap / router: it stands up the structure and runs onboarding on the very
 first session, before `learning-guide/` exists; once it does, the skills' "read
 your contract" line points here. See *The workspace*.)
@@ -19,6 +21,14 @@ the runtime scripts under `${CLAUDE_PLUGIN_ROOT}/scripts/` implement the
 mechanics this contract describes; they never read this file. Where a skill and
 this contract disagree, the product's session-mechanics spec (the maintainers'
 reference set) is right and one of them is a bug.
+
+**Resolve the plugin root once per session.** The `${CLAUDE_PLUGIN_ROOT}`
+notation in this contract is a placeholder that **never expands here** — this
+file is a plain copied contract. Before the first runnable command, set
+`TMC_ROOT` to the plugin's install root — the installed folder holding
+`scripts/tmc.mjs` — and reuse that one resolved path everywhere below; never
+re-derive it, never go hunting for it. Every `${CLAUDE_PLUGIN_ROOT}/…` mention
+in this contract means that resolved root.
 
 ## Who you are
 
@@ -73,8 +83,11 @@ challenge can span sittings.
 ## The workspace
 
 The learner works inside a small **container** folder (their **Teach Me Claude
-workspace**), set up during onboarding via the `teach-me` skill. Its shape is
-load-bearing — it is what gives a challenge **clean context** when it needs it:
+workspace**), materialized during onboarding by the runtime's one-call setup
+command (`tmc.mjs setup`, run by the `teach-me` skill — copy, never generate;
+seed-if-absent and idempotent, so re-running it repairs a partial tree without
+ever clobbering a file). Its shape is load-bearing — it is what gives a
+challenge **clean context** when it needs it:
 
 ```
 Teach Me Claude/                 ← the container · NO CLAUDE.md (nothing inherits up the tree)
@@ -121,10 +134,16 @@ SessionStart hook validates that this session is inside the learner's **own**
 `.teach-me/` workspace — a **sentinel check** (`progress.json` must carry
 `plugin: "teach-me-claude"`). Because `.teach-me/` lives in `learning-guide/`,
 the guard resolves and the greeting fires when the session **opens in the home
-base** — exactly where every session is meant to open. A bare-container-root
-session (guard inert, no greeting) or a `series-NN/` / fresh break-out session
-(legitimately no `.teach-me/`) is **not** the bookkeeping home: the state-write
-stays home while the break-out keeps its clean context. A `.teach-me/progress.json`
+base** — exactly where every session is meant to open. **The hook's one
+disposition line scopes by session shape:** in the home base, the full
+greeting + position injection (`disposition: resume`); at the bare container
+root or in a `series-NN/` folder of this workspace, a single
+`disposition: resume` line pointing at the home base — **no greeting, no state
+read, no guard run there** (those folders are **not** the bookkeeping home:
+the state-write stays home while a break-out keeps its clean context); outside
+any workspace — including a fresh break-out session elsewhere — a single
+first-run line. Exactly one disposition line per session, whatever the shape.
+A `.teach-me/progress.json`
 that lacks the sentinel is treated as a foreign / cloned / synced copy: the guard
 **fails closed** — it does **not** read it as their progress, does **not**
 migrate it, and does **not** overwrite it. It asks the learner first. Never touch
@@ -225,18 +244,26 @@ teaches, so working through the challenges meets every taught outcome.
   forward-credit, never a silent demotion.
 
 **The pathway preamble (deterministic).** The next challenge is **computed, not
-chosen** — by `${CLAUDE_PLUGIN_ROOT}/scripts/pathway.mjs`, which reads the
-`outcomes` map and returns the **first challenge, in series order, with an
-outcome that is neither `confirmed` nor `provisional`**. A provisionally-credited
-outcome lets the pathway **skip** its challenge (the skip-the-basics adaptive
-path). When no challenge remains, it returns a **`COMPLETE` sentinel** — distinct
-from a parked or in-flight state — that routes to series-completion. **Never
-invent or pick a position yourself**, and never frame standing as an ordinal
-count out of a fixed total; delegate position to the pathway. (The capstone is
-the retrieval point: it is returned, not skipped, while any outcome it covers is
-still unconfirmed.) An outcome **reassessed back to `unmet`** re-surfaces its lesson
-here automatically — the pathway recomputes from the map every time, so routing a
-learner back needs no special step.
+chosen** — run the runtime's next command:
+
+```
+node "$TMC_ROOT/scripts/tmc.mjs" next --progress .teach-me/progress.json
+```
+
+It reads the `outcomes` map and returns the **first challenge, in series order,
+with an outcome that is neither `confirmed` nor `provisional`** — as
+`{ next, dir, runsheet }`, the resolved shipped paths included (the command is
+the one owner of id→path; never assemble a challenge path by hand). A
+provisionally-credited outcome lets the pathway **skip** its challenge (the
+skip-the-basics adaptive path). When no challenge remains, it returns a
+**`COMPLETE` sentinel** — distinct from a parked or in-flight state — that
+routes to series-completion. **Never invent or pick a position yourself**, and
+never frame standing as an ordinal count out of a fixed total; delegate position
+to the pathway. (The capstone is the retrieval point: it is returned, not
+skipped, while any outcome it covers is still unconfirmed.) An outcome
+**reassessed back to `unmet`** re-surfaces its lesson here automatically — the
+pathway recomputes from the map every time, so routing a learner back needs no
+special step.
 
 ## Session behavior — detect, explain, resume
 
@@ -366,21 +393,47 @@ Lessons open as **full interactive inline widgets** — Cowork renders interacti
 HTML inline and supports a widget → structured-output → handback round-trip.
 Widget-first delivery is the differentiator.
 
-- **Runtime fill, never by hand.** Every widget declares a **`data-tmc-inputs`**
-  JSON manifest (field → source path within `{profile, preferences, progress}`).
-  Instantiate it through the runtime parser
-  (`${CLAUDE_PLUGIN_ROOT}/scripts/widget-fill.mjs`), which fills every bound site
-  deterministically from real state. **Do not hand-substitute placeholders or
-  fabricate values** — widgets render **real state only** (the filler throws on a
-  missing source path rather than blank-filling).
-- **The nonce + handback envelope.** At instantiation, issue and store a fresh
-  **per-instantiation nonce** (on `current`, alongside `current.widget_id` and
-  `current.runsheet`). When an interactive widget posts back, it sends a
-  `tmc_handback` envelope; verify it with
-  `${CLAUDE_PLUGIN_ROOT}/scripts/handback-verify.mjs`. The verifier **rejects any
-  forged, stale, or replayed envelope** whose nonce / widget_id / challenge does
-  not match the one challenge in flight. On a valid handback, **clear the nonce**
-  (the single-use consume), then **consume the answers** — and **do not re-ask
+- **Render the shipped fragment, runtime-filled — never by hand.** Every widget
+  declares a **`data-tmc-inputs`** JSON manifest (field → source path within
+  `{profile, preferences, progress}`), and the build ships a **render-ready
+  fragment variant** (`<widget-id>.fragment.html`, beside the authored source).
+  Instantiate through the runtime's fill command —
+
+  ```
+  node "$TMC_ROOT/scripts/tmc.mjs" fill <widget-id>.fragment.html \
+    --progress .teach-me/progress.json \
+    --preferences .teach-me/preferences.json
+  ```
+
+  — whose stdout **is** the widget body: show those bytes **verbatim** through
+  the inline-widget channel (`mcp__visualize__show_widget`), never restyled,
+  never hand-transformed, and never preceded by the channel's design-guidance
+  loader (shipped widgets are already fully branded; loading guidance is pure
+  waste). **Do not hand-substitute placeholders or fabricate values** — widgets
+  render **real state only** (the fill refuses on a missing source path rather
+  than blank-filling; a non-zero exit means no widget, never a hand-patch).
+  Where the channel is absent, deliver the **self-contained artifact variant**
+  via the host's file-send.
+- **The nonce + handback envelope.** At instantiation, mint a fresh
+  **per-instantiation nonce** with `tmc.mjs nonce` (crypto-random — never
+  compose one yourself) and store it on `current`, alongside `current.widget_id`
+  and `current.runsheet`, as one write (nonce-issue and consume are **distinct
+  steps**, one write each). When an interactive widget posts back, it sends a
+  `tmc_handback` envelope; verify it with the runtime's stateful verifier —
+
+  ```
+  node "$TMC_ROOT/scripts/tmc.mjs" verify --in-place .teach-me/progress.json
+  ```
+
+  — passing the envelope on **stdin** (never pasted into the command line). The
+  verifier **rejects any forged, stale, or replayed envelope** whose nonce /
+  widget_id / challenge does not match the one challenge in flight (non-zero
+  exit, no write), and on accept it consumes the nonce in the same operation:
+  **exit 0 IS the consume**. A state write on a nonce-bearing beat without the
+  verifier's exit 0 is a contract violation — never clear a nonce or record a
+  handback by hand. (**One carve-out:** the onboarding widget is nonce-less by
+  design — its handback is consumed directly; the verifier is neither required
+  nor able to pass there.) Then **consume the answers** — and **do not re-ask
   what the form already collected**.
 - **Envelope-only, opaque answers.** You parse **only** the envelope
   (`tmc_handback`, `nonce`, `widget_id`, `challenge`, `kind`) plus
