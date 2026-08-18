@@ -166,14 +166,28 @@ first** — re-run the same `setup` command (idempotent: it completes only the
 missing pieces) — and only when its sentinels pass, write. Never write learner
 state into a tree whose sentinels did not pass.
 
-**(b) One consolidated write per file — no re-writes, no read-back-to-verify.**
+**(b) Compute the next step first — so the write below can be the only one.**
+**Never pick the challenge yourself** — the pathway computes it:
+
+```
+node "$TMC_ROOT/scripts/tmc.mjs" next --progress "Teach Me Claude/learning-guide/.teach-me/progress.json"
+```
+
+On the fresh, template-seeded map it returns the first challenge in series
+order as `{ next, dir, runsheet }` — the resolved shipped paths included (the
+command is the one owner of id→path; never assemble a challenge path by hand).
+
+**(c) One consolidated write per file — no re-writes, no read-back-to-verify.**
 Update `Teach Me Claude/learning-guide/.teach-me/progress.json` **once**, from
 `answers`: **name** → `learner.name` · **profession** → `learner.profession` ·
 **handover_task** → the first `learner.workflow_profile` seed, captured
 concretely ("report cards every term", not "admin") — it is load-bearing: a
 later lesson delegates it for real · **work_preferences** and what brought them
-here → `learner.goals` · `learner.started` → today. Fold the fast-track
-seeding (below) into this same write. Then update
+here → `learner.goals` · `learner.started` → today · the challenge `next`
+returned marked in flight on `current` (`current.runsheet` +
+`current.status: "in_progress"`, with today's date) — the `outcomes` map,
+never an integer, records the standing. Fold the fast-track seeding (below)
+into this same write. Then update
 `Teach Me Claude/learning-guide/.teach-me/preferences.json` **once**:
 **language** → `language` (default `en` if blank); **ai_maturity** → one of
 `beginner | intermediate | advanced`, inferred from the breadth of
@@ -211,30 +225,20 @@ lesson run.
 **Then at most a light follow-up, never an interview.** Fill only a gap the
 widget left — one or two curious questions where an answer is vague (Socratic,
 never a re-ask). **Never ask for anything the widget or the conversation
-already gave you.**
+already gave you.** What the follow-up surfaces rides into the lesson-1
+briefing below (on disk it lands at the first debrief's workflow-profile
+update — do not reopen the progress file for it).
 
 ## 3 · The bridge — lesson 1, now, in this same sitting
 
 One framing beat that names what comes next — *"that's the setup done; your
-first lesson takes about fifteen minutes and ends with the agent touching a
-real piece of your work — let's do it now"* — and go. Never close onboarding on
-"come back when you're ready": the gap between setup and the first felt win is
-where learners are lost.
+first lesson ends with the agent touching a real piece of your work — let's do
+it now"* (the time expectation was already set in the first beat — do not
+restate one) — and go. Never close onboarding on "come back when you're
+ready": the gap between setup and the first felt win is where learners are
+lost.
 
-**Never pick the challenge yourself** — the pathway computes it:
-
-```
-node "$TMC_ROOT/scripts/tmc.mjs" next --progress "Teach Me Claude/learning-guide/.teach-me/progress.json"
-```
-
-On a fresh map it returns the first challenge in series order as
-`{ next, dir, runsheet }` — the resolved shipped paths included (the command is
-the one owner of id→path; never assemble a challenge path by hand). Mark it in
-flight on `current` (`current.runsheet` + `current.status: "in_progress"`,
-with today's date) as part of the §2 progress write — the `outcomes` map,
-never an integer, records the standing.
-
-Then hand into the `challenge` skill flow with the **plain-language briefing**
+Hand into the `challenge` skill flow with the **plain-language briefing**
 the home-base contract describes: the workspace root, the challenge id `next`
 returned (the id, not a path), a one-line progress summary, and a one-line
 learner profile. The onboarding conversation flows straight into the lesson —
