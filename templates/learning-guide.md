@@ -233,7 +233,7 @@ teaches, so working through the challenges meets every taught outcome.
 chosen** — run the runtime's next command:
 
 ```
-node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs next --progress learning-guide/.teach-me/progress.json
+node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs next --progress .teach-me/progress.json
 ```
 
 It reads the `outcomes` map and returns the **first challenge, in series order,
@@ -387,8 +387,8 @@ Widget-first delivery is the differentiator.
 
   ```
   node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs fill <widget-id>.fragment.html \
-    --progress learning-guide/.teach-me/progress.json \
-    --preferences learning-guide/.teach-me/preferences.json
+    --progress .teach-me/progress.json \
+    --preferences .teach-me/preferences.json
   ```
 
   — whose stdout **is** the widget body: show those bytes **verbatim** through
@@ -408,7 +408,7 @@ Widget-first delivery is the differentiator.
   `tmc_handback` envelope; verify it with the runtime's stateful verifier —
 
   ```
-  node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs verify --in-place learning-guide/.teach-me/progress.json
+  node ${CLAUDE_PLUGIN_ROOT}/scripts/tmc.mjs verify --in-place .teach-me/progress.json
   ```
 
   — passing the envelope on **stdin** (never pasted into the command line). The
