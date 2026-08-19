@@ -103,6 +103,40 @@ function normaliseAiMaturity(value) {
   return VALID_AI_MATURITY.includes(value) ? value : DEFAULT_AI_MATURITY;
 }
 
+// Normalise a version literal to a number when it is a plain base-10 integer string
+// ("3" → 3, "03" → 3), so a version field corrupted to a string does not read as an
+// old shape. A genuinely malformed literal (non-integer string, null, absent) is
+// returned unchanged and simply fails the `=== CURRENT_VERSION` gate (the structural
+// check in isAlreadyV3 then decides). Pure.
+function normaliseVersion(v) {
+  if (typeof v === "string" && /^\s*\d+\s*$/.test(v)) return Number(v.trim());
+  return v;
+}
+
+// Is this parsed progress object ALREADY the v3 (outcome-driven) shape? Robust to a
+// wrong / missing `version` literal — a real v3 file whose version got corrupted to
+// "3" or dropped must NOT be re-read as v2, because the v2 branch resets
+// outcomes/challenges/credential to empty (data loss) while the SessionStart note
+// reassures the learner "your progress is safe". A file is v3 iff:
+//   - its normalised version is exactly CURRENT_VERSION, OR
+//   - it carries an unmistakable v3-only structural signal (an outcomes map, a
+//     credential record, or a v3 `current` pointer with a runsheet/status) AND is
+//     NOT unmistakably v2 — a v2 file stores an integer `current.challenge`, the one
+//     field v3 retired, so its presence is a hard v2 tell that overrides the signals.
+// Pure; never mutates its input.
+export function isAlreadyV3(input) {
+  if (!isPlainObject(input)) return false;
+  if (normaliseVersion(input.version) === CURRENT_VERSION) return true;
+  const current = isPlainObject(input.current) ? input.current : {};
+  if (Number.isInteger(current.challenge)) return false; // unmistakably v2 → not v3
+  return (
+    isPlainObject(input.outcomes) ||
+    isPlainObject(input.credential) ||
+    typeof current.runsheet === "string" ||
+    typeof current.status === "string"
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Pure migration — the public core. Takes a parsed progress object (v2 or v3 or
 // half-migrated) and returns a fresh { progress, preferences } pair in the v3
@@ -134,7 +168,9 @@ export function migrate(input, { priorPreferences } = {}) {
   const currentIn = isPlainObject(input.current) ? input.current : {};
   const kitIn = isPlainObject(input.kit) ? input.kit : {};
 
-  const alreadyV3 = input.version === CURRENT_VERSION;
+  // Robust v3 detection (F4): a "3"-string or missing version literal on an
+  // otherwise-v3 file must NOT trigger the v2 reset of outcomes/challenges/credential.
+  const alreadyV3 = isAlreadyV3(input);
 
   // --- preferences ---------------------------------------------------------
   // Precedence: an explicitly-supplied prior preferences object (already split
@@ -310,7 +346,11 @@ export function migrateFile(progressPath, preferencesPath, { hooks } = {}) {
     }
   }
 
-  const wasCurrent = parsedProgress && parsedProgress.version === CURRENT_VERSION;
+  // `migrated` reports whether the SHAPE changed. Use the same robust v3 detection
+  // (F4): a v3 file with a "3"-string / missing version literal is re-normalised,
+  // not migrated — so the SessionStart greeting does not falsely tell the learner
+  // their outcomes will "re-confirm as they go" when they were preserved intact.
+  const wasCurrent = isAlreadyV3(parsedProgress);
 
   // --- transform (pure; throws here also leave originals intact) -----------
   const { progress, preferences } = migrate(parsedProgress, { priorPreferences });

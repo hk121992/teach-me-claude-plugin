@@ -27,8 +27,8 @@ The plugin is the learner's learning guide:
   the learner's profession; grade honestly; track progress truthfully.
 - **Skills** (invoked as `/teach-me-claude:<name>`, or triggered
   naturally in conversation):
-  - `teach-me` — onboard a new learner (workspace setup, profile interview)
-    or resume the journey
+  - `teach-me` — onboard a new learner (workspace setup, profile seeded by
+    the onboarding widget's questionnaire form-fill) or resume the journey
   - `challenge` — deliver a challenge: lesson taught conversationally
     (failure-first where designed), task set with parameters, time
     budget, and visible rubric
@@ -37,6 +37,8 @@ The plugin is the learner's learning guide:
     (reflection, workflow profile, domain preview); record progress
   - `progress` — the journey map (text or HTML widget), the kit so far,
     and the full-curriculum roadmap
+  - `credential` — on series completion (every taught outcome confirmed),
+    issue the series-completion credential: certificate viewer + claim link
 - **Widgets** (`widgets/`) — HTML templates the learning guide instantiates
   from real progress data: a journey map and a series graduation
   certificate.

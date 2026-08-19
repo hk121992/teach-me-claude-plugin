@@ -16,8 +16,14 @@ decide completion (that is the pathway's job) and you **never** issue a certific
 merely reaching the last challenge or passing the capstone as a step (FM-CERT-EARLY).
 
 Before doing anything, re-confirm completion from real state: read
-`.teach-me/progress.json` and check that the `outcomes` map has **no `unmet` and no
-`provisional`** entry. If anything is still open, **stop** — there is no credential to
+`.teach-me/progress.json` and check that **every outcome the just-completed series
+teaches** is `confirmed` — i.e. **none** of that series' taught uids is left `unmet`
+or `provisional`. **Scope the re-check to the completed series' taught set** — the
+`covers_outcomes` uids of that series' runsheets (the same set the pathway iterated
+to reach `COMPLETE`) — **not the whole `outcomes` map**. The pathway's `COMPLETE` is
+**per-series**: once more than one series ships, an open outcome from a *different*
+series must **not** block a legitimately-complete series' credential. If any of the
+completed series' own taught uids is still open, **stop** — there is no credential to
 issue yet; route back to the next challenge instead.
 
 # 1. Mint + persist the credential record (once)

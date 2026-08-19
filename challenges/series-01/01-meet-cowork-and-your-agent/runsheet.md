@@ -32,18 +32,22 @@ widgets:
 
 ### S1 · Present the lesson  *(home base · guide)*
 Present **`orient-lesson`** — Slide 1 the lesson, Slide 2 the activity. Then, **immediately after
-the widget, as its own chat message**, post a markdown link to the shipped `orient-takeaway.html`
-at its **plugin-install path**: resolve
-`${CLAUDE_PLUGIN_ROOT}/challenges/series-01/01-meet-cowork-and-your-agent/orient-takeaway.html`
+the widget, as its own chat message**, post a markdown link to the shipped self-contained
+take-with-you page: resolve
+`${CLAUDE_PLUGIN_ROOT}/challenges/series-01/01-meet-cowork-and-your-agent/orient-takeaway.export.html`
 to the absolute path of your install and post *"Open your activity steps in your browser:
-[orient-takeaway.html](<the resolved absolute path>)"* — the visible filename keeps the step
-usable even where a chat link doesn't render clickable.
+[orient-takeaway.export.html](<the resolved absolute path>)"*. Link those exact shipped bytes —
+never a re-authored substitute. Close with **one** send-off
+beat — action, why it benefits them, come-back cue (*"Off you go — doing it in a fresh task is
+the real lesson. Come back here when you've seen the file with your own eyes."*) — and no step
+restatement: the widget and the take-with-you file own the steps.
 - confirms: —
 
 ### S2 · Break-out — the activity  *(new task in `series-01-foundations` · learner)*
 The learner, unaided: starts a new task (**Home** tab → **+ New**, **Cowork** selected) → points it
 at `series-01-foundations` (**Project or folder**) → sends the exact first instruction (create
-`first-day.md` with today's date + their name) → **opens the file themselves**. The loop closes on
+`first-day.md` in the `series-01-foundations` folder, today's date + their name at the top) →
+**opens the file themselves**. The loop closes on
 their own click — the agent's *"done!"* read in chat is not the beat.
 - confirms: 01-DILG-14 · 01-DESC-10 · 01-DSCN-11 · 01-DILG-12
 

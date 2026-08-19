@@ -1,0 +1,531 @@
+<style>
+
+
+:root {
+  
+  --tmc-pine: hsl(174 64% 30%);          
+  --tmc-pine-strong: hsl(174 68% 21%);   
+  --tmc-pine-tint: hsl(174 32% 92%);     
+  --tmc-on-pine: #FFFFFF;                
+
+  
+  --tmc-gold: hsl(40 72% 42%);           
+  --tmc-gold-tint: hsl(40 64% 90%);
+
+  
+  --tmc-paper: #FBF8F2;
+  --tmc-surface: #FFFFFF;
+  --tmc-surface-2: #F3EDE2;
+  --tmc-ink: #241F1A;
+  --tmc-ink-2: #6E665B;
+  --tmc-ink-3: #9A9184;
+  --tmc-hairline: #E2D9C9;
+
+  
+  --tmc-done: #2E7D4F;  --tmc-done-tint: #E7F1E9;
+  --tmc-doing: #B26C2A; --tmc-doing-tint: #F6ECDD;
+
+  
+  --tmc-font-display: ui-rounded, "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-text: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  
+  --tmc-r-sm: 6px;  --tmc-r-md: 10px;  --tmc-r-lg: 14px;  --tmc-r-pill: 999px;
+
+  
+  --tmc-space-1: 4px; --tmc-space-2: 8px; --tmc-space-3: 12px;
+  --tmc-space-4: 16px; --tmc-space-5: 24px; --tmc-space-6: 32px;
+
+  
+  --tmc-shadow: 0 10px 30px rgba(36, 31, 26, 0.10);
+}
+
+:root[data-theme="dark"], .tmc-dark {
+  --tmc-pine: hsl(174 58% 48%);          
+  --tmc-pine-strong: hsl(174 52% 56%);   
+  --tmc-pine-tint: hsl(174 32% 18%);     
+  --tmc-on-pine: #0F2A26;
+  --tmc-gold: hsl(40 78% 58%);           
+  --tmc-gold-tint: hsl(40 40% 18%);
+  --tmc-paper: #18140F;
+  --tmc-surface: #221C16;
+  --tmc-surface-2: #2C251D;
+  --tmc-ink: #F2ECDF;
+  --tmc-ink-2: #B3A998;
+  --tmc-ink-3: #837A6B;
+  --tmc-hairline: #3A3026;
+  --tmc-done: #5FB07E;  --tmc-done-tint: #1E3328;
+  --tmc-doing: #E0A35C; --tmc-doing-tint: #382816;
+  --tmc-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.tmc {
+  font-family: var(--tmc-font-text);
+  color: var(--tmc-ink);
+  background: var(--tmc-paper);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tmc-card {
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-lg);
+  box-shadow: var(--tmc-shadow);
+  padding: var(--tmc-space-6);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.tmc-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  margin-bottom: var(--tmc-space-4);
+}
+.tmc-brand .tmc-mark { width: 28px; height: 28px; display: block; }
+.tmc-wordmark {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+.tmc-wordmark b { color: var(--tmc-pine-strong); font-weight: 600; }
+
+.tmc-eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--tmc-pine-strong);
+}
+.tmc h1, .tmc-title {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  margin: var(--tmc-space-2) 0 var(--tmc-space-3);
+  color: var(--tmc-ink);
+}
+.tmc h2 {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: var(--tmc-space-5) 0 var(--tmc-space-2);
+}
+.tmc p { margin: 0 0 var(--tmc-space-3); color: var(--tmc-ink); }
+.tmc .tmc-muted { color: var(--tmc-ink-2); }
+.tmc code, .tmc kbd, .tmc pre {
+  font-family: var(--tmc-font-mono);
+  font-size: 0.9em;
+  background: var(--tmc-surface-2);
+  border-radius: var(--tmc-r-sm);
+  padding: 0.1em 0.35em;
+}
+.tmc pre { padding: var(--tmc-space-3); overflow: auto; line-height: 1.45; }
+.tmc pre code { background: none; padding: 0; }
+
+.tmc-fill { color: var(--tmc-pine-strong); font-weight: 600; }
+
+.tmc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tmc-space-1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2em 0.7em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine-tint);
+  color: var(--tmc-pine-strong);
+}
+.tmc-chip--doing { background: var(--tmc-doing-tint); color: var(--tmc-doing); }
+.tmc-chip--done { background: var(--tmc-done-tint); color: var(--tmc-done); }
+
+.tmc-field { margin: 0 0 var(--tmc-space-4); }
+.tmc-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: var(--tmc-space-2);
+  color: var(--tmc-ink);
+}
+.tmc-help { font-size: 0.85rem; color: var(--tmc-ink-2); margin-top: var(--tmc-space-1); }
+
+.tmc-input, .tmc-textarea, .tmc-select {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  font-family: var(--tmc-font-text);
+  font-size: 0.95rem;
+  color: var(--tmc-ink);
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-md);
+  padding: 0.6em 0.75em;
+}
+.tmc-textarea { min-height: 6.5em; line-height: 1.5; resize: vertical; }
+.tmc-input:focus-visible,
+.tmc-textarea:focus-visible,
+.tmc-select:focus-visible {
+  border-color: var(--tmc-pine);
+  box-shadow: 0 0 0 3px var(--tmc-pine-tint);
+}
+
+.tmc-radio-row, .tmc-check-row {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  padding: var(--tmc-space-2) 0;
+}
+.tmc-radio-row input, .tmc-check-row input { accent-color: var(--tmc-pine); }
+
+.tmc-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tmc-space-2);
+  cursor: pointer;
+  font-family: var(--tmc-font-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.65em 1.2em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine);
+  color: var(--tmc-on-pine);
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+.tmc-btn:hover { background: var(--tmc-pine-strong); }
+.tmc-btn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-btn--ghost {
+  background: transparent;
+  color: var(--tmc-pine-strong);
+  border-color: var(--tmc-hairline);
+}
+.tmc-btn--ghost:hover { background: var(--tmc-pine-tint); }
+.tmc-actions {
+  display: flex;
+  gap: var(--tmc-space-3);
+  margin-top: var(--tmc-space-5);
+}
+
+.tmc-callout {
+  border-left: 3px solid var(--tmc-pine);
+  background: var(--tmc-pine-tint);
+  border-radius: var(--tmc-r-md);
+  padding: var(--tmc-space-3) var(--tmc-space-4);
+  margin: var(--tmc-space-4) 0;
+  color: var(--tmc-ink);
+}
+.tmc-callout--gold { border-left-color: var(--tmc-gold); background: var(--tmc-gold-tint); }
+
+@keyframes tmc-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tmc-anim { animation: tmc-fade-up 0.5s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tmc-anim { animation: none; }
+  .tmc-btn { transition: none; }
+}
+
+@media (max-width: 560px) {
+  .tmc-card { padding: var(--tmc-space-5) var(--tmc-space-4); }
+  .tmc h1, .tmc-title { font-size: 1.4rem; }
+  .tmc-actions { flex-direction: column; }
+  .tmc-btn { width: 100%; }
+}
+
+.tmc-card.tmc-lesson { padding: 0; overflow: hidden; }
+
+.tmc-banner { background: var(--tmc-pine); color: var(--tmc-on-pine); padding: var(--tmc-space-4) var(--tmc-space-6); }
+.tmc-lock { display: inline-flex; align-items: center; gap: 10px; }
+.tmc-lock svg { width: 24px; height: 24px; flex: 0 0 24px; }
+.tmc-lock .tmc-word { font-family: var(--tmc-font-display); font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+
+.tmc-lesson-body { padding: var(--tmc-space-6); }
+
+.tmc-pager-radio { position: absolute; opacity: 0; width: 0; height: 0; }
+.tmc-slide { display: none; }
+.tmc-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--tmc-space-3); margin-top: var(--tmc-space-6); border-top: 1px solid var(--tmc-hairline); padding-top: var(--tmc-space-4); }
+.tmc-page { font-size: 0.8rem; color: var(--tmc-ink-2); font-weight: 600; }
+.tmc-navbtn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: var(--tmc-font-text); font-weight: 600; font-size: 0.95rem; padding: 0.6em 1.1em; border-radius: var(--tmc-r-pill); background: var(--tmc-pine); color: var(--tmc-on-pine); }
+.tmc-navbtn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-navbtn--ghost { background: transparent; color: var(--tmc-pine-strong); border: 1px solid var(--tmc-hairline); }
+
+.tmc-lsec { margin-top: var(--tmc-space-6); }
+.tmc-lsec:first-of-type { margin-top: var(--tmc-space-2); }
+.tmc-lsec > h2 { font-family: var(--tmc-font-display); font-size: 1.15rem; margin: 0 0 var(--tmc-space-3); }
+.tmc-not { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-not li { padding: 0.3em 0 0.3em 1.6em; position: relative; line-height: 1.6; }
+.tmc-not li::before { content: "\2715"; position: absolute; left: 0; color: var(--tmc-ink-3); }
+.tmc-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--tmc-space-2); margin: var(--tmc-space-4) 0; }
+.tmc-fstep { flex: 1 1 8em; min-width: 8em; background: var(--tmc-surface-2); border: 1px solid var(--tmc-hairline); border-radius: var(--tmc-r-md); padding: var(--tmc-space-3); }
+.tmc-fstep--out { background: var(--tmc-pine-tint); border-color: var(--tmc-pine); }
+.tmc-flabel { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tmc-pine-strong); }
+.tmc-fbody { margin-top: 0.2em; font-weight: 600; font-size: 0.95rem; }
+.tmc-farr { align-self: center; color: var(--tmc-ink-3); font-weight: 700; }
+.tmc-steps { counter-reset: s; list-style: none; padding: 0; margin: var(--tmc-space-4) 0 0; }
+.tmc-steps > li { counter-increment: s; position: relative; padding: 0 0 var(--tmc-space-5) 2.6em; line-height: 1.7; }
+.tmc-steps > li:last-child { padding-bottom: 0; }
+.tmc-steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 1.7em; height: 1.7em; background: var(--tmc-pine); color: var(--tmc-on-pine); border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 600; }
+.tmc-say { display: block; margin-top: var(--tmc-space-2); padding: 0.6em 0.8em; background: var(--tmc-surface-2); border-left: 3px solid var(--tmc-pine); border-radius: var(--tmc-r-sm); font-family: var(--tmc-font-mono); font-size: 0.85rem; line-height: 1.5; }
+.tmc-take { border: 2px solid var(--tmc-pine); border-radius: var(--tmc-r-md); padding: var(--tmc-space-5); margin-top: var(--tmc-space-5); background: var(--tmc-pine-tint); }
+.tmc-take > h2 { margin-top: 0; }
+.tmc-check { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-check li { padding: 0.4em 0 0.4em 1.8em; position: relative; line-height: 1.6; }
+.tmc-check li::before { content: "\2610"; position: absolute; left: 0; font-size: 1.15em; line-height: 1; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{
+  "learner_name": "profile.name",
+  "series": "progress.current.series",
+  "completed": "progress.credential.completed"
+}
+</script>
+<style>
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; background: var(--tmc-surface-2);
+    padding: var(--tmc-space-6);
+    font-family: var(--tmc-font-text); color: var(--tmc-ink);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .cert {
+    position: relative; background: var(--tmc-paper);
+    max-width: 720px; width: 100%;
+    padding: 3.75rem 3.25rem 3.25rem; text-align: center;
+    border: 1px solid var(--tmc-hairline); border-radius: var(--tmc-r-lg);
+    box-shadow: var(--tmc-shadow);
+  }
+  /* inner pine frame */
+  .cert::before {
+    content: ""; position: absolute; inset: 14px;
+    border: 1.5px solid var(--tmc-pine); border-radius: 8px; pointer-events: none;
+  }
+  .cert > * { position: relative; }
+
+  .brand { display: flex; flex-direction: column; align-items: center; gap: .5rem; margin-bottom: var(--tmc-space-6); }
+  .brand .mark { width: 46px; height: 46px; display: block; }
+  .wordmark { font-family: var(--tmc-font-display); font-weight: 600; font-size: 1.25rem; letter-spacing: -.01em; color: var(--tmc-ink); }
+  .wordmark b { font-weight: 600; color: var(--tmc-pine-strong); }
+
+  .eyebrow { font-weight: 600; letter-spacing: .26em; text-transform: uppercase; font-size: .7rem; color: var(--tmc-pine-strong); }
+  h1 { font-family: var(--tmc-font-display); font-weight: 600; font-size: 2.1rem; line-height: 1.1; margin: .85rem 0 .35rem; color: var(--tmc-ink); }
+  .series { color: var(--tmc-ink-2); margin-bottom: var(--tmc-space-6); }
+  .lead { max-width: 480px; margin: 0 auto .75rem; color: var(--tmc-ink-2); }
+  .name { font-family: var(--tmc-font-display); font-weight: 600; font-size: 2.4rem; line-height: 1.1; margin: .5rem 0 .65rem; color: var(--tmc-ink); }
+  .rule { width: 220px; border-bottom: 1px solid var(--tmc-hairline); margin: 0 auto 1.6rem; }
+  .body { max-width: 520px; margin: 0 auto var(--tmc-space-5); color: var(--tmc-ink); }
+
+  /* The confirmed-competency roll — count-agnostic, one row per confirmed outcome. */
+  .competencies { max-width: 560px; margin: 0 auto var(--tmc-space-5); text-align: left; }
+  .competencies h2 {
+    font-family: var(--tmc-font-text); font-size: .72rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--tmc-pine-strong);
+    margin: 0 0 var(--tmc-space-3); text-align: center;
+  }
+  ul.comp { list-style: none; padding: 0; margin: 0; }
+  ul.comp li {
+    display: flex; align-items: baseline; gap: var(--tmc-space-3);
+    padding: .55rem .25rem; border-bottom: 1px solid var(--tmc-hairline);
+  }
+  ul.comp li:last-child { border-bottom: none; }
+  .check { color: var(--tmc-done); flex: none; font-size: 1rem; width: 1.2rem; text-align: center; }
+  .comp-title { flex: 1; color: var(--tmc-ink); }
+  .uid { color: var(--tmc-ink-3); font-size: .78rem; font-family: var(--tmc-font-mono); flex: none; }
+  /* substrate distinction: Claude-specific vs transferable (agnostic). */
+  .tag {
+    flex: none; font-size: .68rem; font-weight: 600; letter-spacing: .02em;
+    padding: .12em .6em; border-radius: var(--tmc-r-pill);
+  }
+  .tag.claude { background: var(--tmc-pine-tint); color: var(--tmc-pine-strong); }
+  .tag.agnostic { background: var(--tmc-surface-2); color: var(--tmc-ink-2); }
+  .comp-note { font-size: .8rem; color: var(--tmc-ink-3); text-align: center; margin: var(--tmc-space-3) 0 0; }
+
+  .date { margin-top: var(--tmc-space-5); color: var(--tmc-ink-3); font-size: .95rem; }
+  .seal { width: 104px; height: 104px; margin: 1.5rem auto 0; display: block; }
+  /* honour-system note — explicitly NOT a server-verified claim. */
+  .attest { max-width: 520px; margin: var(--tmc-space-5) auto 0; font-size: .8rem; color: var(--tmc-ink-3); line-height: 1.5; }
+
+  /* honest empty/guard state — shown rather than fabricating a certificate. */
+  .guard { max-width: 460px; margin: 0 auto; color: var(--tmc-ink-2); }
+  .guard .eyebrow { color: var(--tmc-doing); }
+  .hidden { display: none; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .cert { box-shadow: none; border-radius: 0; }
+  }
+  @media (max-width: 560px) {
+    .cert { padding: 2.5rem 1.5rem; } h1 { font-size: 1.8rem; } .name { font-size: 2rem; }
+    ul.comp li { flex-wrap: wrap; }
+  }
+</style>
+<div class="tmc">
+<div class="cert">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-pine)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <div class="wordmark">Teach Me <b>Claude</b></div>
+    </div>
+
+    
+    <div id="cert-body" class="hidden">
+      <div class="eyebrow">Certificate of Completion</div>
+      <h1>Certificate of Completion</h1>
+      
+      <div class="series" id="series-line">Series <span data-tmc-bind="series">—</span></div>
+
+      <p class="lead">This certifies that</p>
+      
+      <div class="name" id="name-line" data-tmc-bind="learner_name">—</div>
+      <div class="rule"></div>
+
+      
+      <p class="body">has completed this series of Teach Me Claude — building a working
+         personal toolkit and confirming the competencies below.</p>
+
+      <div class="competencies">
+        <h2>Competencies confirmed</h2>
+        <ul class="comp" id="comp"></ul>
+        <p class="comp-note" id="comp-note"></p>
+      </div>
+
+      <div class="date" id="date-line">Completed <span data-tmc-bind="completed">—</span></div>
+
+      <svg class="seal" viewBox="0 0 120 120" role="img" aria-label="Earned">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="var(--tmc-pine)" stroke-width="1.5" stroke-dasharray="2.5 4"/>
+        <circle cx="60" cy="60" r="47" fill="none" stroke="var(--tmc-pine)" stroke-width="1"/>
+        <path d="M43 61 l11 12 l23 -25" fill="none" stroke="var(--tmc-pine)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
+      
+      <p class="attest">This is your personal record of what you confirmed in Teach Me
+         Claude. It reflects your local progress — an honest account of the competencies
+         you demonstrated, not a server-verified credential. A verifiable, shareable
+         version is issued when you claim it online.</p>
+    </div>
+
+    
+    <div id="cert-guard" class="guard hidden">
+      <div class="eyebrow">Not yet</div>
+      <h1>No certificate to show yet</h1>
+      <p class="body">A certificate appears once every taught outcome of a series is
+         confirmed. Keep going — this page will fill itself in from your real progress
+         when you complete the series.</p>
+    </div>
+  </div>
+
+  
+  <script id="tmc-state" type="application/json">null</script>
+
+  <script>
+    // Read the injected real state. If absent (e.g. opened un-filled), show the guard
+    // rather than fabricating a certificate.
+    let STATE = null;
+    try {
+      const raw = document.getElementById("tmc-state").textContent.trim();
+      STATE = JSON.parse(raw);
+    } catch (_) { STATE = null; }
+
+    const progress = (STATE && STATE.progress) || null;
+    const outcomes = (progress && progress.outcomes) || {};
+
+    // A friendly label per outcome. The shipped runtime does NOT carry the outcomes
+    // matrix (curriculum/outcomes.md is a design file that does not ship), so we label
+    // from the outcome entry's OWN fields (a title/label if the runtime wrote one, else
+    // the uid) — never from a hardcoded series list, never fabricated.
+    function labelFor(uid, entry) {
+      return (entry && (entry.title || entry.label)) || uid;
+    }
+
+    // Extract the CONFIRMED outcomes (real-state-only), sorted by uid for a stable
+    // order. substrate: explicit "claude" stays; absence === agnostic (the documented
+    // default), NOT invented as claude.
+    const confirmed = Object.entries(outcomes)
+      .filter(([, e]) => e && e.status === "confirmed")
+      .map(([uid, e]) => ({
+        uid,
+        entry: e,
+        substrate: e && e.substrate === "claude" ? "claude" : "agnostic",
+      }))
+      .sort((a, b) => (a.uid < b.uid ? -1 : a.uid > b.uid ? 1 : 0));
+
+    // The certificate is shown ONLY on a real COMPLETE state: there must be at least
+    // one confirmed competency to certify. (The runtime gates rendering on COMPLETE;
+    // this is the widget's own real-state-only floor so it never shows an empty cert.)
+    const body = document.getElementById("cert-body");
+    const guard = document.getElementById("cert-guard");
+    // A certificate needs a real learner NAME (the identity field) AND at least one
+    // confirmed competency. Without a real name we show the guard — never a cert bearing
+    // a placeholder. The name is the one field whose absence must VOID the cert, not just
+    // drop a line (real-state-only; FM-FABRICATED-STATE). In the normal pipeline
+    // widget-fill throws on an absent profile.name before render; this is the widget's
+    // own defense-in-depth floor for any path that injects state but skips the fill.
+    const learnerName =
+      STATE && STATE.profile && typeof STATE.profile.name === "string"
+        ? STATE.profile.name.trim()
+        : "";
+    if (!progress || confirmed.length === 0 || learnerName === "") {
+      guard.classList.remove("hidden");
+    } else {
+      body.classList.remove("hidden");
+
+      // Hide header lines whose real value is absent rather than printing a blank/dash.
+      // (The widget-fill parser fills data-tmc-bind sites; when a source path is absent
+      // it throws at fill time — but when the cert is rendered with partial state we
+      // also defensively hide the unfilled line here.)
+      const seriesVal = progress.current && progress.current.series;
+      if (seriesVal === undefined || seriesVal === null || seriesVal === "") {
+        document.getElementById("series-line").classList.add("hidden");
+      }
+      // The completion date lives on the credential record (progress.credential),
+      // stamped by the credential flow on COMPLETE — the SAME real field the manifest
+      // binds. Hide the line if absent rather than printing a blank (defense-in-depth;
+      // the manifest fill already enforces real-state-only at fill time).
+      const cred = progress.credential;
+      const completedVal = cred && cred.completed;
+      if (!completedVal) {
+        document.getElementById("date-line").classList.add("hidden");
+      }
+
+      // Render the confirmed-competency roll — count-agnostic, real-state-only.
+      const SUB_LABEL = { claude: "Claude", agnostic: "Transferable" };
+      const list = document.getElementById("comp");
+      confirmed.forEach(({ uid, entry, substrate }) => {
+        const li = document.createElement("li");
+        li.innerHTML =
+          '<span class="check">✓</span>' +
+          '<span class="comp-title"></span>' +
+          '<span class="uid"></span>' +
+          '<span class="tag ' + substrate + '"></span>';
+        li.querySelector(".comp-title").textContent = labelFor(uid, entry);
+        li.querySelector(".uid").textContent = uid;
+        li.querySelector(".tag").textContent = SUB_LABEL[substrate];
+        list.appendChild(li);
+      });
+
+      // Count-agnostic summary line — derived from the REAL number of confirmed
+      // outcomes, distinguishing the Claude-specific from the transferable ones.
+      const n = confirmed.length;
+      const claudeN = confirmed.filter((c) => c.substrate === "claude").length;
+      const agnosticN = n - claudeN;
+      const parts = [];
+      if (agnosticN) parts.push(agnosticN + " transferable");
+      if (claudeN) parts.push(claudeN + " Claude-specific");
+      document.getElementById("comp-note").textContent =
+        n + " competenc" + (n === 1 ? "y" : "ies") + " confirmed" +
+        (parts.length ? " (" + parts.join(", ") + ")" : "") + ".";
+    }
+  </script>
+</div>

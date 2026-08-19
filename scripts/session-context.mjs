@@ -44,7 +44,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { pathway, COMPLETE, inFlightResume, CONFIRMED, PROVISIONAL } from "./pathway.mjs";
 import { migrateFile, CURRENT_VERSION, PLUGIN as PLUGIN_SENTINEL } from "./migrate-progress.mjs";
@@ -55,9 +55,16 @@ import { parseFrontmatter } from "./frontmatter.mjs";
 // ---------------------------------------------------------------------------
 
 // The learner's own workspace is a `.teach-me/` dir holding progress.json.
-const WORKSPACE_DIR = ".teach-me";
-const PROGRESS_BASENAME = "progress.json";
-const PREFERENCES_BASENAME = "preferences.json";
+// EXPORTED (wi-onboarding IU-1 touch-up): tmc.mjs — the runtime CLI whose
+// `setup` command materializes the workspace tree — imports these so the
+// bookkeeping layout has ONE owner (this module). No third layout truth.
+export const WORKSPACE_DIR = ".teach-me";
+export const PROGRESS_BASENAME = "progress.json";
+export const PREFERENCES_BASENAME = "preferences.json";
+// The home-base folder name (the container member holding the workspace +
+// contract). Same one-owner rule as the trio above: tmc.mjs `setup` materializes
+// it and classifyDisposition below probes for it — both through THIS constant.
+export const HOME_BASE_DIR = "learning-guide";
 
 // The CONCRETE sentinel (`PLUGIN_SENTINEL`) and the current state-shape version
 // (`CURRENT_VERSION`) are IMPORTED from migrate-progress.mjs — the module that
@@ -84,6 +91,20 @@ export const ACTION = Object.freeze({
 export const REASON = Object.freeze({
   MISSING: "missing",
   CORRUPT: "corrupt",
+});
+
+// The hook's ONE disposition line (wi-onboarding IU-3; session-model §The
+// workspace › Onboarding — "SessionStart hook emits one disposition line
+// (first-run | resume position)"). Binary by design: FIRST_RUN when no
+// `.teach-me/` workspace dir exists at cwd; `resume` otherwise — whichever
+// recovery branch detect-explain-resume then lands on (proceed / missing /
+// corrupt / foreign are all the RETURNING side of the check). Every rendered
+// injection carries the line EXACTLY ONCE: zero is the probe-1 failure (no
+// signal → the agent re-derives disposition by hand), two+ is an ambiguous
+// signal an agent may mis-trust.
+export const DISPOSITION = Object.freeze({
+  FIRST_RUN: "FIRST_RUN",
+  RESUME: "resume",
 });
 
 // ---------------------------------------------------------------------------
@@ -221,22 +242,41 @@ export function classify(readResult) {
  * History, kit contents, reflections, evidence refs, and the full outcomes map are
  * deliberately NOT included — the injection must stay small. Pure; no I/O.
  *
+ * The counts are taken over the union of (the outcomes-map's own uids) and the
+ * TAUGHT set (`taughtUids` — the loaded runsheets' `covers_outcomes` union). This
+ * closes the "absent ≠ present-and-unmet" leak (F8): without the taught set a
+ * never-touched taught outcome is simply ABSENT from the map and vanishes from the
+ * counts, so mid-series the summary reads "N confirmed, 0 unmet (of N tracked)"
+ * while dozens of taught outcomes are still open — a false everything-done
+ * narrative. With it, an absent taught uid is correctly counted `unmet`. When
+ * `taughtUids` is omitted/empty (the none-yet path, or a direct call) the behaviour
+ * is unchanged: the counts range over the map's own entries.
+ *
  * @param {any} progress a v3 progress object
+ * @param {Iterable<string>} [taughtUids] the taught outcome uids for the in-flight
+ *        series (see taughtUidUnion); absent-taught uids count as `unmet`.
  * @returns {{ name: string|null, outcomes: {confirmed:number, provisional:number, unmet:number, total:number}, current: {runsheet:(string|null), status:(string|null)} }}
  */
-export function cappedSummary(progress) {
+export function cappedSummary(progress, taughtUids) {
   const learner = (progress && progress.learner) || {};
   const name = typeof learner.name === "string" && learner.name !== "" ? learner.name : null;
 
   const outcomesMap = (progress && progress.outcomes) || {};
+
+  // Account for every uid already in the map UNION every taught uid — so a taught
+  // outcome the learner has not reached yet is counted `unmet`, not invisible.
+  const uids = new Set(Object.keys(outcomesMap));
+  if (taughtUids) for (const uid of taughtUids) uids.add(uid);
+
   let confirmed = 0;
   let provisional = 0;
   let unmet = 0;
-  for (const entry of Object.values(outcomesMap)) {
+  for (const uid of uids) {
+    const entry = outcomesMap[uid];
     const status = entry && entry.status;
     if (status === CONFIRMED) confirmed += 1;
     else if (status === PROVISIONAL) provisional += 1;
-    else unmet += 1; // unmet OR any unexpected/absent status → counted as not-yet-met
+    else unmet += 1; // unmet OR absent-taught OR any unexpected status → not-yet-met
   }
 
   const cur = (progress && progress.current) || {};
@@ -285,9 +325,13 @@ export function cappedSummary(progress) {
 //   exercised in tests via an explicit dir / the `runsheets`/`pluginRoot` overrides.
 // ---------------------------------------------------------------------------
 
-const CHALLENGES_DIR = "challenges";
-const OVERVIEW_PREFIX = "00-"; // the 00- overview file + 00-onboarding folder, not challenge runsheets
-const RUNSHEET_BASENAME = "runsheet.md"; // the shipped runsheet inside each challenge folder
+// EXPORTED (wi-onboarding IU-1 touch-up): tmc.mjs — the runtime CLI whose
+// `next` command owns id→path over the shipped tree — imports these so the
+// shipped-tree layout has ONE owner (this module, the loader that already
+// encodes it). No third layout truth.
+export const CHALLENGES_DIR = "challenges";
+export const OVERVIEW_PREFIX = "00-"; // the 00- overview file + 00-onboarding folder, not challenge runsheets
+export const RUNSHEET_BASENAME = "runsheet.md"; // the shipped runsheet inside each challenge folder
 
 /**
  * The installed plugin's root, resolved from THIS module's own location: the build
@@ -380,12 +424,109 @@ export function loadRunsheets(seriesDir) {
   return sheets;
 }
 
+/**
+ * The union of every TAUGHT outcome uid across a loaded runsheet set — the
+ * `covers_outcomes[].uid` of every runsheet. This is the taught set for the
+ * in-flight series; cappedSummary uses it so an untouched taught outcome counts
+ * `unmet` on the position surface rather than vanishing (F8). Pure; no I/O.
+ * @param {Array<object>} runsheets loaded runsheet metadata
+ * @returns {Set<string>} the set of taught outcome uids (empty when none loaded)
+ */
+export function taughtUidUnion(runsheets) {
+  const uids = new Set();
+  for (const rs of runsheets || []) {
+    const covers = (rs && rs.covers_outcomes) || [];
+    for (const c of covers) {
+      if (c && typeof c.uid === "string" && c.uid !== "") uids.add(c.uid);
+    }
+  }
+  return uids;
+}
+
 // ---------------------------------------------------------------------------
 // Render — the final injection string. Pure (given the computed parts).
 // ---------------------------------------------------------------------------
 
 const OPEN = "<teach-me-claude>";
 const CLOSE = "</teach-me-claude>";
+
+/**
+ * Classify a session cwd into the three disposition shapes (review CORR-A —
+ * the hook must never label a folder of an EXISTING workspace FIRST_RUN):
+ *
+ *   { kind: "workspace" }                — `<cwd>/.teach-me` exists: the home
+ *       base (or any folder carrying its own bookkeeping) → the full
+ *       compose/inject path.
+ *   { kind: "member", homeBaseRel }      — the cwd belongs to an existing
+ *       workspace without carrying the bookkeeping itself: the CONTAINER ROOT
+ *       (`<cwd>/learning-guide/.teach-me` exists → rel "learning-guide/") or a
+ *       CONTAINER-MEMBER folder such as `series-NN/` (a sibling of the home
+ *       base: `<cwd>/../learning-guide/.teach-me` exists → rel
+ *       "../learning-guide/"). `homeBaseRel` is one of those two FIXED
+ *       relative strings — never derived from input, so nothing external can
+ *       steer what the hook injects.
+ *   { kind: "first-run" }                — none of the above. A genuinely new
+ *       user, any unrelated folder, or a fresh break-out outside the container
+ *       (undetectable by construction — the returning-check question remains
+ *       the authority; session-model's three context levels).
+ *
+ * Deliberately bounded to these three probes: no tree-walk, no upward scan
+ * beyond one level — the same session shapes the learning-guide contract
+ * names.
+ * @param {string} cwd
+ * @returns {{kind:"workspace"}|{kind:"member", homeBaseRel:string}|{kind:"first-run"}}
+ */
+export function classifyDisposition(cwd) {
+  if (fs.existsSync(path.join(cwd, WORKSPACE_DIR))) return { kind: "workspace" };
+  if (fs.existsSync(path.join(cwd, HOME_BASE_DIR, WORKSPACE_DIR))) {
+    return { kind: "member", homeBaseRel: `${HOME_BASE_DIR}/` };
+  }
+  if (fs.existsSync(path.join(path.dirname(cwd), HOME_BASE_DIR, WORKSPACE_DIR))) {
+    return { kind: "member", homeBaseRel: `../${HOME_BASE_DIR}/` };
+  }
+  return { kind: "first-run" };
+}
+
+/**
+ * Render the FIRST_RUN disposition — the whole injection for a session whose
+ * cwd belongs to no workspace at all. ONE line, wrapper included: it fires in
+ * every non-workspace session, so it must stay a single cheap line —
+ * informational, actionable only when the user actually asks to learn. Pure.
+ * @returns {string}
+ */
+export function renderFirstRun() {
+  return (
+    `${OPEN}disposition: ${DISPOSITION.FIRST_RUN} — no Teach Me Claude workspace in ` +
+    "this folder. If the user asks to learn Claude or to start or continue the " +
+    "course, follow the teach-me skill: it asks the one returning-check question, " +
+    `then shows the onboarding widget immediately.${CLOSE}`
+  );
+}
+
+// The resume-side disposition line, shared by every workspace-present renderer
+// (proceed / reconnect / ask / the member pointer) so the exactly-once
+// contract has one home.
+const RESUME_LINE = `disposition: ${DISPOSITION.RESUME}`;
+
+/**
+ * Render the workspace-MEMBER disposition — a session at the container root or
+ * in a container-member folder (series-NN/, any sibling of the home base) of
+ * an EXISTING workspace. ONE resume-side line pointing at the home base: no
+ * greeting, no state read, no guard run — the guard and the bookkeeping stay
+ * home-base-only, so a break-out keeps its clean context and still never gets
+ * mislabelled FIRST_RUN (review CORR-A). `homeBaseRel` is one of
+ * classifyDisposition's two fixed relative strings. Pure.
+ * @param {string} homeBaseRel "learning-guide/" | "../learning-guide/"
+ * @returns {string}
+ */
+export function renderResumeElsewhere(homeBaseRel) {
+  return (
+    `${OPEN}${RESUME_LINE} — this folder belongs to an existing Teach Me Claude ` +
+    `workspace; the home base is at ${homeBaseRel} (every session opens there — ` +
+    "that is where the course, the learner's progress, and the greeting live). " +
+    `If the user wants their course from here, the teach-me skill routes them home.${CLOSE}`
+  );
+}
 
 /**
  * Render the PROCEED injection: a warm greeting + the capped position summary +
@@ -402,6 +543,7 @@ export function renderProceed({ summary, next, migrated = false }) {
   const who = summary.name ? summary.name : "there";
   const lines = [];
   lines.push(OPEN);
+  lines.push(RESUME_LINE);
   lines.push(
     "This folder is the user's Teach Me Claude workspace. You are their learning guide.",
   );
@@ -477,15 +619,16 @@ export function renderProceed({ summary, next, migrated = false }) {
 export function renderReconnect(reason, progressPath) {
   const lines = [];
   lines.push(OPEN);
+  lines.push(RESUME_LINE);
   lines.push(
     "This folder looks like a Teach Me Claude workspace, but the learning state " +
       "could not be loaded. Do NOT guess their progress from memory — reconnect first.",
   );
   if (reason === REASON.CORRUPT) {
     lines.push(
-      `Their progress file (${progressPath}) is present but CORRUPT (the file exists ` +
-        "but is not readable as valid JSON). Say so plainly — it is a corrupt save, " +
-        "not an absent one — and offer to help them recover or restart it. Never " +
+      `Their saved learning state (${progressPath}) is present but CORRUPT (the file ` +
+        "exists but is not readable as valid JSON). Say so plainly — it is a corrupt " +
+        "save, not an absent one — and offer to help them recover or restart it. Never " +
         "overwrite it without telling them.",
     );
   } else {
@@ -512,6 +655,7 @@ export function renderReconnect(reason, progressPath) {
 export function renderAsk(progressPath) {
   const lines = [];
   lines.push(OPEN);
+  lines.push(RESUME_LINE);
   lines.push(
     "There is a `.teach-me/progress.json` here, but it does NOT carry the Teach Me " +
       "Claude marker — so this may be a cloned or synced copy of someone else's " +
@@ -595,13 +739,32 @@ export function composeSessionContext({ cwd, runsheets, pluginRoot } = {}) {
   if (decision.migrate) {
     // The ONLY write path, and only AFTER the guard passed. migrateFile writes
     // progress.json + preferences.json atomically and returns the v3 result.
-    const res = migrateFile(progressPath, preferencesPath);
+    //
+    // F3: migrateFile can THROW — a corrupt preferences.json throws EBADPREFSJSON,
+    // a re-read/parse of progress.json throws EBADPROGRESSJSON, or an fs error
+    // surfaces. Left unguarded the throw propagates to the CLI catch-all, which
+    // exits 0 with NO output: the entire SessionStart injection silently vanishes
+    // and the learner is dropped with no greeting and no explanation. Catch it and
+    // degrade to an explicit RECONNECT/corrupt that NAMES the offending file (the
+    // corrupt preferences.json is the live case) — never a silent disappearance,
+    // and NO further write is attempted.
+    let res;
+    try {
+      res = migrateFile(progressPath, preferencesPath);
+    } catch (err) {
+      const badPath =
+        err && err.code === "EBADPROGRESSJSON" ? progressPath : preferencesPath;
+      return {
+        action: ACTION.RECONNECT,
+        reason: REASON.CORRUPT,
+        output: renderReconnect(REASON.CORRUPT, badPath),
+        progressPath,
+      };
+    }
     progress = res.progress;
     migrated = res.migrated;
   }
 
-  // Capped position summary + the deterministic next step.
-  const summary = cappedSummary(progress);
   // Runsheets: the explicit override wins (tests inject fixtures); otherwise load
   // the in-flight series' runsheets from the SHIPPED plugin (NOT workspaceDir — the
   // learner's workspace holds only progress, never content). The series dir is
@@ -611,6 +774,13 @@ export function composeSessionContext({ cwd, runsheets, pluginRoot } = {}) {
   const sheets = Array.isArray(runsheets)
     ? runsheets
     : loadRunsheets(inFlightSeriesDir(base, progress.current && progress.current.series));
+
+  // Capped position summary — counted over the TAUGHT set (the loaded runsheets'
+  // covered-outcome union) so an as-yet-untouched taught outcome counts `unmet`
+  // instead of vanishing into a false everything-done narrative (F8). With no
+  // runsheets loaded the taught set is empty and the summary falls back to the
+  // map's own entries (unchanged none-yet behaviour).
+  const summary = cappedSummary(progress, taughtUidUnion(sheets));
   // pathway() over an EMPTY runsheet set is vacuously COMPLETE — but "no content yet"
   // is NOT "every taught outcome confirmed". Only ask pathway when content exists; with
   // no runsheets, do NOT claim completion against unmet outcomes.
@@ -662,9 +832,18 @@ export default composeSessionContext;
 // safe; a crash is not).
 // ---------------------------------------------------------------------------
 
+// Is this module the process entry point? Compare URL-to-URL via
+// pathToFileURL — NOT `file://${argv[1]}`, which fails to match whenever the
+// install path needs URL-encoding (a space, non-ASCII) or is a symlink, making
+// the CLI a silent exit-0 no-op (the hook prints nothing, so EVERY session
+// loses its one disposition line and the agent is back to the probe-1
+// discovery dance). Cowork install paths can contain spaces, so this is a live
+// latent break, not a theoretical one. Same idiom as tmc.mjs — keep them in
+// step.
 const isMain = (() => {
   try {
-    return import.meta.url === `file://${process.argv[1]}`;
+    if (!process.argv[1]) return false;
+    return import.meta.url === pathToFileURL(process.argv[1]).href;
   } catch {
     return false;
   }
@@ -673,11 +852,22 @@ const isMain = (() => {
 if (isMain) {
   try {
     const cwd = process.argv[2] || process.cwd();
-    // If there is no `.teach-me/` here at all, this is simply not a learner
-    // workspace — emit nothing and cost nothing (parity with the old shell guard's
-    // "outside a workspace this prints nothing").
-    const { workspaceDir } = resolveWorkspacePath(cwd);
-    if (!fs.existsSync(workspaceDir)) {
+    // The ONE disposition line per session (wi-onboarding IU-3 + review
+    // CORR-A). Three shapes: a WORKSPACE cwd falls through to the full
+    // compose/inject below; a MEMBER cwd (the container root or a series
+    // folder of an existing workspace) gets the one resume-side pointer at
+    // the home base — never a FIRST_RUN mislabel; anywhere else gets the one
+    // FIRST_RUN line. (The old print-nothing behaviour left the agent with
+    // zero signal and forced the probe-1 discovery dance — the line IS the
+    // speed lever, kept to a single cheap line because it fires in every
+    // session.)
+    const disposition = classifyDisposition(cwd);
+    if (disposition.kind === "member") {
+      process.stdout.write(renderResumeElsewhere(disposition.homeBaseRel) + "\n");
+      process.exit(0);
+    }
+    if (disposition.kind === "first-run") {
+      process.stdout.write(renderFirstRun() + "\n");
       process.exit(0);
     }
     const { output } = composeSessionContext({ cwd });

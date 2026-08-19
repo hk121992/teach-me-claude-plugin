@@ -1,0 +1,423 @@
+<style>
+
+
+:root {
+  
+  --tmc-pine: hsl(174 64% 30%);          
+  --tmc-pine-strong: hsl(174 68% 21%);   
+  --tmc-pine-tint: hsl(174 32% 92%);     
+  --tmc-on-pine: #FFFFFF;                
+
+  
+  --tmc-gold: hsl(40 72% 42%);           
+  --tmc-gold-tint: hsl(40 64% 90%);
+
+  
+  --tmc-paper: #FBF8F2;
+  --tmc-surface: #FFFFFF;
+  --tmc-surface-2: #F3EDE2;
+  --tmc-ink: #241F1A;
+  --tmc-ink-2: #6E665B;
+  --tmc-ink-3: #9A9184;
+  --tmc-hairline: #E2D9C9;
+
+  
+  --tmc-done: #2E7D4F;  --tmc-done-tint: #E7F1E9;
+  --tmc-doing: #B26C2A; --tmc-doing-tint: #F6ECDD;
+
+  
+  --tmc-font-display: ui-rounded, "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-text: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  
+  --tmc-r-sm: 6px;  --tmc-r-md: 10px;  --tmc-r-lg: 14px;  --tmc-r-pill: 999px;
+
+  
+  --tmc-space-1: 4px; --tmc-space-2: 8px; --tmc-space-3: 12px;
+  --tmc-space-4: 16px; --tmc-space-5: 24px; --tmc-space-6: 32px;
+
+  
+  --tmc-shadow: 0 10px 30px rgba(36, 31, 26, 0.10);
+}
+
+:root[data-theme="dark"], .tmc-dark {
+  --tmc-pine: hsl(174 58% 48%);          
+  --tmc-pine-strong: hsl(174 52% 56%);   
+  --tmc-pine-tint: hsl(174 32% 18%);     
+  --tmc-on-pine: #0F2A26;
+  --tmc-gold: hsl(40 78% 58%);           
+  --tmc-gold-tint: hsl(40 40% 18%);
+  --tmc-paper: #18140F;
+  --tmc-surface: #221C16;
+  --tmc-surface-2: #2C251D;
+  --tmc-ink: #F2ECDF;
+  --tmc-ink-2: #B3A998;
+  --tmc-ink-3: #837A6B;
+  --tmc-hairline: #3A3026;
+  --tmc-done: #5FB07E;  --tmc-done-tint: #1E3328;
+  --tmc-doing: #E0A35C; --tmc-doing-tint: #382816;
+  --tmc-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.tmc {
+  font-family: var(--tmc-font-text);
+  color: var(--tmc-ink);
+  background: var(--tmc-paper);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tmc-card {
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-lg);
+  box-shadow: var(--tmc-shadow);
+  padding: var(--tmc-space-6);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.tmc-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  margin-bottom: var(--tmc-space-4);
+}
+.tmc-brand .tmc-mark { width: 28px; height: 28px; display: block; }
+.tmc-wordmark {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+.tmc-wordmark b { color: var(--tmc-pine-strong); font-weight: 600; }
+
+.tmc-eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--tmc-pine-strong);
+}
+.tmc h1, .tmc-title {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  margin: var(--tmc-space-2) 0 var(--tmc-space-3);
+  color: var(--tmc-ink);
+}
+.tmc h2 {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: var(--tmc-space-5) 0 var(--tmc-space-2);
+}
+.tmc p { margin: 0 0 var(--tmc-space-3); color: var(--tmc-ink); }
+.tmc .tmc-muted { color: var(--tmc-ink-2); }
+.tmc code, .tmc kbd, .tmc pre {
+  font-family: var(--tmc-font-mono);
+  font-size: 0.9em;
+  background: var(--tmc-surface-2);
+  border-radius: var(--tmc-r-sm);
+  padding: 0.1em 0.35em;
+}
+.tmc pre { padding: var(--tmc-space-3); overflow: auto; line-height: 1.45; }
+.tmc pre code { background: none; padding: 0; }
+
+.tmc-fill { color: var(--tmc-pine-strong); font-weight: 600; }
+
+.tmc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tmc-space-1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2em 0.7em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine-tint);
+  color: var(--tmc-pine-strong);
+}
+.tmc-chip--doing { background: var(--tmc-doing-tint); color: var(--tmc-doing); }
+.tmc-chip--done { background: var(--tmc-done-tint); color: var(--tmc-done); }
+
+.tmc-field { margin: 0 0 var(--tmc-space-4); }
+.tmc-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: var(--tmc-space-2);
+  color: var(--tmc-ink);
+}
+.tmc-help { font-size: 0.85rem; color: var(--tmc-ink-2); margin-top: var(--tmc-space-1); }
+
+.tmc-input, .tmc-textarea, .tmc-select {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  font-family: var(--tmc-font-text);
+  font-size: 0.95rem;
+  color: var(--tmc-ink);
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-md);
+  padding: 0.6em 0.75em;
+}
+.tmc-textarea { min-height: 6.5em; line-height: 1.5; resize: vertical; }
+.tmc-input:focus-visible,
+.tmc-textarea:focus-visible,
+.tmc-select:focus-visible {
+  border-color: var(--tmc-pine);
+  box-shadow: 0 0 0 3px var(--tmc-pine-tint);
+}
+
+.tmc-radio-row, .tmc-check-row {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  padding: var(--tmc-space-2) 0;
+}
+.tmc-radio-row input, .tmc-check-row input { accent-color: var(--tmc-pine); }
+
+.tmc-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tmc-space-2);
+  cursor: pointer;
+  font-family: var(--tmc-font-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.65em 1.2em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine);
+  color: var(--tmc-on-pine);
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+.tmc-btn:hover { background: var(--tmc-pine-strong); }
+.tmc-btn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-btn--ghost {
+  background: transparent;
+  color: var(--tmc-pine-strong);
+  border-color: var(--tmc-hairline);
+}
+.tmc-btn--ghost:hover { background: var(--tmc-pine-tint); }
+.tmc-actions {
+  display: flex;
+  gap: var(--tmc-space-3);
+  margin-top: var(--tmc-space-5);
+}
+
+.tmc-callout {
+  border-left: 3px solid var(--tmc-pine);
+  background: var(--tmc-pine-tint);
+  border-radius: var(--tmc-r-md);
+  padding: var(--tmc-space-3) var(--tmc-space-4);
+  margin: var(--tmc-space-4) 0;
+  color: var(--tmc-ink);
+}
+.tmc-callout--gold { border-left-color: var(--tmc-gold); background: var(--tmc-gold-tint); }
+
+@keyframes tmc-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tmc-anim { animation: tmc-fade-up 0.5s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tmc-anim { animation: none; }
+  .tmc-btn { transition: none; }
+}
+
+@media (max-width: 560px) {
+  .tmc-card { padding: var(--tmc-space-5) var(--tmc-space-4); }
+  .tmc h1, .tmc-title { font-size: 1.4rem; }
+  .tmc-actions { flex-direction: column; }
+  .tmc-btn { width: 100%; }
+}
+
+.tmc-card.tmc-lesson { padding: 0; overflow: hidden; }
+
+.tmc-banner { background: var(--tmc-pine); color: var(--tmc-on-pine); padding: var(--tmc-space-4) var(--tmc-space-6); }
+.tmc-lock { display: inline-flex; align-items: center; gap: 10px; }
+.tmc-lock svg { width: 24px; height: 24px; flex: 0 0 24px; }
+.tmc-lock .tmc-word { font-family: var(--tmc-font-display); font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+
+.tmc-lesson-body { padding: var(--tmc-space-6); }
+
+.tmc-pager-radio { position: absolute; opacity: 0; width: 0; height: 0; }
+.tmc-slide { display: none; }
+.tmc-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--tmc-space-3); margin-top: var(--tmc-space-6); border-top: 1px solid var(--tmc-hairline); padding-top: var(--tmc-space-4); }
+.tmc-page { font-size: 0.8rem; color: var(--tmc-ink-2); font-weight: 600; }
+.tmc-navbtn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: var(--tmc-font-text); font-weight: 600; font-size: 0.95rem; padding: 0.6em 1.1em; border-radius: var(--tmc-r-pill); background: var(--tmc-pine); color: var(--tmc-on-pine); }
+.tmc-navbtn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-navbtn--ghost { background: transparent; color: var(--tmc-pine-strong); border: 1px solid var(--tmc-hairline); }
+
+.tmc-lsec { margin-top: var(--tmc-space-6); }
+.tmc-lsec:first-of-type { margin-top: var(--tmc-space-2); }
+.tmc-lsec > h2 { font-family: var(--tmc-font-display); font-size: 1.15rem; margin: 0 0 var(--tmc-space-3); }
+.tmc-not { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-not li { padding: 0.3em 0 0.3em 1.6em; position: relative; line-height: 1.6; }
+.tmc-not li::before { content: "\2715"; position: absolute; left: 0; color: var(--tmc-ink-3); }
+.tmc-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--tmc-space-2); margin: var(--tmc-space-4) 0; }
+.tmc-fstep { flex: 1 1 8em; min-width: 8em; background: var(--tmc-surface-2); border: 1px solid var(--tmc-hairline); border-radius: var(--tmc-r-md); padding: var(--tmc-space-3); }
+.tmc-fstep--out { background: var(--tmc-pine-tint); border-color: var(--tmc-pine); }
+.tmc-flabel { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tmc-pine-strong); }
+.tmc-fbody { margin-top: 0.2em; font-weight: 600; font-size: 0.95rem; }
+.tmc-farr { align-self: center; color: var(--tmc-ink-3); font-weight: 700; }
+.tmc-steps { counter-reset: s; list-style: none; padding: 0; margin: var(--tmc-space-4) 0 0; }
+.tmc-steps > li { counter-increment: s; position: relative; padding: 0 0 var(--tmc-space-5) 2.6em; line-height: 1.7; }
+.tmc-steps > li:last-child { padding-bottom: 0; }
+.tmc-steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 1.7em; height: 1.7em; background: var(--tmc-pine); color: var(--tmc-on-pine); border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 600; }
+.tmc-say { display: block; margin-top: var(--tmc-space-2); padding: 0.6em 0.8em; background: var(--tmc-surface-2); border-left: 3px solid var(--tmc-pine); border-radius: var(--tmc-r-sm); font-family: var(--tmc-font-mono); font-size: 0.85rem; line-height: 1.5; }
+.tmc-take { border: 2px solid var(--tmc-pine); border-radius: var(--tmc-r-md); padding: var(--tmc-space-5); margin-top: var(--tmc-space-5); background: var(--tmc-pine-tint); }
+.tmc-take > h2 { margin-top: 0; }
+.tmc-check { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-check li { padding: 0.4em 0 0.4em 1.8em; position: relative; line-height: 1.6; }
+.tmc-check li::before { content: "\2610"; position: absolute; left: 0; font-size: 1.15em; line-height: 1; }
+</style>
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #vl-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #vl-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+<div class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-templated">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="vl-pager" id="vl-s1" checked aria-label="Slide 1: the lesson">
+  <input class="tmc-pager-radio" type="radio" name="vl-pager" id="vl-s2" aria-label="Slide 2: your activity">
+
+  <div class="tmc-slides">
+    
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 6 · judging what comes back</div>
+        <h1 class="tmc-title">Trust, but verify</h1>
+        <p class="tmc-muted">A wrong answer arrives in the same confident voice as a right one. Today
+           you learn where to be suspicious — and where you're allowed to relax.</p>
+
+        <div class="tmc-lsec">
+          <h2>Confident is not correct</h2>
+          <p>When the model is wrong, nothing in its voice tells you. The fluent, sure register is
+             identical either way — there's <strong>no tone-of-voice warning</strong>, and no clever
+             phrasing removes it. That's not a defect to fix; it's a property of the technology to
+             work with. You just met it, in your own field.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>The risk is jagged — and that's good news</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Low risk</div><div class="tmc-fbody">working over material you supplied</div></div>
+            <div class="tmc-fstep"><div class="tmc-flabel">High risk</div><div class="tmc-fbody">recalled specifics — citations, statistics, dates, niche facts</div></div>
+          </div>
+          <p>Summarising <em>your</em> document: low. Naming a study from memory: high. Once you can
+             read this map, suspicion stops being a mood and becomes <strong>calibration</strong> —
+             you know exactly which of your tasks deserve the hard look.</p>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Two moves that beat it</h2>
+          <ul class="tmc-check">
+            <li><strong>Open the source.</strong> Cited is not verified — an unopened citation is a
+               claim wearing a costume. Open it and see whether it says what it's said to say.</li>
+            <li><strong>Make it compute.</strong> For numbers: <em>"don't estimate — write the
+               calculation, run it, show your working."</em> Same colleague, two modes; a computed
+               answer can be rerun and audited, a guess can't.</li>
+          </ul>
+          <div class="tmc-callout">A <strong>fluent</strong> estimate is <em>more</em> dangerous than
+             an obviously wrong one — plausible is what invites trust.</div>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>Calibrate it to stakes</h2>
+          <div class="tmc-flow">
+            <div class="tmc-fstep"><div class="tmc-flabel">Always check</div><div class="tmc-fbody">names, numbers, quotes leaving under your name</div></div>
+            <div class="tmc-fstep"><div class="tmc-flabel">Sometimes</div><div class="tmc-fbody">mid-stakes drafts — spot-check what's load-bearing</div></div>
+            <div class="tmc-fstep tmc-fstep--out"><div class="tmc-flabel">Never worry</div><div class="tmc-fbody">brainstorms, throwaways — skip, guilt-free</div></div>
+          </div>
+          <p>"Verify everything" is as unusable as "trust everything." Your checklist earns its keep
+             by naming what you're <strong>allowed to skip</strong> as clearly as what you must
+             check.</p>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="vl-s2">Now catch it yourself →</label>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson 6 · your activity</div>
+        <h1 class="tmc-title">Catch it, then build your checklist</h1>
+        <p class="tmc-muted">Two probes on your own ground, two countermeasures back home — and you
+           leave with a checklist calibrated to your work.</p>
+
+        <ol class="tmc-steps">
+          <li><strong>Break out fresh.</strong> Click <strong>+ New task</strong> (top-left) — no
+             folder, just a plain conversation, away from your course. (Already ran the probes with
+             your guide? Bring both answers to step 4.)</li>
+          <li><strong>Probe your field.</strong> Ask about what you know best, escalating from basics
+             to the niche — named studies, regulations, statistics, dates — and ask it to name its
+             sources. Hunt until something arrives that you, the expert, can catch — or can't verify.</li>
+          <li><strong>Probe your numbers.</strong> Paste a few real figures (stand-ins for anything
+             private) and ask:
+             <span class="tmc-say">No tools, just reading — roughly what's the total once you add the
+             monthly figures and apply the increase?</span>
+             Pick a multi-step figure you can check. Keep both answers word-for-word.</li>
+          <li><strong>Back home, open one citation.</strong> Return to your course task (under
+             <strong>Recents</strong>). Pick the most load-bearing source it named — and open it.
+             Does it say what it was said to say?</li>
+          <li><strong>Make it compute.</strong> Same question, this time with tools:
+             <span class="tmc-say">Write the calculation, run it, and show me your working.</span>
+             Set the fresh estimate against the computed answer and the value you know.</li>
+          <li><strong>Build your checklist.</strong> Write <code>verification-checklist.md</code>,
+             in your series folder, in your own words: what you'll <strong>always check</strong>,
+             <strong>sometimes check</strong>, and <strong>never worry about</strong> — specific to
+             your real outputs, with skips you can defend.</li>
+        </ol>
+
+        <div class="tmc-take">
+          <h2>Take these with you</h2>
+          <p class="tmc-muted" style="margin:0">The probes run away from this page — your guide will
+             drop a link below to keep these beside you:</p>
+          <ul class="tmc-check">
+            <li><strong>+ New task</strong> — no folder; a plain, fresh conversation</li>
+            <li>Your field: escalate to the niche, ask for its sources, hunt for the catch</li>
+            <li>Your numbers: stand-in figures → a no-tools estimate of a multi-step answer you can check</li>
+            <li>Keep both answers word-for-word</li>
+            <li>Come back via <strong>Recents</strong> → your course task</li>
+          </ul>
+        </div>
+
+        <div class="tmc-nav">
+          <label class="tmc-navbtn tmc-navbtn--ghost" for="vl-s1">← Back to the lesson</label>
+          <span class="tmc-page">Slide 2 of 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>

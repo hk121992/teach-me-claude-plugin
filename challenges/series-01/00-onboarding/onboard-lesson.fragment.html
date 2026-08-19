@@ -1,0 +1,425 @@
+<style>
+
+
+:root {
+  
+  --tmc-pine: hsl(174 64% 30%);          
+  --tmc-pine-strong: hsl(174 68% 21%);   
+  --tmc-pine-tint: hsl(174 32% 92%);     
+  --tmc-on-pine: #FFFFFF;                
+
+  
+  --tmc-gold: hsl(40 72% 42%);           
+  --tmc-gold-tint: hsl(40 64% 90%);
+
+  
+  --tmc-paper: #FBF8F2;
+  --tmc-surface: #FFFFFF;
+  --tmc-surface-2: #F3EDE2;
+  --tmc-ink: #241F1A;
+  --tmc-ink-2: #6E665B;
+  --tmc-ink-3: #9A9184;
+  --tmc-hairline: #E2D9C9;
+
+  
+  --tmc-done: #2E7D4F;  --tmc-done-tint: #E7F1E9;
+  --tmc-doing: #B26C2A; --tmc-doing-tint: #F6ECDD;
+
+  
+  --tmc-font-display: ui-rounded, "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-text: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --tmc-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  
+  --tmc-r-sm: 6px;  --tmc-r-md: 10px;  --tmc-r-lg: 14px;  --tmc-r-pill: 999px;
+
+  
+  --tmc-space-1: 4px; --tmc-space-2: 8px; --tmc-space-3: 12px;
+  --tmc-space-4: 16px; --tmc-space-5: 24px; --tmc-space-6: 32px;
+
+  
+  --tmc-shadow: 0 10px 30px rgba(36, 31, 26, 0.10);
+}
+
+:root[data-theme="dark"], .tmc-dark {
+  --tmc-pine: hsl(174 58% 48%);          
+  --tmc-pine-strong: hsl(174 52% 56%);   
+  --tmc-pine-tint: hsl(174 32% 18%);     
+  --tmc-on-pine: #0F2A26;
+  --tmc-gold: hsl(40 78% 58%);           
+  --tmc-gold-tint: hsl(40 40% 18%);
+  --tmc-paper: #18140F;
+  --tmc-surface: #221C16;
+  --tmc-surface-2: #2C251D;
+  --tmc-ink: #F2ECDF;
+  --tmc-ink-2: #B3A998;
+  --tmc-ink-3: #837A6B;
+  --tmc-hairline: #3A3026;
+  --tmc-done: #5FB07E;  --tmc-done-tint: #1E3328;
+  --tmc-doing: #E0A35C; --tmc-doing-tint: #382816;
+  --tmc-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.tmc {
+  font-family: var(--tmc-font-text);
+  color: var(--tmc-ink);
+  background: var(--tmc-paper);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tmc-card {
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-lg);
+  box-shadow: var(--tmc-shadow);
+  padding: var(--tmc-space-6);
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.tmc-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  margin-bottom: var(--tmc-space-4);
+}
+.tmc-brand .tmc-mark { width: 28px; height: 28px; display: block; }
+.tmc-wordmark {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+.tmc-wordmark b { color: var(--tmc-pine-strong); font-weight: 600; }
+
+.tmc-eyebrow {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--tmc-pine-strong);
+}
+.tmc h1, .tmc-title {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  margin: var(--tmc-space-2) 0 var(--tmc-space-3);
+  color: var(--tmc-ink);
+}
+.tmc h2 {
+  font-family: var(--tmc-font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: var(--tmc-space-5) 0 var(--tmc-space-2);
+}
+.tmc p { margin: 0 0 var(--tmc-space-3); color: var(--tmc-ink); }
+.tmc .tmc-muted { color: var(--tmc-ink-2); }
+.tmc code, .tmc kbd, .tmc pre {
+  font-family: var(--tmc-font-mono);
+  font-size: 0.9em;
+  background: var(--tmc-surface-2);
+  border-radius: var(--tmc-r-sm);
+  padding: 0.1em 0.35em;
+}
+.tmc pre { padding: var(--tmc-space-3); overflow: auto; line-height: 1.45; }
+.tmc pre code { background: none; padding: 0; }
+
+.tmc-fill { color: var(--tmc-pine-strong); font-weight: 600; }
+
+.tmc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tmc-space-1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2em 0.7em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine-tint);
+  color: var(--tmc-pine-strong);
+}
+.tmc-chip--doing { background: var(--tmc-doing-tint); color: var(--tmc-doing); }
+.tmc-chip--done { background: var(--tmc-done-tint); color: var(--tmc-done); }
+
+.tmc-field { margin: 0 0 var(--tmc-space-4); }
+.tmc-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: var(--tmc-space-2);
+  color: var(--tmc-ink);
+}
+.tmc-help { font-size: 0.85rem; color: var(--tmc-ink-2); margin-top: var(--tmc-space-1); }
+
+.tmc-input, .tmc-textarea, .tmc-select {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  font-family: var(--tmc-font-text);
+  font-size: 0.95rem;
+  color: var(--tmc-ink);
+  background: var(--tmc-surface);
+  border: 1px solid var(--tmc-hairline);
+  border-radius: var(--tmc-r-md);
+  padding: 0.6em 0.75em;
+}
+.tmc-textarea { min-height: 6.5em; line-height: 1.5; resize: vertical; }
+.tmc-input:focus-visible,
+.tmc-textarea:focus-visible,
+.tmc-select:focus-visible {
+  border-color: var(--tmc-pine);
+  box-shadow: 0 0 0 3px var(--tmc-pine-tint);
+}
+
+.tmc-radio-row, .tmc-check-row {
+  display: flex;
+  align-items: center;
+  gap: var(--tmc-space-2);
+  padding: var(--tmc-space-2) 0;
+}
+.tmc-radio-row input, .tmc-check-row input { accent-color: var(--tmc-pine); }
+
+.tmc-btn {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tmc-space-2);
+  cursor: pointer;
+  font-family: var(--tmc-font-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.65em 1.2em;
+  border-radius: var(--tmc-r-pill);
+  background: var(--tmc-pine);
+  color: var(--tmc-on-pine);
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+.tmc-btn:hover { background: var(--tmc-pine-strong); }
+.tmc-btn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-btn--ghost {
+  background: transparent;
+  color: var(--tmc-pine-strong);
+  border-color: var(--tmc-hairline);
+}
+.tmc-btn--ghost:hover { background: var(--tmc-pine-tint); }
+.tmc-actions {
+  display: flex;
+  gap: var(--tmc-space-3);
+  margin-top: var(--tmc-space-5);
+}
+
+.tmc-callout {
+  border-left: 3px solid var(--tmc-pine);
+  background: var(--tmc-pine-tint);
+  border-radius: var(--tmc-r-md);
+  padding: var(--tmc-space-3) var(--tmc-space-4);
+  margin: var(--tmc-space-4) 0;
+  color: var(--tmc-ink);
+}
+.tmc-callout--gold { border-left-color: var(--tmc-gold); background: var(--tmc-gold-tint); }
+
+@keyframes tmc-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tmc-anim { animation: tmc-fade-up 0.5s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tmc-anim { animation: none; }
+  .tmc-btn { transition: none; }
+}
+
+@media (max-width: 560px) {
+  .tmc-card { padding: var(--tmc-space-5) var(--tmc-space-4); }
+  .tmc h1, .tmc-title { font-size: 1.4rem; }
+  .tmc-actions { flex-direction: column; }
+  .tmc-btn { width: 100%; }
+}
+
+.tmc-card.tmc-lesson { padding: 0; overflow: hidden; }
+
+.tmc-banner { background: var(--tmc-pine); color: var(--tmc-on-pine); padding: var(--tmc-space-4) var(--tmc-space-6); }
+.tmc-lock { display: inline-flex; align-items: center; gap: 10px; }
+.tmc-lock svg { width: 24px; height: 24px; flex: 0 0 24px; }
+.tmc-lock .tmc-word { font-family: var(--tmc-font-display); font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+
+.tmc-lesson-body { padding: var(--tmc-space-6); }
+
+.tmc-pager-radio { position: absolute; opacity: 0; width: 0; height: 0; }
+.tmc-slide { display: none; }
+.tmc-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--tmc-space-3); margin-top: var(--tmc-space-6); border-top: 1px solid var(--tmc-hairline); padding-top: var(--tmc-space-4); }
+.tmc-page { font-size: 0.8rem; color: var(--tmc-ink-2); font-weight: 600; }
+.tmc-navbtn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: var(--tmc-font-text); font-weight: 600; font-size: 0.95rem; padding: 0.6em 1.1em; border-radius: var(--tmc-r-pill); background: var(--tmc-pine); color: var(--tmc-on-pine); }
+.tmc-navbtn:focus-visible { box-shadow: 0 0 0 3px var(--tmc-pine-tint); }
+.tmc-navbtn--ghost { background: transparent; color: var(--tmc-pine-strong); border: 1px solid var(--tmc-hairline); }
+
+.tmc-lsec { margin-top: var(--tmc-space-6); }
+.tmc-lsec:first-of-type { margin-top: var(--tmc-space-2); }
+.tmc-lsec > h2 { font-family: var(--tmc-font-display); font-size: 1.15rem; margin: 0 0 var(--tmc-space-3); }
+.tmc-not { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-not li { padding: 0.3em 0 0.3em 1.6em; position: relative; line-height: 1.6; }
+.tmc-not li::before { content: "\2715"; position: absolute; left: 0; color: var(--tmc-ink-3); }
+.tmc-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--tmc-space-2); margin: var(--tmc-space-4) 0; }
+.tmc-fstep { flex: 1 1 8em; min-width: 8em; background: var(--tmc-surface-2); border: 1px solid var(--tmc-hairline); border-radius: var(--tmc-r-md); padding: var(--tmc-space-3); }
+.tmc-fstep--out { background: var(--tmc-pine-tint); border-color: var(--tmc-pine); }
+.tmc-flabel { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tmc-pine-strong); }
+.tmc-fbody { margin-top: 0.2em; font-weight: 600; font-size: 0.95rem; }
+.tmc-farr { align-self: center; color: var(--tmc-ink-3); font-weight: 700; }
+.tmc-steps { counter-reset: s; list-style: none; padding: 0; margin: var(--tmc-space-4) 0 0; }
+.tmc-steps > li { counter-increment: s; position: relative; padding: 0 0 var(--tmc-space-5) 2.6em; line-height: 1.7; }
+.tmc-steps > li:last-child { padding-bottom: 0; }
+.tmc-steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 1.7em; height: 1.7em; background: var(--tmc-pine); color: var(--tmc-on-pine); border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 600; }
+.tmc-say { display: block; margin-top: var(--tmc-space-2); padding: 0.6em 0.8em; background: var(--tmc-surface-2); border-left: 3px solid var(--tmc-pine); border-radius: var(--tmc-r-sm); font-family: var(--tmc-font-mono); font-size: 0.85rem; line-height: 1.5; }
+.tmc-take { border: 2px solid var(--tmc-pine); border-radius: var(--tmc-r-md); padding: var(--tmc-space-5); margin-top: var(--tmc-space-5); background: var(--tmc-pine-tint); }
+.tmc-take > h2 { margin-top: 0; }
+.tmc-check { list-style: none; padding: 0; margin: var(--tmc-space-3) 0 0; }
+.tmc-check li { padding: 0.4em 0 0.4em 1.8em; position: relative; line-height: 1.6; }
+.tmc-check li::before { content: "\2610"; position: absolute; left: 0; font-size: 1.15em; line-height: 1; }
+</style>
+<style>
+  /* per-widget only: the pure-CSS pager reveal rules (key on this widget's radio ids) */
+  #ob-s1:checked ~ .tmc-slides .tmc-slide--1 { display: block; }
+  #ob-s2:checked ~ .tmc-slides .tmc-slide--2 { display: block; }
+</style>
+<script type="application/json" data-tmc-inputs>
+{}
+</script>
+<div class="tmc">
+<section class="tmc-card tmc-lesson" id="widget-interactive">
+  <div class="tmc-banner">
+    <span class="tmc-lock">
+      <svg width="24" height="24" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="var(--tmc-on-pine)"
+           stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px">
+        <path d="M35 38 L50 27 L65 38"/><path d="M31 53 L50 42 L69 53"/><path d="M27 68 L50 57 L73 68"/>
+      </svg>
+      <span class="tmc-word">Teach Me Claude</span>
+    </span>
+  </div>
+
+  <input class="tmc-pager-radio" type="radio" name="ob-pager" id="ob-s1" checked aria-label="Slide 1: welcome">
+  <input class="tmc-pager-radio" type="radio" name="ob-pager" id="ob-s2" aria-label="Slide 2: about you">
+
+  <div class="tmc-slides">
+    
+    <div class="tmc-slide tmc-slide--1">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson zero · welcome</div>
+        <h1 class="tmc-title">Let's set you up</h1>
+        <p class="tmc-muted">Ninety seconds now, then we go straight into your first lesson — no
+           "come back later." This is learn-by-doing: every lesson pairs a short read with a real
+           task on <strong>your own work</strong>.</p>
+
+        <div class="tmc-lsec">
+          <h2>What you'll walk away with</h2>
+          <ul class="tmc-check">
+            <li>By the end of your next sitting, the agent will have done a <strong>real piece of your work</strong></li>
+            <li>A toolkit you own — a skill that grills your requests, your agent's memory, a verification checklist</li>
+            <li>A <strong>machine you commissioned</strong> for a task you're sick of doing by hand</li>
+          </ul>
+        </div>
+
+        <div class="tmc-lsec">
+          <h2>One quick thing first</h2>
+          <p>The next slide asks a handful of questions so every lesson is tuned to your world.
+             Already know your way around AI? Tick what you've done and the course
+             <strong>fast-tracks</strong> — it credits what you can already do and skips it, so
+             you're never marched through the basics.</p>
+        </div>
+
+        <div class="tmc-nav">
+          <span class="tmc-page">Slide 1 of 2</span>
+          <label class="tmc-navbtn" for="ob-s2">Tell me about you →</label>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="tmc-slide tmc-slide--2">
+      <div class="tmc-lesson-body">
+        <div class="tmc-eyebrow">Lesson zero · about you</div>
+        <h1 class="tmc-title">A few quick things</h1>
+        <p class="tmc-muted">Your answers hand straight back to your learning guide — you copy
+           nothing by hand. Only the first two are needed; the rest just make the lessons sharper.</p>
+
+        <form id="onboard-form" novalidate>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-name">What should I call you?</label>
+            <input class="tmc-input" id="f-name" name="name" type="text" placeholder="e.g. Maya" required>
+          </div>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-prof">What do you do all day?</label>
+            <input class="tmc-input" id="f-prof" name="profession" type="text"
+                   placeholder="e.g. secondary-school teacher" required>
+          </div>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-task">The one recurring task you'd most love to hand over</label>
+            <input class="tmc-input" id="f-task" name="handover_task" type="text"
+                   placeholder="e.g. writing report-card comments every term">
+          </div>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-pref">How do you like to work? What does a good result look like to you?</label>
+            <textarea class="tmc-textarea" id="f-pref" name="work_preferences"
+                      placeholder="e.g. short and plain — I'd rather be asked a question than get a wrong guess"></textarea>
+          </div>
+          <div class="tmc-field">
+            <label class="tmc-label" for="f-lang">What language do you want to work in?</label>
+            <input class="tmc-input" id="f-lang" name="language" type="text" placeholder="English (leave blank for English)">
+          </div>
+
+          <div class="tmc-field">
+            <span class="tmc-label">Which of these have you done before? Tick any — it just lets me skip quickly through what you likely already know. We can always come back to things later if you still need to cover some of the basics. If you prefer to start from the very beginning, leave it blank.</span>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="used-ai"> Used an AI assistant (Claude, ChatGPT…) for real work</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="delegated-reviewed"> Handed a whole task to an AI and reviewed its output</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="wrote-briefs"> Written detailed instructions to steer an AI's output</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="verified-output"> Checked an AI's work against sources before trusting it</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="set-up-memory"> Set up memory, custom instructions, or a project for an AI</label>
+            <label class="tmc-check-row"><input type="checkbox" name="prior" value="built-automation"> Built a reusable AI skill, command, or automation</label>
+          </div>
+
+          <div class="tmc-actions">
+            <label class="tmc-btn tmc-btn--ghost" for="ob-s1">← Back</label>
+            <button class="tmc-btn" type="submit">Hand back to my guide</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var form = document.getElementById("onboard-form");
+    if (!form) return;
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var data = new FormData(form);
+      function str(k) { return (data.get(k) || "").toString().trim(); }
+      var envelope = {
+        tmc_handback: true,
+        kind: "onboarding",
+        answers: {
+          name: str("name"),
+          profession: str("profession"),
+          handover_task: str("handover_task"),
+          work_preferences: str("work_preferences"),
+          language: str("language")
+        },
+        prior_experience: data.getAll("prior").map(function (v) { return v.toString(); })
+      };
+      if (typeof sendPrompt === "function") {
+        sendPrompt(JSON.stringify(envelope));
+      }
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) { btn.textContent = "Handed back ✓"; btn.disabled = true; }
+    });
+  })();
+</script>
+</div>

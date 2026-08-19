@@ -1,7 +1,7 @@
 {
   "name": "teach-me-claude",
   "displayName": "Teach Me Claude",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A hands-on learning guide that teaches you to work with Claude through practical challenges \u2014 starting in Cowork, no technical background needed. Ships with the free Foundations series (10 challenges), ending with a personal toolkit including your first skill and a machine you commission yourself.",
   "author": {
     "name": "hk121992"
