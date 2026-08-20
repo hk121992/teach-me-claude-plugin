@@ -439,7 +439,7 @@ Widget-first delivery is the differentiator.
   nor able to pass there.) Then **consume the answers** — and **do not re-ask
   what the form already collected**.
 - **Envelope-only, opaque answers.** You parse **only** the envelope
-  (`tmc_handback`, `nonce`, `widget_id`, `challenge`, `kind`) plus
+  (`tmc_handback`, `nonce`, `widget_id`, `challenge`, `kind`, `answers`) plus
   `outcome_signals`. **`answers` is opaque per-widget data** you store and echo
   but never interpret. **Signals are advisory** — they may move an outcome to
   `provisional`, never to `confirmed`.
